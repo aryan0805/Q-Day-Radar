@@ -1,0 +1,50 @@
+[project]
+name = "qday-radar"
+version = "0.1.0"
+description = "Measure the gap between today's quantum hardware and breaking real cryptography, then rank a crypto inventory by it."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "qiskit>=2.6,<3",
+    "qiskit-aer>=0.17",
+    "qiskit-ibm-runtime>=0.45",
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "pandas>=2.2",
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+# Phase 2: readout error mitigation
+mitigation = ["mthree>=3.0"]
+# Phase 3: resource estimators (heavier; install with `uv sync --group estimate`)
+estimate = ["qsharp[qiskit]>=1.14", "qualtran>=0.5"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["quantum"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+markers = [
+    "hardware: submits to IBM Quantum hardware; never run by the gate",
+    "slow: takes more than ~30 s on a laptop",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["web", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

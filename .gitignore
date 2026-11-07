@@ -1,0 +1,15 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
+node_modules/
+web/.next/
+web/out/
+.claude/settings.local.json
+
+# Runtime lock for the QPU budget ledger (P001)
+results/*.lock
