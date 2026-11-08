@@ -11,6 +11,7 @@ import { register } from "../../lib/data";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
 import { Gloss } from "../Gloss";
+import { Tech } from "../Tech";
 
 register("hero", hero);
 
@@ -309,6 +310,14 @@ export function Hero() {
             <Traced src="hero:resolution.n" /> into <Traced src="hero:resolution.factors[0]" /> × <Traced src="hero:resolution.factors[1]" />.
           </p>
         </div>
+        <Tech>
+          <p style={{ margin: "0 0 0.5rem" }}>
+            Registry label: <Traced src="hero:circuit.kind" />. <Traced src="hero:notes.compiled" />
+          </p>
+          <p style={{ margin: 0 }}>
+            <Traced src="hero:notes.hardware" /> <Traced src="hero:notes.success" />
+          </p>
+        </Tech>
         <button type="button" className="btn hero-replay" onClick={() => replay.current?.()}>
           Replay the sequence
         </button>
