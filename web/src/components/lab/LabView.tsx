@@ -5,6 +5,8 @@ import lab from "../../../public/data/lab.json";
 import { register, resolve } from "../../lib/data";
 import { Fig, type ProvLabel } from "../Fig";
 import { Traced } from "../Traced";
+import { Gloss } from "../Gloss";
+import { Tech } from "../Tech";
 
 register("lab", lab);
 
@@ -91,20 +93,40 @@ function bars(ci: number, mode: Mode): Bar[] {
 
 export function LabView() {
   const [mode, setMode] = useState<Mode>("all");
+  const firstCompiled = lab.circuits.findIndex((c) => c.kind === "compiled");
   return (
     <section aria-labelledby="lab-h">
       <h1 id="lab-h" style={{ fontSize: "2rem", marginBlock: "0 0.5rem" }}>
         Lab
       </h1>
       <p className="muted">
-        Real Shor and Grover circuits run three ways: on a perfect simulator, on a simulator with
-        noise copied from ibm_kingston, and on ibm_kingston itself. A bar is the share of shots that
-        found the right answer. The dashed line is what random guessing scores; a result only means
-        something when it sits clearly above it.
+        We ran small quantum attacks three ways: on a perfect <Gloss term="simulator">simulator</Gloss>,
+        on a simulator that copies the noise of a real chip, and on IBM&apos;s real quantum
+        computer, ibm_kingston.
       </p>
-      <p className="muted" style={{ fontSize: "0.875rem" }}>
-        Hardware batch <Traced src="lab:hardware_batch" />, run once with the human&apos;s approval.
+      <p className="muted">
+        The attacks are <Gloss term="shor">Shor&apos;s method</Gloss>, which breaks{" "}
+        <Gloss term="rsa">RSA</Gloss>, and <Gloss term="grover">Grover&apos;s method</Gloss>, which
+        searches for a secret key. Each bar shows how often an attack found the right answer. The
+        dashed line is the <Gloss term="chance">score from random guessing</Gloss>.
       </p>
+      <p>
+        <Fig src="lab:hardware_summary.ran" label="hardware" /> circuits ran on the real machine.{" "}
+        <Fig src="lab:hardware_summary.above" label="hardware" /> scored above random guessing.{" "}
+        <Fig src="lab:hardware_summary.no_better" label="hardware" /> did no better than random guessing.
+      </p>
+      <Tech>
+        <p style={{ margin: "0 0 0.5rem" }}>
+          A circuit is <em>compiled</em> when its multiplications are built for one fixed problem, so
+          the answer is built in; it is <em>generic</em> when it works for any input. Hardware runs
+          use three settings: raw, dd (dynamical decoupling) and dd_twirl (decoupling with Pauli
+          twirling). The thin line on a bar is the Wilson confidence interval for shot noise.
+        </p>
+        <p style={{ margin: 0 }}>
+          Hardware batch <Traced src="lab:hardware_batch" />, run once with the human&apos;s approval.
+          The noisy simulator carries the noise model of a snapshot of ibm_kingston.
+        </p>
+      </Tech>
       <div role="group" aria-label="Which runs to show" className="seg" style={{ marginBlock: "1rem" }}>
         {MODES.map((m) => (
           <button key={m.id} type="button" aria-pressed={mode === m.id} onClick={() => setMode(m.id)}>
@@ -121,13 +143,26 @@ export function LabView() {
                 <Traced src={`lab:${p}.name`} />
               </h2>
               <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: "0.875rem" }}>
-                <Traced src={`lab:${p}.kind`} /> circuit. Chance baseline{" "}
-                <Fig src={`lab:${p}.ideal.chance_baseline`} digits={3} label="computed from data"
-                  note="The success rate of guessing at random." />
-                ; ideal success{" "}
-                <Fig src={`lab:${p}.ideal.theoretical_success`} digits={3} label="computed from data"
-                  note="The success rate the circuit should reach on a perfect machine, from theory." />
-                .
+                {c.kind === "compiled" ? (
+                  ci === firstCompiled ? <Gloss term="compiled">A simplified demo version.</Gloss> : "A simplified demo version."
+                ) : (
+                  "A general-purpose version."
+                )}{" "}
+                {c.hardware_best ? (
+                  <>
+                    On the real machine its best run scored{" "}
+                    <Fig src={`lab:${p}.hardware_best.success_probability`} scale={100} digits={1} unit="%" label="hardware"
+                      note="The share of shots that found the right answer." />
+                    . Random guessing scores{" "}
+                    <Fig src={`lab:${p}.hardware_best.chance_baseline`} scale={100} digits={1} unit="%" label="computed from data" />
+                    , so it was <Traced src={`lab:${p}.hardware_best.verdict`} />. It closed{" "}
+                    <Fig src={`lab:${p}.hardware_best.normalized_score`} scale={100} digits={1} unit="%" label="hardware"
+                      note="The share of the gap between random guessing and a perfect score." />{" "}
+                    of the gap to a perfect score.
+                  </>
+                ) : (
+                  "It was not run on the real machine."
+                )}
               </p>
               {bars(ci, mode).length === 0 ? (
                 <p className="muted">No hardware run for this circuit.</p>

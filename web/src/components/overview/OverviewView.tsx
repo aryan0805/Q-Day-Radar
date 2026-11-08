@@ -7,6 +7,8 @@ import { onFirstInteraction } from "../../lib/interaction";
 import { useScenario, withScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
+import { Gloss } from "../Gloss";
+import { Tech } from "../Tech";
 import { ScenarioNote } from "../ScenarioNote";
 import { useEffect, type ComponentType } from "react";
 
@@ -84,7 +86,7 @@ export function OverviewView() {
             When does quantum computing break what you use?
           </h1>
           <p className="muted hero-lead">
-            Q-Day Radar runs real Shor and Grover circuits, scales their cost up to real key sizes,
+            Q-Day Radar runs real <Gloss term="shor">Shor</Gloss> and <Gloss term="grover">Grover</Gloss> circuits, scales their cost up to real key sizes,
             and ranks a fictional company&apos;s cryptography by how soon it is exposed. The
             sequence below shows one real run, then the radar shows every asset.
           </p>
@@ -95,6 +97,11 @@ export function OverviewView() {
         <h2 id="radar-h" style={{ fontSize: "1.5rem", marginBlock: "0 0.5rem" }}>
           The inventory on a radar
         </h2>
+        <p className="muted">
+          Each dot is one piece of cryptography in a made-up company. Dots near the centre have the
+          least time left. Red dots are exposed: a quantum computer could break them before they
+          can be replaced.
+        </p>
         <ScenarioNote />
         <div className="ov-grid">
           <figure className="card" style={{ margin: 0 }} aria-labelledby="radar-cap">
@@ -169,8 +176,8 @@ export function OverviewView() {
               )}
             </div>
             <p className="muted" style={{ fontSize: "0.8125rem", marginBottom: 0 }}>
-              The dashed red ring is a margin of zero: dots inside it are exposed. The dotted outer
-              ring holds assets with no finite margin in this scenario.
+              The dashed red ring marks zero years to spare. Dots inside it are exposed. The dotted
+              outer ring holds assets with no margin in this scenario.
             </p>
           </figure>
 
@@ -179,26 +186,23 @@ export function OverviewView() {
               <h2 id="now-h" style={{ fontSize: "1.125rem", marginBlock: "0 0.75rem" }}>
                 In this scenario
               </h2>
-              <dl className="why">
-                <dt>Assets exposed</dt>
-                <dd>
-                  <Fig src={`inventory:${sum}.exposed`} label="computed from data" /> of{" "}
-                  <Fig src={`inventory:${sum}.assets_total`} label="computed from data" />
-                </dd>
-                <dt>Assets already weak without quantum</dt>
-                <dd>
-                  <Fig src={`inventory:${sum}.classically_deprecated`} label="computed from data" />
-                </dd>
-                <dt>Earliest quantum break</dt>
-                <dd>
-                  <Fig src={`inventory:${sum}.soonest_crqc_year`} digits={1} nullText="none" label="trend extrapolation"
-                    note="A straight-line trend of hardware qubit counts; it failed its own holdout."
-                    extra={[{ name: "Trend holdout error (%):", src: "scenarios:timeline.fit.holdout.rel_error", scale: 100, digits: 0 }]} />
-                </dd>
-              </dl>
-              <p className="muted" style={{ fontSize: "0.8125rem", marginBottom: 0 }}>
-                Years are a <Traced src="inventory:crqc_label" />: the trend&apos;s own holdout error was{" "}
-                <Fig src="scenarios:timeline.fit.holdout.rel_error" scale={100} digits={0} unit="%" label="trend extrapolation" />.
+              <p style={{ marginTop: 0 }}>
+                <Fig src={`inventory:${sum}.exposed`} label="computed from data" /> of{" "}
+                <Fig src={`inventory:${sum}.assets_total`} label="computed from data" /> assets are exposed.{" "}
+                <Fig src={`inventory:${sum}.classically_deprecated`} label="computed from data" /> are already weak without any quantum
+                computer.{" "}
+                {scenarios.timeline.scenarios[scenario] && inventory.summary[scenario].soonest_crqc_year !== null ? (
+                  <>
+                    The earliest quantum break is about{" "}
+                    <Fig src={`inventory:${sum}.soonest_years_from_now`} digits={1} label="trend extrapolation" /> years away, around{" "}
+                    <Fig src={`inventory:${sum}.soonest_crqc_year`} digits={0} label="trend extrapolation"
+                      extra={[{ name: "Trend holdout error (%):", src: "scenarios:timeline.fit.holdout.rel_error", scale: 100, digits: 0 }]} />
+                    . That is <Gloss term="trend">an estimate from a trend line, not a measurement</Gloss>. The trend missed a known year by{" "}
+                    <Fig src="scenarios:timeline.fit.holdout.rel_error" scale={100} digits={0} unit="%" label="trend extrapolation" />.
+                  </>
+                ) : (
+                  "No quantum attack finishes within the limit we set, so there is no break year."
+                )}
               </p>
             </section>
 
@@ -206,30 +210,46 @@ export function OverviewView() {
               <h2 id="order-h" style={{ fontSize: "1.125rem", marginBlock: "0 0.75rem" }}>
                 Whose attack arrives first
               </h2>
-              <OrderRow label="Computed order" scenario={scenario} list={inventory.family_order[scenario]} base={`inventory:family_order.${scenario}`} />
-              <OrderRow label="Cost model alone" scenario={scenario} list={scenarios.model_only[scenario].family_order} base={`scenarios:model_only.${scenario}.family_order`} />
-              <p className="muted" style={{ fontSize: "0.8125rem" }}>
-                <Traced src={`scenarios:order_notes.${scenario}`} />
+              <p style={{ marginTop: 0 }}>
+                <Traced src={`scenarios:order_plain.${scenario}`} />
               </p>
-              <p className="muted" style={{ fontSize: "0.8125rem", marginBottom: 0 }}>
-                <Traced src={`scenarios:scenario_notes.${scenario}`} />
-              </p>
+              <Tech>
+                <OrderRow label="Computed order" scenario={scenario} list={inventory.family_order[scenario]} base={`inventory:family_order.${scenario}`} />
+                <OrderRow label="Cost model alone" scenario={scenario} list={scenarios.model_only[scenario].family_order} base={`scenarios:model_only.${scenario}.family_order`} />
+                <p className="muted" style={{ fontSize: "0.8125rem" }}>
+                  <Traced src={`scenarios:order_notes.${scenario}`} />
+                </p>
+                <p className="muted" style={{ fontSize: "0.8125rem", marginBottom: 0 }}>
+                  <Traced src={`scenarios:scenario_notes.${scenario}`} />
+                </p>
+              </Tech>
             </section>
 
             <section className="card" aria-labelledby="dl-h">
               <h2 id="dl-h" style={{ fontSize: "1.125rem", marginBlock: "0 0.75rem" }}>
                 Deadlines to compare
               </h2>
-              <ul className="deadlines">
-                {inventory.deadlines.map((d, i) => (
-                  <li key={d.key}>
-                    <Fig src={`inventory:deadlines[${i}].year`} label="published standard" note={d.scope} />{" "}
-                    <span className="muted">
-                      <Traced src={`inventory:deadlines[${i}].scope`} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <p style={{ marginTop: 0 }}>
+                Governments set their own dates. The most sensitive US federal systems must move key
+                exchange to quantum-safe methods by{" "}
+                <Fig src="inventory:deadlines[0].year" label="published standard" note={inventory.deadlines[0]?.scope} /> and signatures by{" "}
+                <Fig src="inventory:deadlines[1].year" label="published standard" note={inventory.deadlines[1]?.scope} />. NIST plans to
+                deprecate today&apos;s methods after{" "}
+                <Fig src="inventory:deadlines[2].year" label="published standard" note={inventory.deadlines[2]?.scope} /> and to disallow
+                them after <Fig src="inventory:deadlines[3].year" label="published standard" note={inventory.deadlines[3]?.scope} />.
+              </p>
+              <Tech>
+                <ul className="deadlines">
+                  {inventory.deadlines.map((d, i) => (
+                    <li key={d.key}>
+                      <Fig src={`inventory:deadlines[${i}].year`} label="published standard" note={d.scope} />{" "}
+                      <span className="muted">
+                        <Traced src={`inventory:deadlines[${i}].scope`} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Tech>
             </section>
           </div>
         </div>

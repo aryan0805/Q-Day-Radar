@@ -184,11 +184,17 @@
     "hardware_batch": {
       "title": "Hardware Batch",
       "type": "string"
+    },
+    "hardware_summary": {
+      "additionalProperties": true,
+      "title": "Hardware Summary",
+      "type": "object"
     }
   },
   "required": [
     "hardware_batch",
     "device",
+    "hardware_summary",
     "circuits"
   ],
   "title": "LabFile",

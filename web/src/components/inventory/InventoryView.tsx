@@ -7,6 +7,8 @@ import { useScenario } from "../../lib/scenario";
 import { useUrlParam } from "../../lib/urlparam";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
+import { Gloss } from "../Gloss";
+import { Tech } from "../Tech";
 import { ScenarioNote } from "../ScenarioNote";
 
 type SortKey = "rank" | "margin" | "name";
@@ -62,24 +64,40 @@ export function InventoryView() {
         Inventory
       </h1>
       <p className="muted">
-        Every cryptographic asset in a fictional company&apos;s bill of materials, ranked by how soon
-        a quantum computer could break it compared with how long it must stay secure and how long it
-        takes to migrate.
+        This table lists every piece of cryptography in a made-up company, from web certificates to
+        disk encryption. The first row is the most urgent.
       </p>
-      <ScenarioNote />
-      <p style={{ fontSize: "0.875rem" }}>
-        Every year in the CRQC column is a{" "}
-        <Traced src="inventory:crqc_label" />: a straight-line fit to hardware qubit counts, whose
-        own holdout error was{" "}
+      <p className="muted">
+        Each row has a <Gloss term="crqc">break year</Gloss>: when a quantum computer could break
+        it. The <Gloss term="mosca">margin</Gloss> is the years to spare. A negative margin means
+        the asset is exposed.
+      </p>
+      <p>
+        Every break year is an <Gloss term="trend">estimate from a trend line, not a measurement</Gloss>.
+        The trend missed a known year by{" "}
         <Fig src="scenarios:timeline.fit.holdout.rel_error" scale={100} digits={0} unit="%" label="trend extrapolation"
           note="The fit was made without the latest point and asked to predict it." />
-        .
+        , so treat the years as rough.
       </p>
+      <ScenarioNote />
       {noFinite ? (
         <p role="note" className="card" style={{ borderColor: "var(--warn)" }}>
-          <Traced src={`scenarios:scenario_notes.${scenario}`} />
+          In this scenario every attack would run for longer than{" "}
+          <Fig src="scenarios:timeline.runtime_cap_years" digits={0} unit="year" label="design choice" />, which is the limit we set. So no asset has a margin here. That
+          is a limit we chose, not proof that nothing is at risk.
         </p>
       ) : null}
+      <Tech>
+        <p style={{ margin: "0 0 0.5rem" }}>
+          Rank orders assets by exposure weight times years of shortfall, then by margin, then by
+          id. A CRQC year is a <Traced src="inventory:crqc_label" />: a log-linear fit of the
+          largest gate-model qubit count per year, carried to the physical qubits the costed attack
+          needs.
+        </p>
+        <p style={{ margin: 0 }}>
+          <Traced src={`scenarios:scenario_notes.${scenario}`} />
+        </p>
+      </Tech>
 
       <div className="controls" role="group" aria-label="Filter and sort">
         <label>
@@ -222,7 +240,7 @@ function CrqcYear({ index, asset, scenario }: { index: number; asset: Asset; sce
         extra={extra}
       />
       <div className="muted" style={{ fontSize: "0.8125rem" }}>
-        {s.crqc_basis === null ? "no finite year" : deprecated ? "classically deprecated" : "trend extrapolation"}
+        {s.crqc_basis === null ? "no finite year" : deprecated ? "weak without quantum" : "trend-line estimate"}
       </div>
     </>
   );

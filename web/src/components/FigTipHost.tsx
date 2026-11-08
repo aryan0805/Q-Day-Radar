@@ -4,7 +4,7 @@
 // figure (.fig) or a glossary term (.gloss) and draws the tooltip from the element's data-*
 // attributes. Escape closes it. Keeping this out of the figures keeps hydration cheap.
 import { useEffect, useRef, useState } from "react";
-import { GLOSSARY } from "../lib/glossary";
+import type { Term } from "../lib/glossary";
 import { resolve } from "../lib/data";
 import { fmtNumber } from "../lib/format";
 import { LABEL_COLOUR, type ProvLabel } from "./Fig";
@@ -41,6 +41,8 @@ function value(x: Extra): string {
 export function FigTipHost() {
   const [open, setOpen] = useState<Open | null>(null);
   const current = useRef<HTMLElement | null>(null);
+  const openedAt = useRef(0);
+  const [glossary, setGlossary] = useState<Record<string, Term> | null>(null);
 
   useEffect(() => {
     const target = (e: Event): HTMLElement | null => (e.target as HTMLElement | null)?.closest?.(".fig, .gloss") ?? null;
@@ -48,6 +50,7 @@ export function FigTipHost() {
       const r = el.getBoundingClientRect();
       const left = Math.max(8, Math.min(r.left, window.innerWidth - 360));
       current.current = el;
+      openedAt.current = performance.now();
       setOpen({ el, top: r.bottom + 6, left, flip: r.bottom > window.innerHeight - 220 });
     };
     const hide = () => {
@@ -72,8 +75,10 @@ export function FigTipHost() {
       const el = target(e);
       if (!el) return hide();
       // A tap toggles; a mouse click keeps the tooltip the hover opened.
-      if ((e as PointerEvent).pointerType !== "mouse" && current.current === el) hide();
-      else show(el);
+      // (the focus that a tap causes has just opened it, so ignore a toggle straight after)
+      if ((e as PointerEvent).pointerType !== "mouse" && current.current === el) {
+        if (performance.now() - openedAt.current > 400) hide();
+      } else show(el);
     };
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") hide();
@@ -94,6 +99,11 @@ export function FigTipHost() {
     };
   }, []);
 
+  // The definitions are a separate chunk, fetched the first time a glossary term is opened.
+  useEffect(() => {
+    if (open?.el.dataset.term && !glossary) void import("../lib/glossary").then((m) => setGlossary(m.GLOSSARY));
+  }, [open, glossary]);
+
   useEffect(() => {
     if (!open) return;
     open.el.setAttribute("aria-describedby", "fig-tip");
@@ -105,7 +115,7 @@ export function FigTipHost() {
   const style = { left: open.left, ...(open.flip ? { bottom: window.innerHeight - open.top + 30 } : { top: open.top }) };
 
   if (d.term) {
-    const t = GLOSSARY[d.term];
+    const t = glossary?.[d.term];
     if (!t) return null;
     return (
       <span id="fig-tip" role="tooltip" className="fig-tip" style={style}>

@@ -10,6 +10,7 @@ import hero from "../../../public/data/hero.json";
 import { register } from "../../lib/data";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
+import { Gloss } from "../Gloss";
 
 register("hero", hero);
 
@@ -273,7 +274,7 @@ export function Hero() {
                     <Fig src="hero:resolution.denominator" label="computed from data" />
                   </li>
                   <li className="fact-line">
-                    Continued fractions give{" "}
+                    <Gloss term="continued">Continued fractions</Gloss> give{" "}
                     <Fig src="hero:resolution.convergents[2][0]" label="computed from data" />/
                     <Fig src="hero:resolution.convergents[2][1]" label="computed from data" />
                   </li>
@@ -292,12 +293,21 @@ export function Hero() {
           <div data-layer="lattice" className="hero-layer">
             <p className="hero-step">The pieces re-form into a lattice that holds</p>
             <LatticeSvg />
-            <p className="lat-caption hero-caption">ML-KEM: what to migrate to.</p>
+            <p className="lat-caption hero-caption"><Gloss term="mlkem">ML-KEM</Gloss>: what to migrate to.</p>
           </div>
         </div>
         <div className="hero-notes">
-          <p><Traced src="hero:notes.compiled" /></p>
-          <p><Traced src="hero:notes.hardware" /> <Traced src="hero:notes.success" /></p>
+          <p>
+            This is a <Gloss term="compiled">simplified demo version</Gloss> of Shor&apos;s algorithm, the quantum attack on{" "}
+            <Gloss term="rsa">RSA</Gloss> encryption. To fit on today&apos;s small quantum computers, part of the answer was built in. So
+            it shows how the attack works, not a real attack.
+          </p>
+          <p>
+            We ran it on IBM&apos;s real quantum computer, <Traced src="hero:hardware.backend" />, in a{" "}
+            <Gloss term="transpiled">transpiled</Gloss> form made for that chip. A run counts as a success when it finds the repeating
+            pattern: here a period of <Traced src="hero:resolution.order" /> for a = <Traced src="hero:resolution.a" />. That period splits{" "}
+            <Traced src="hero:resolution.n" /> into <Traced src="hero:resolution.factors[0]" /> × <Traced src="hero:resolution.factors[1]" />.
+          </p>
         </div>
         <button type="button" className="btn hero-replay" onClick={() => replay.current?.()}>
           Replay the sequence

@@ -1,12 +1,13 @@
 "use client";
 
-// Says how the chosen scenario differs from the median, computed from the data (never typed):
-// the 'pessimistic' caveat (it differs from the median only in cycle time and growth rate) is
-// whatever the comparison finds.
+// Says what the chosen scenario means in plain words, then how it differs from the median as a
+// technical detail computed from the data (never typed): the 'pessimistic' caveat is whatever the
+// comparison finds.
 import { Fragment } from "react";
 import { resolve, type Scenario } from "../lib/data";
 import { useScenario } from "../lib/scenario";
 import { Fig } from "./Fig";
+import { Tech } from "./Tech";
 
 interface Field {
   name: string;
@@ -23,31 +24,41 @@ const FIELDS: Field[] = [
   { name: "hardware doubling time", path: (s: Scenario) => `timeline.scenarios.${s}.doubling_years`, unit: "years", digits: 2 },
 ];
 
+const PLAIN: Record<Scenario, string> = {
+  median: "You are looking at the middle scenario. It follows the trend in past quantum hardware.",
+  optimistic: "You are looking at the optimistic scenario. It assumes quantum computers get better, and get better faster, than the middle case.",
+  pessimistic: "You are looking at the pessimistic scenario. It assumes quantum computers run slower, and improve more slowly, than the middle case.",
+};
+
 export function ScenarioNote() {
   const { scenario } = useScenario();
-  if (scenario === "median") {
-    return (
-      <p className="muted" style={{ fontSize: "0.875rem" }}>
-        Median is the reference scenario: the base cost model with the fitted hardware growth rate.
-      </p>
-    );
-  }
-  const differs = FIELDS.filter(
-    (f) => resolve("scenarios", f.path(scenario)) !== resolve("scenarios", f.path("median")),
-  );
+  const differs =
+    scenario === "median"
+      ? []
+      : FIELDS.filter((f) => resolve("scenarios", f.path(scenario)) !== resolve("scenarios", f.path("median")));
   return (
-    <p className="muted" style={{ fontSize: "0.875rem" }}>
-      {scenario === "optimistic" ? "Optimistic" : "Pessimistic"} differs from median in{" "}
-      {differs.length === 0 ? "nothing in these inputs" : differs.map((f, i) => (
-        <Fragment key={f.name}>
-          {i > 0 ? ", " : ""}
-          {f.name}{" "}
-          <Fig src={`scenarios:${f.path(scenario)}`} label="design choice" digits={f.digits} sci={f.sci} unit={f.unit} />{" "}
-          (median{" "}
-          <Fig src={`scenarios:${f.path("median")}`} label="design choice" digits={f.digits} sci={f.sci} unit={f.unit} />)
-        </Fragment>
-      ))}
-      .
-    </p>
+    <>
+      <p className="muted" style={{ fontSize: "0.9375rem" }}>
+        {PLAIN[scenario]} Use the buttons at the top to switch. A scenario is a guess about how fast quantum computers will improve.
+      </p>
+      {scenario === "median" ? null : (
+        <Tech>
+          <p style={{ margin: 0 }}>
+            {scenario === "optimistic" ? "Optimistic" : "Pessimistic"} differs from median in{" "}
+            {differs.length === 0
+              ? "nothing in these inputs"
+              : differs.map((f, i) => (
+                  <Fragment key={f.name}>
+                    {i > 0 ? ", " : ""}
+                    {f.name}{" "}
+                    <Fig src={`scenarios:${f.path(scenario)}`} label="design choice" digits={f.digits} sci={f.sci} unit={f.unit} /> (median{" "}
+                    <Fig src={`scenarios:${f.path("median")}`} label="design choice" digits={f.digits} sci={f.sci} unit={f.unit} />)
+                  </Fragment>
+                ))}
+            .
+          </p>
+        </Tech>
+      )}
+    </>
   );
 }

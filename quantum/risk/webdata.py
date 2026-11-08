@@ -136,6 +136,7 @@ class LabCircuit(_M):
 class LabFile(_M):
     hardware_batch: str
     device: dict[str, Any]
+    hardware_summary: dict[str, Any]
     circuits: list[LabCircuit]
 
 
@@ -206,7 +207,20 @@ def _best_hardware(hw: list[dict]) -> dict | None:
         "config": best["config"],
         "success_probability": best["success_probability"],
         "chance_baseline": best["chance_baseline"],
+        "normalized_score": best["normalized_score"],
         "verdict": _verdict(lo, hi, best["chance_baseline"]),
+    }
+
+
+def _hardware_summary(circuits: list[dict]) -> dict:
+    """How many circuits ran on the real machine and how each scored against random guessing."""
+    best = [c["hardware_best"] for c in circuits if c["hardware_best"]]
+    count = lambda text: sum(b["verdict"].startswith(text) for b in best)  # noqa: E731
+    return {
+        "ran": len(best),
+        "above": count("above"),
+        "no_better": count("no better"),
+        "worse": count("worse"),
     }
 
 
@@ -257,6 +271,7 @@ def build_lab() -> dict:
     return {
         "hardware_batch": HW_SUMMARY.stem.removeprefix("summary-"),
         "device": device(),
+        "hardware_summary": _hardware_summary(circuits),
         "circuits": circuits,
     }
 
@@ -471,7 +486,7 @@ def _inventory_file(timeline: dict) -> dict:
 def _verdict(lo: float, hi: float, chance: float) -> str:
     """Plain verdict from the 95% interval against random guessing."""
     if lo > chance:
-        return "clearly better than random guessing"
+        return "above random guessing"
     if hi < chance:
         return "worse than random guessing"
     return "no better than random guessing"

@@ -7,6 +7,8 @@ import { sci } from "../../lib/format";
 import { useScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
+import { Gloss } from "../Gloss";
+import { Tech } from "../Tech";
 import { ScenarioNote } from "../ScenarioNote";
 
 register("lab", lab);
@@ -43,11 +45,39 @@ export function ScalingView() {
         Scaling
       </h1>
       <p className="muted">
-        What it takes to run Shor at real key sizes. The left panel measures our circuits at toy
-        sizes and extends the trend to a real-world key size. The right panel compares the physical
-        qubits that attack needs with the chips that exist.
+        Breaking real encryption takes a far bigger quantum computer than anything built today. The
+        left chart shows how the cost of an attack grows as keys get longer. The right chart compares
+        the size needed with real chips.
       </p>
       <ScenarioNote />
+      {(["rsa2048", "ecc256"] as const).map((k, n) => {
+        const t = scenarios.timeline.scenarios[scenario].targets[k];
+        const base = `scenarios:timeline.scenarios.${scenario}.targets.${k}`;
+        return (
+          <p key={k}>
+            Breaking {k === "rsa2048" ? <Gloss term="rsa">RSA-2048</Gloss> : <Gloss term="ecc">ECC-256</Gloss>} would need about{" "}
+            <Fig src={`${base}.physical_qubits`} group digits={0} label={t.physical_source === "model" ? "model estimate" : "published estimate"}
+              note={`Source: ${t.physical_source}${t.physical_bound ? `, an ${t.physical_bound} bound` : ""}`} />{" "}
+            {n === 0 ? <Gloss term="qubit">qubits</Gloss> : "qubits"}. That is about{" "}
+            <Fig src={`scenarios:gaps.${scenario}.${k}.over_device`} group digits={0} label="computed from data" /> times more than
+            ibm_kingston, the chip we ran on, which has <Fig src="lab:device.n_qubits" group digits={0} label="hardware" />. It is also about{" "}
+            <Fig src={`scenarios:gaps.${scenario}.${k}.over_record`} group digits={0} label="computed from data" /> times more than the
+            largest chip built so far, which has <Fig src="scenarios:timeline.baseline.qubits" group digits={0} label="published estimate" />. The
+            attack would run for about{" "}
+            <Fig src={`${base}.runtime_seconds`} scale={1 / 86400} digits={1} unit="days" label="model estimate" />.{" "}
+            {t.crqc_year === null ? (
+              <>That is longer than the limit we set, so we give no year.</>
+            ) : (
+              <>
+                A chip that big could exist around{" "}
+                <Fig src={`${base}.crqc_year`} digits={0} label="trend extrapolation"
+                  extra={[{ name: "Trend holdout error (%):", src: "scenarios:timeline.fit.holdout.rel_error", scale: 100, digits: 0 }]} />
+                . That is {n === 0 ? <Gloss term="trend">an estimate from a trend line, not a measurement</Gloss> : "an estimate from a trend line, not a measurement"}.
+              </>
+            )}
+          </p>
+        );
+      })}
       <div className="scale-grid">
         <CostChart />
         <BraceChart scenario={scenario} />
@@ -72,7 +102,7 @@ function CostChart() {
   return (
     <figure className="card" style={{ margin: 0 }} aria-labelledby="cost-cap">
       <figcaption id="cost-cap" style={{ marginBottom: "0.5rem" }}>
-        <strong>Cost of Shor (Toffoli-equivalent gates) against modulus size</strong>
+        <strong>What an attack costs as keys get longer</strong>
       </figcaption>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Log-log chart: measured cost at small sizes and the extrapolation to 2048 bits for two estimators" style={{ width: "100%", height: "auto" }}>
         <g stroke="var(--line)">
@@ -119,9 +149,11 @@ function CostChart() {
         })}
       </svg>
       <p className="muted" style={{ fontSize: "0.8125rem", marginTop: 0 }}>
-        Dots are measured. The dashed line is the fitted trend carried to the modulus size shown at
-        the right; the thick bar is the range of values the fits disagree over.
+        Dots are measured costs at small key sizes. The dashed line carries the trend up to a real
+        key size. It is an estimate, not a measurement. The two tools give different totals, so
+        treat the size of the cost as rough.
       </p>
+      <Tech>
       <dl className="why">
         {COST_SERIES.map((s, si) => {
           const i = idx[si] ?? -1;
@@ -152,6 +184,7 @@ function CostChart() {
           </p>
         ) : null;
       })}
+      </Tech>
     </figure>
   );
 }
@@ -174,7 +207,7 @@ function BraceChart({ scenario }: { scenario: "optimistic" | "median" | "pessimi
   return (
     <figure className="card" style={{ margin: 0 }} aria-labelledby="brace-cap">
       <figcaption id="brace-cap" style={{ marginBottom: "0.5rem" }}>
-        <strong>Physical qubits: what exists against what the attack needs</strong>
+        <strong>Qubits needed, against the chips that exist</strong>
       </figcaption>
       <svg viewBox={`0 0 ${W} ${BH}`} role="img" aria-label="Log axis of qubit counts with a brace from the chip we ran on to the qubits the attack needs" style={{ width: "100%", height: "auto" }}>
         <line x1={M.l} x2={W - M.r} y1={base} y2={base} stroke="var(--line)" />
@@ -210,6 +243,7 @@ function BraceChart({ scenario }: { scenario: "optimistic" | "median" | "pessimi
           physical qubits (log scale)
         </text>
       </svg>
+      <Tech>
       <dl className="why">
         <dt>ibm_kingston, the chip we ran on</dt>
         <dd>
@@ -254,6 +288,7 @@ function BraceChart({ scenario }: { scenario: "optimistic" | "median" | "pessimi
       <p className="muted" style={{ fontSize: "0.8125rem" }}>
         <Traced src={`scenarios:order_notes.${scenario}`} />
       </p>
+      </Tech>
     </figure>
   );
 }

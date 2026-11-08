@@ -57,8 +57,9 @@
       "hardware_best": {
         "chance_baseline": 0.25,
         "config": "raw",
+        "normalized_score": 0.3401692708333333,
         "success_probability": 0.505126953125,
-        "verdict": "clearly better than random guessing"
+        "verdict": "above random guessing"
       },
       "ideal": {
         "chance_baseline": 0.25,
@@ -142,8 +143,9 @@
       "hardware_best": {
         "chance_baseline": 0.125,
         "config": "dd_twirl",
+        "normalized_score": 0.032589285714285716,
         "success_probability": 0.1517333984375,
-        "verdict": "clearly better than random guessing"
+        "verdict": "above random guessing"
       },
       "ideal": {
         "chance_baseline": 0.125,
@@ -227,8 +229,9 @@
       "hardware_best": {
         "chance_baseline": 0.0625,
         "config": "dd",
+        "normalized_score": 0.015889992360580595,
         "success_probability": 0.0767822265625,
-        "verdict": "clearly better than random guessing"
+        "verdict": "above random guessing"
       },
       "ideal": {
         "chance_baseline": 0.0625,
@@ -312,8 +315,9 @@
       "hardware_best": {
         "chance_baseline": 0.03125,
         "config": "dd",
+        "normalized_score": 0.0042878934387787365,
         "success_probability": 0.035400390625,
-        "verdict": "clearly better than random guessing"
+        "verdict": "above random guessing"
       },
       "ideal": {
         "chance_baseline": 0.03125,
@@ -363,6 +367,7 @@
       "hardware_best": {
         "chance_baseline": 0.171875,
         "config": "raw",
+        "normalized_score": 0.009672619047619048,
         "success_probability": 0.175048828125,
         "verdict": "no better than random guessing"
       },
@@ -448,8 +453,9 @@
       "hardware_best": {
         "chance_baseline": 0.171875,
         "config": "dd_twirl",
+        "normalized_score": 0.6015625,
         "success_probability": 0.3692626953125,
-        "verdict": "clearly better than random guessing"
+        "verdict": "above random guessing"
       },
       "ideal": {
         "chance_baseline": 0.171875,
@@ -510,5 +516,11 @@
     "name": "ibm_kingston",
     "source": "FakeKingston snapshot of ibm_kingston (qiskit-ibm-runtime)"
   },
-  "hardware_batch": "batch-20261108T044751Z"
+  "hardware_batch": "batch-20261108T044751Z",
+  "hardware_summary": {
+    "above": 5,
+    "no_better": 1,
+    "ran": 6,
+    "worse": 0
+  }
 }

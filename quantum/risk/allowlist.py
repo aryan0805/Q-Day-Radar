@@ -218,6 +218,11 @@ ALLOWED: dict[str, frozenset[str]] = {
     ),
     "lab": frozenset(
         {
+            "hardware_summary",
+            "ran",
+            "above",
+            "no_better",
+            "worse",
             "hardware_best",
             "verdict",
             "device",

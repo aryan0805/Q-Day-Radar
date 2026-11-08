@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { GLOSSARY } from "../lib/glossary";
+import type { GLOSSARY } from "../lib/glossary";
 
 /** Wraps a term at its first use on a page. Hover, focus or tap shows a plain definition (the shared
  *  FigTipHost draws it); Escape closes it. */
