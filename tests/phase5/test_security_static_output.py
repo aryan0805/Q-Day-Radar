@@ -29,6 +29,7 @@ INERT_HOSTS = {
     "nextjs.org": "documentation link inside a framework error message string",
     "react.dev": "documentation link inside a framework error message string",
     "github.com": "core-js licence/source comment string inside a bundled polyfill",
+    "gsap.com": "docs link in a GSAP console-warning string; the chunk has no fetch/XHR/import()",
     "scripts.sil.org": "the OFL licence text's own FAQ link (plain text in the licence file)",
 }
 HOST_RE = re.compile(r"https?://([A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)+)")
@@ -194,3 +195,67 @@ def test_security_no_data_file_is_over_5_mb() -> None:
         p.name: p.stat().st_size for p in DATA_DIR.glob("*.json") if p.stat().st_size > 5_000_000
     }
     assert big == {}
+
+
+# ------------------------------------------------------------- GSAP is lazy (lead, 2026-11-08)
+
+
+def _gsap_chunks(out_dir: Path) -> list[str]:
+    """Script files that contain GSAP, found by content so a renamed chunk is still found."""
+    return sorted(
+        str(p.relative_to(out_dir))
+        for p in out_dir.rglob("*.js")
+        if "GSAP target" in _text(p) or "gsap.com" in _text(p)
+    )
+
+
+def _scripts_a_page_loads(html: str) -> set[str]:
+    """Script files a page names directly: <script src> and <link rel=preload as=script>."""
+    srcs = set(re.findall(r"<script[^>]*\bsrc=[\"']([^\"']+)", html, re.I))
+    for tag in re.findall(r"<link[^>]*>", html, re.I):
+        if re.search(r"""as=["']script["']""", tag, re.I) or re.search(r"modulepreload", tag, re.I):
+            srcs |= set(re.findall(r"""href=["']([^"']+)""", tag, re.I))
+    return {s.lstrip("/") for s in srcs}
+
+
+def test_security_the_gsap_chunk_exists_and_is_found_by_content(out_dir: Path) -> None:
+    # without this, "GSAP is not loaded" would pass for a build that has no GSAP to look for
+    # (the hero is built in 5c; until then this fails loudly instead of passing by absence)
+    assert _gsap_chunks(out_dir), "no GSAP chunk in out/: nothing to check laziness against"
+
+
+def test_security_no_page_loads_a_gsap_chunk_directly(out_dir: Path) -> None:
+    gsap = set(_gsap_chunks(out_dir))
+    assert gsap
+    loaded = {
+        str(f.relative_to(out_dir)): sorted(
+            gsap & _scripts_a_page_loads(f.read_text(encoding="utf-8"))
+        )
+        for f in sorted(out_dir.rglob("*.html"))
+    }
+    assert {k: v for k, v in loaded.items() if v} == {}
+
+
+def test_security_the_gsap_chunk_has_no_network_api(out_dir: Path) -> None:
+    # the reviewed reason for listing gsap.com as inert: a string, not a request target
+    apis = (
+        "fetch(",
+        "XMLHttpRequest",
+        "sendBeacon",
+        "new WebSocket",
+        "EventSource",
+        "importScripts",
+    )
+    for chunk in _gsap_chunks(out_dir):
+        text = _text(out_dir / chunk)
+        assert [a for a in apis if a in text] == [], chunk
+        assert 'createElement("script")' not in text and "import(" not in text, chunk
+
+
+def test_security_gsap_detection_can_fail(tmp_path: Path) -> None:
+    (tmp_path / "a.js").write_text("var x=1;")
+    (tmp_path / "g.js").write_text('warn("GSAP target not found. https://gsap.com")')
+    assert _gsap_chunks(tmp_path) == ["g.js"]
+    page = '<script src="/g.js"></script><link rel="preload" as="script" href="/h.js">'
+    assert _scripts_a_page_loads(page) == {"g.js", "h.js"}
+    assert _scripts_a_page_loads("<script>inline()</script>") == set()
