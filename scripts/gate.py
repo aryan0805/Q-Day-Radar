@@ -1129,6 +1129,649 @@ def p4_strict(expr: str) -> Callable[[], tuple[bool, str]]:
     return pytest_selects(expr, path="tests/phase4", strict=True)
 
 
+# ---------- phase 5: front end ----------
+# Every threshold below was fixed at /phase-start 5, before BUILD (P5 process rule).
+
+P5_WEB = ROOT / "web"
+P5_OUT = P5_WEB / "out"
+P5_SRC = P5_WEB / "src"
+P5_SITES = ROOT / ".coord" / "gates" / "phase-5-sites.json"  # lead fills: urls, not secrets
+P5_SCREENS = ["/", "/lab/", "/scaling/", "/inventory/"]
+P5_TOKENS_CSS = P5_SRC / "styles" / "tokens.css"
+P5_BG_TOKENS = ["bg-0", "bg-1", "bg-2"]
+P5_TEXT_TOKENS = ["text-1", "text-2", "q", "threat", "warn", "pqc", "sim-text"]
+P5_GRAPHIC_TOKENS = ["sim", "line"]
+P5_MIN_TEXT_CONTRAST = 4.5  # WCAG 2.2 AA, 1.4.3
+P5_MIN_GRAPHIC_CONTRAST = 3.0  # WCAG 2.2 AA, 1.4.11 (sim only; line is decorative, reported)
+P5_LH_MIN = {"performance": 0.90, "accessibility": 1.00}
+P5_LH_MAX_LCP_MS = 2000.0
+P5_LH_MAX_CLS = 0.05
+P5_LH_RUNS = 3  # median of 3 per screen, Lighthouse mobile defaults
+P5_HOME_JS_GZ_MAX = 200_000  # bytes, gzip -9, scripts index.html loads before any interaction
+P5_TWEAK_SENTINEL = "QDAY_TWEAK_PANEL"
+P5_BYPASS_ENV = "VERCEL_AUTOMATION_BYPASS_SECRET"  # in the root .env only, never in web/
+P5_SKIP_DIRS = {"node_modules", ".next", "out"}
+P5_SECRET_PATTERNS = [
+    r"-----BEGIN [A-Z ]*PRIVATE KEY-----",
+    r"ghp_[A-Za-z0-9]{36}",
+    r"github_pat_[A-Za-z0-9_]{20,}",
+    r"AKIA[0-9A-Z]{16}",
+    r"xox[abprs]-[A-Za-z0-9-]{10,}",
+    r"sk-[A-Za-z0-9_-]{20,}",
+    r"crn:v1:",
+    r"QISKIT_IBM_",
+    r"/Users/[A-Za-z]",
+    r"/home/[a-z]",
+]
+P5_FORBIDDEN_KEYS = r"(token|secret|password|passwd|api_?key|crn|instance|credential|local_path)"
+P5_REQUIRED_HEADERS = {
+    "strict-transport-security": ["max-age=63072000", "includesubdomains", "preload"],
+    "x-content-type-options": ["nosniff"],
+    "referrer-policy": ["strict-origin-when-cross-origin"],
+    "permissions-policy": ["camera=()", "microphone=()", "geolocation=()"],
+    "cross-origin-opener-policy": ["same-origin"],
+}
+P5_CSP_DIRECTIVES = {
+    "default-src": "'self'",
+    "img-src": "'self' data:",
+    "font-src": "'self'",
+    "connect-src": "'self'",
+    "frame-ancestors": "'none'",
+    "base-uri": "'self'",
+    "form-action": "'none'",
+}
+
+
+def _p5_walk(base: Path):
+    for p in base.rglob("*"):
+        if p.is_file() and not (set(p.relative_to(base).parts[:-1]) & P5_SKIP_DIRS):
+            yield p
+
+
+def _p5_env_values() -> list[str]:
+    env = ROOT / ".env"
+    vals = []
+    if env.exists():
+        for line in env.read_text().splitlines():
+            if "=" in line and not line.lstrip().startswith("#"):
+                v = line.split("=", 1)[1].strip().strip("'\"")
+                if len(v) >= 8:
+                    vals.append(v)
+    return vals
+
+
+def _p5_env(key: str) -> str | None:
+    env = ROOT / ".env"
+    if env.exists():
+        for line in env.read_text().splitlines():
+            if line.startswith(f"{key}="):
+                return line.split("=", 1)[1].strip().strip("'\"") or None
+    return os.environ.get(key)
+
+
+def p5_no_env_in_web() -> tuple[bool, str]:
+    """No .env* under web/; no env reads in web/src or next.config (NODE_ENV only)."""
+    import re
+
+    if not P5_SRC.exists():
+        return False, "web/src missing"
+    problems = [str(p.relative_to(ROOT)) for p in _p5_walk(P5_WEB) if p.name.startswith(".env")]
+    bad = re.compile(r"process\.env(?!\.NODE_ENV\b)|import\.meta\.env|NEXT_PUBLIC_")
+    targets = list(_p5_walk(P5_SRC)) + list(P5_WEB.glob("next.config.*"))
+    for p in targets:
+        if p.suffix in {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"}:
+            for i, line in enumerate(p.read_text(errors="replace").splitlines(), 1):
+                if bad.search(line):
+                    problems.append(f"{p.relative_to(ROOT)}:{i}")
+    return not problems, "; ".join(problems[:5]) or f"{len(targets)} files scanned, no env reads"
+
+
+def p5_canary_scan() -> tuple[bool, str]:
+    """No .env value (held in memory, never printed) and no secret pattern in web/out or data."""
+    import re
+
+    if not P5_OUT.exists():
+        return False, "web/out missing (build first)"
+    values = _p5_env_values()
+    pats = [re.compile(p) for p in P5_SECRET_PATTERNS]
+    hits, n = [], 0
+    for base in (P5_OUT, P4_WEB):
+        for p in _p5_walk(base):
+            n += 1
+            text = p.read_bytes().decode("utf-8", errors="replace")
+            if any(v in text for v in values):
+                hits.append(f"{p.relative_to(ROOT)}: an .env value")
+            hits += [f"{p.relative_to(ROOT)}: /{r.pattern}/" for r in pats if r.search(text)]
+    if not values:
+        hits.append("no .env values loaded, so the canary half of the scan did not run")
+    return not hits, "; ".join(hits[:5]) or f"{n} files, {len(values)} canaries, 0 hits"
+
+
+def p5_data_keys_allowed() -> tuple[bool, str]:
+    """No key in web/public/data that names a secret, a credential or a local path."""
+    import re
+
+    bad = re.compile(P5_FORBIDDEN_KEYS, re.I)
+    hits = []
+
+    def walk(x, where):
+        if isinstance(x, dict):
+            for k, v in x.items():
+                if bad.search(str(k)):
+                    hits.append(f"{where}.{k}")
+                walk(v, f"{where}.{k}")
+        elif isinstance(x, list):
+            for i, v in enumerate(x):
+                walk(v, f"{where}[{i}]")
+
+    files = sorted(P4_WEB.glob("*.json"))
+    for f in files:
+        walk(_load(f), f.stem)
+    return not hits, "; ".join(hits[:5]) or f"{len(files)} data files, no forbidden keys"
+
+
+def p5_no_source_maps() -> tuple[bool, str]:
+    if not P5_OUT.exists():
+        return False, "web/out missing"
+    maps = [p for p in _p5_walk(P5_OUT) if p.suffix == ".map"]
+    refs = [
+        p
+        for p in _p5_walk(P5_OUT)
+        if p.suffix in {".js", ".css"} and b"sourceMappingURL=" in p.read_bytes()
+    ]
+    bad = [str(p.relative_to(P5_OUT)) for p in maps + refs]
+    return not bad, "; ".join(bad[:5]) or "no .map files, no sourceMappingURL"
+
+
+def p5_no_third_party() -> tuple[bool, str]:
+    """No page or stylesheet loads anything from another origin."""
+    import re
+
+    if not P5_OUT.exists():
+        return False, "web/out missing"
+    html_ref = re.compile(
+        r"<(?:script|link|img|iframe|source|video|audio)\b[^>]*\b(?:src|href|srcset)="
+        r"[\"']?(?:https?:)?//",
+        re.I,
+    )
+    css_ref = re.compile(r"(?:url\(|@import)\s*[\"']?(?:https?:)?//", re.I)
+    hosts = re.compile(r"fonts\.googleapis|fonts\.gstatic|googletagmanager|google-analytics|"
+                       r"cdn\.jsdelivr|unpkg\.com|cdnjs\.", re.I)
+    bad = []
+    for p in _p5_walk(P5_OUT):
+        if p.suffix in {".html", ".css", ".js"}:
+            t = p.read_text(errors="replace")
+            if (p.suffix == ".html" and html_ref.search(t)) or (
+                p.suffix == ".css" and css_ref.search(t)
+            ) or hosts.search(t):
+                bad.append(str(p.relative_to(P5_OUT)))
+    return not bad, "; ".join(bad[:5]) or "no third-party scripts, styles, fonts or images"
+
+
+def p5_tweak_panel_absent() -> tuple[bool, str]:
+    """The dev tweak panel exists in source (sentinel) and is absent from the production build."""
+    if not P5_OUT.exists() or not P5_SRC.exists():
+        return False, "web/src or web/out missing"
+    in_src = any(P5_TWEAK_SENTINEL in p.read_text(errors="replace") for p in _p5_walk(P5_SRC))
+    leaked = [
+        str(p.relative_to(P5_OUT))
+        for p in _p5_walk(P5_OUT)
+        if P5_TWEAK_SENTINEL.encode() in p.read_bytes()
+    ]
+    if not in_src:
+        return False, f"sentinel {P5_TWEAK_SENTINEL} not in web/src, so absence proves nothing"
+    return not leaked, "; ".join(leaked[:5]) or "sentinel in src, absent from out/"
+
+
+def _p5_hex(name: str, css: str) -> str | None:
+    import re
+
+    m = re.search(rf"--{re.escape(name)}\s*:\s*(#[0-9A-Fa-f]{{6}})\b", css)
+    return m.group(1) if m else None
+
+
+def _p5_contrast(a: str, b: str) -> float:
+    def lum(h: str) -> float:
+        c = [int(h[i : i + 2], 16) / 255 for i in (1, 3, 5)]
+        c = [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+        return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+
+    hi, lo = sorted([lum(a), lum(b)], reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def p5_token_contrast() -> tuple[bool, str]:
+    """Every text token >= 4.5:1 and --sim >= 3:1 on every background, from the hex fallbacks."""
+    if not P5_TOKENS_CSS.exists():
+        return False, f"{P5_TOKENS_CSS.relative_to(ROOT)} missing"
+    css = P5_TOKENS_CSS.read_text()
+    problems, worst = [], {}
+    for group, need in ((P5_TEXT_TOKENS, P5_MIN_TEXT_CONTRAST), (["sim"], P5_MIN_GRAPHIC_CONTRAST)):
+        for fg in group:
+            fh = _p5_hex(fg, css)
+            if not fh:
+                problems.append(f"--{fg} has no #rrggbb fallback")
+                continue
+            for bg in P5_BG_TOKENS:
+                bh = _p5_hex(bg, css)
+                if not bh:
+                    problems.append(f"--{bg} has no #rrggbb fallback")
+                    continue
+                r = _p5_contrast(fh, bh)
+                worst[fg] = min(worst.get(fg, 99.0), r)
+                if r < need:
+                    problems.append(f"--{fg} on --{bg} {r:.2f} < {need}")
+    detail = ", ".join(f"{k} {v:.2f}" for k, v in worst.items())
+    return not problems, "; ".join(sorted(set(problems))[:5]) or f"min ratios: {detail}"
+
+
+def _p5_local_server():
+    import functools
+    import http.server
+    import threading
+
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(P5_OUT))
+    handler.log_message = lambda *a, **k: None
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    return srv, f"http://127.0.0.1:{srv.server_address[1]}"
+
+
+def p5_lighthouse() -> tuple[bool, str]:
+    """Lighthouse (mobile defaults) on the built site, median of 3 runs per screen."""
+    import statistics
+
+    if not P5_OUT.exists():
+        return False, "web/out missing"
+    srv, base = _p5_local_server()
+    problems, rows = [], []
+    try:
+        for screen in P5_SCREENS:
+            runs = []
+            for _ in range(P5_LH_RUNS):
+                out = Path(tempfile.gettempdir()) / f"qday-lh-{os.getpid()}.json"
+                r = subprocess.run(
+                    ["npm", "--prefix", "web", "exec", "--", "lighthouse", base + screen,
+                     "--output=json", f"--output-path={out}", "--quiet",
+                     "--only-categories=performance,accessibility",
+                     "--chrome-flags=--headless=new"],
+                    cwd=ROOT, capture_output=True, text=True,
+                )
+                if r.returncode != 0 or not out.exists():
+                    return False, f"lighthouse failed on {screen}: {(r.stderr or '')[-200:]}"
+                lh = json.loads(out.read_text())
+                out.unlink()
+                runs.append({
+                    "performance": lh["categories"]["performance"]["score"],
+                    "accessibility": lh["categories"]["accessibility"]["score"],
+                    "lcp": lh["audits"]["largest-contentful-paint"]["numericValue"],
+                    "cls": lh["audits"]["cumulative-layout-shift"]["numericValue"],
+                })
+            med = {k: statistics.median(x[k] for x in runs) for k in runs[0]}
+            rows.append(f"{screen} perf {med['performance']:.2f} a11y {med['accessibility']:.2f} "
+                        f"LCP {med['lcp']:.0f}ms CLS {med['cls']:.3f}")
+            for k, need in P5_LH_MIN.items():
+                if med[k] < need:
+                    problems.append(f"{screen} {k} {med[k]:.2f} < {need}")
+            if med["lcp"] >= P5_LH_MAX_LCP_MS:
+                problems.append(f"{screen} LCP {med['lcp']:.0f} >= {P5_LH_MAX_LCP_MS:.0f} ms")
+            if med["cls"] >= P5_LH_MAX_CLS:
+                problems.append(f"{screen} CLS {med['cls']:.3f} >= {P5_LH_MAX_CLS}")
+    finally:
+        srv.shutdown()
+    return not problems, "; ".join(problems + rows)
+
+
+def p5_home_js_budget() -> tuple[bool, str]:
+    """Gzipped size of every script out/index.html loads (src, modulepreload and inline)."""
+    import gzip
+    import re
+
+    idx = P5_OUT / "index.html"
+    if not idx.exists():
+        return False, "web/out/index.html missing"
+    html = idx.read_text()
+    srcs = re.findall(r"<script\b[^>]*\bsrc=[\"']([^\"']+)", html)
+    srcs += re.findall(r"<link\b[^>]*rel=[\"']modulepreload[\"'][^>]*href=[\"']([^\"']+)", html)
+    total, missing = 0, []
+    for s in sorted(set(srcs)):
+        f = P5_OUT / s.split("?")[0].lstrip("/")
+        if not f.exists():
+            missing.append(s)
+            continue
+        total += len(gzip.compress(f.read_bytes(), 9))
+    for body in re.findall(r"<script\b(?![^>]*\bsrc=)[^>]*>(.*?)</script>", html, re.S):
+        total += len(gzip.compress(body.encode(), 9))
+    if missing:
+        return False, f"index.html references missing files: {missing[:3]}"
+    ok = total <= P5_HOME_JS_GZ_MAX
+    return ok, f"home JS {total:,} B gzipped (limit {P5_HOME_JS_GZ_MAX:,}), {len(set(srcs))} files"
+
+
+# --- provenance: every figure on a pre-rendered page traces to web/public/data ---
+
+_P5_SUP = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
+_P5_VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
+            "param", "source", "track", "wbr"}
+_P5_SKIP_TAGS = {"script", "style", "title", "template"}
+
+
+def _p5_figures(text: str) -> list[str]:
+    """Figures in text, after removing identifiers like RSA-2048, ML-KEM-768, ibm_kingston, k2."""
+    import re
+
+    t = re.sub(r"[A-Za-z][\w]*(?:-[\w]+)*\d[\w-]*", " ", text)
+    t = re.sub(r"\|[^|⟩]*⟩", " ", t)  # ket labels
+    return re.findall(r"\d[\d,.]*", t)
+
+
+def _p5_parse_number(text: str) -> tuple[float, float] | None:
+    """(value, tolerance): tolerance is half a unit of the last digit shown."""
+    import re
+
+    t = text.replace("−", "-").replace(" ", "").replace(" ", "").replace(",", "")
+    t = t.translate(_P5_SUP)
+    m = re.search(r"([-+]?\d+(?:\.(\d+))?)\s*(?:(?:[×x]\s*10\^?|e)([-+]?\d+))?", t)
+    if not m:
+        return None
+    mant, dec, exp = float(m.group(1)), m.group(2) or "", int(m.group(3) or 0)
+    return mant * 10**exp, 0.5 * 10 ** (-len(dec)) * 10**exp
+
+
+def _p5_resolve(ref: str):
+    import re
+
+    name, _, path = ref.partition(":")
+    f = P4_WEB / f"{name}.json"
+    if not f.exists():
+        raise KeyError(f"no data file {name}.json")
+    x = _load(f)
+    for tok in re.findall(r"\[(\d+)\]|([^.\[\]]+)", path):
+        x = x[int(tok[0])] if tok[0] else x[tok[1]]
+    return x
+
+
+def _p5_value_ok(ref: str, text: str, scale: float) -> str | None:
+    """None if the displayed text matches the data value, else a reason."""
+    try:
+        v = _p5_resolve(ref)
+    except (KeyError, IndexError, TypeError) as exc:
+        return f"{ref}: does not resolve ({exc})"
+    shown = " ".join(text.split())
+    if v is None or isinstance(v, bool):
+        return None if not _p5_figures(shown) else f"{ref}: null/bool shown as {shown!r}"
+    if isinstance(v, str):
+        return None if " ".join(v.split()) in shown else f"{ref}: {v!r} shown as {shown!r}"
+    if isinstance(v, int | float):
+        got = _p5_parse_number(shown)
+        if got is None:
+            return f"{ref}: no number in {shown!r}"
+        val, tol = got
+        want = v * scale
+        if abs(val - want) > tol + 1e-9 * max(1.0, abs(want)):
+            return f"{ref}: shown {shown!r}, data {want:g}"
+        return None
+    return f"{ref}: is a {type(v).__name__}, point data-src at a scalar"
+
+
+def p5_provenance_static() -> tuple[bool, str]:
+    """Every figure in out/*.html sits in a data-src element whose value matches the data,
+    a data-axis group (chart ticks) or a data-literal element (reason listed in the report)."""
+    from html.parser import HTMLParser
+
+    pages = sorted(P5_OUT.rglob("*.html")) if P5_OUT.exists() else []
+    if not pages:
+        return False, "no web/out/*.html"
+    stats = {"src": 0, "literal": []}
+    problems: list[str] = []
+    per_page: dict[str, int] = {}
+
+    class Walker(HTMLParser):
+        def __init__(self, page: str):
+            super().__init__(convert_charrefs=True)
+            self.page, self.stack = page, []  # [tag, attrs, buffer or None]
+
+        def handle_starttag(self, tag, attrs):
+            if tag in _P5_VOID:
+                return
+            a = dict(attrs)
+            buf = [] if "data-src" in a else None
+            self.stack.append([tag, a, buf])
+            if "data-literal" in a:
+                stats["literal"].append(f"{self.page}: {a.get('data-literal') or '(no reason)'}")
+
+        def handle_endtag(self, tag):
+            while self.stack:
+                t, a, buf = self.stack.pop()
+                if buf is not None:
+                    stats["src"] += 1
+                    per_page[self.page] = per_page.get(self.page, 0) + 1
+                    why = _p5_value_ok(a["data-src"], "".join(buf), float(a.get("data-scale", 1)))
+                    if why:
+                        problems.append(f"{self.page}: {why}")
+                if t == tag:
+                    return
+
+        def handle_data(self, data):
+            for t, a, buf in reversed(self.stack):
+                if buf is not None:
+                    buf.append(data)
+                    return
+                if t in _P5_SKIP_TAGS or "data-literal" in a or "data-axis" in a:
+                    return
+            figs = _p5_figures(data)
+            if figs:
+                snippet = data.strip()[:40]
+                problems.append(f"{self.page}: untraced figure {figs[0]!r} in {snippet!r}")
+
+    for p in pages:
+        rel = str(p.relative_to(P5_OUT))
+        Walker(rel).feed(p.read_text(errors="replace"))
+    for screen in P5_SCREENS:
+        page = (screen.strip("/") + "/index.html").lstrip("/")
+        if not per_page.get(page):
+            problems.append(f"{page}: no data-src element, so nothing is traced")
+    lits = stats["literal"]
+    detail = f"{stats['src']} traced values, {len(lits)} literals"
+    if lits:
+        detail += " [" + "; ".join(lits[:12]) + ("; …" if len(lits) > 12 else "") + "]"
+    return not problems, "; ".join(problems[:5] + [detail])
+
+
+# --- git hygiene ---
+
+
+def p5_env_never_committed() -> tuple[bool, str]:
+    r = subprocess.run(["git", "log", "--all", "--name-only", "--format="],
+                       cwd=ROOT, capture_output=True, text=True)
+    bad = sorted({p for p in r.stdout.split() if Path(p).name.startswith(".env")
+                  and Path(p).name != ".env.example"})
+    return not bad, ", ".join(bad) or "no .env file in any commit (only .env.example)"
+
+
+def p5_hooks_and_ci() -> tuple[bool, str]:
+    """gitleaks runs in a versioned pre-commit hook and in a GitHub Action on every push."""
+    problems = []
+    hp = subprocess.run(["git", "config", "core.hooksPath"], cwd=ROOT,
+                        capture_output=True, text=True).stdout.strip()
+    hook = ROOT / (hp or ".git/hooks") / "pre-commit"
+    if hp != ".githooks":
+        problems.append(f"core.hooksPath is {hp or 'unset'}, expected .githooks")
+    if not hook.exists() or "gitleaks" not in hook.read_text() or not os.access(hook, os.X_OK):
+        problems.append(f"{hook.relative_to(ROOT)} missing, not executable or not running gitleaks")
+    wf = list((ROOT / ".github" / "workflows").glob("*.y*ml"))
+    if not any("gitleaks" in f.read_text() and "push" in f.read_text() for f in wf):
+        problems.append("no .github/workflows file runs gitleaks on push")
+    return not problems, "; ".join(problems) or "pre-commit hook and GitHub Action run gitleaks"
+
+
+def p5_github_secret_scanning() -> tuple[bool, str]:
+    r = subprocess.run(["gh", "repo", "view", "--json", "nameWithOwner"], cwd=ROOT,
+                       capture_output=True, text=True) if _which("gh") else None
+    if r is None or r.returncode != 0:
+        return False, "gh CLI missing or not logged in (brew install gh && gh auth login)"
+    repo = json.loads(r.stdout)["nameWithOwner"]
+    vis = subprocess.run(["gh", "repo", "view", "--json", "visibility", "--jq", ".visibility"],
+                         cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    r = subprocess.run(["gh", "api", f"repos/{repo}", "--jq", ".security_and_analysis"],
+                       cwd=ROOT, capture_output=True, text=True)
+    sa = json.loads(r.stdout or "{}") or {}
+    # GitHub secret scanning needs a public repo (or paid GHAS); for a private repo the
+    # gitleaks checks above are the secret check (DECISIONS 2026-11-08 P5, human task 1).
+    need = [] if vis == "PRIVATE" else ["secret_scanning", "secret_scanning_push_protection"]
+    off = [k for k in need if (sa.get(k) or {}).get("status") != "enabled"]
+    dep = subprocess.run(["gh", "api", f"repos/{repo}/vulnerability-alerts", "-i"], cwd=ROOT,
+                         capture_output=True, text=True).stdout
+    status_line = dep.splitlines()[0] if dep else ""
+    if " 204" not in status_line:  # 204 = enabled, 404 = disabled
+        off.append("dependabot alerts")
+    scope = "private: Dependabot only, gitleaks covers secrets" if vis == "PRIVATE" else "public"
+    return not off, f"{repo} ({scope}): " + (", ".join(off) + " not enabled" if off else "on")
+
+
+def _which(cmd: str) -> bool:
+    import shutil
+
+    return shutil.which(cmd) is not None
+
+
+# --- live site (URLs in .coord/gates/phase-5-sites.json; bypass secret in root .env) ---
+
+
+def _p5_sites() -> dict:
+    if not P5_SITES.exists():
+        raise FileNotFoundError(f"{P5_SITES.relative_to(ROOT)} missing (lead fills it)")
+    return _load(P5_SITES)
+
+
+def _p5_fetch(url: str, bypass: bool = False, follow: bool = True):
+    import urllib.error
+    import urllib.request
+
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *a, **k):
+            return None
+
+    headers = {"User-Agent": "qday-gate"}
+    if bypass:
+        secret = _p5_env(P5_BYPASS_ENV)
+        if not secret:
+            raise RuntimeError(f"{P5_BYPASS_ENV} not in the root .env")
+        headers["x-vercel-protection-bypass"] = secret
+    opener = urllib.request.build_opener(*([] if follow else [NoRedirect()]))
+    try:
+        r = opener.open(urllib.request.Request(url, headers=headers), timeout=30)
+        return r.status, {k.lower(): v for k, v in r.headers.items()}, r.read()
+    except urllib.error.HTTPError as e:
+        return e.code, {k.lower(): v for k, v in e.headers.items()}, e.read()
+
+
+def _p5_csp_problems(csp: str, pages: dict[str, bytes]) -> list[str]:
+    import base64
+    import re
+
+    d = {}
+    for part in csp.split(";"):
+        bits = part.split()
+        if bits:
+            d[bits[0].lower()] = " ".join(bits[1:])
+    problems = [f"CSP {k} is {d.get(k)!r}, expected {v!r}"
+                for k, v in P5_CSP_DIRECTIVES.items() if d.get(k) != v]
+    if "upgrade-insecure-requests" not in d:
+        problems.append("CSP lacks upgrade-insecure-requests")
+    script = d.get("script-src", d.get("default-src", ""))
+    if "'unsafe-inline'" in script:
+        dec = (ROOT / "docs" / "DECISIONS.md").read_text()
+        if not any("P5" in ln and "unsafe-inline" in ln for ln in dec.splitlines()):
+            problems.append("script-src has 'unsafe-inline' and no P5 decision records why")
+        return problems
+    for screen, body in pages.items():
+        html = body.decode("utf-8", errors="replace")
+        for attrs, code in re.findall(r"<script\b((?:(?!\bsrc=)[^>])*)>(.*?)</script>", html, re.S):
+            if re.search(r"type=[\"']application/(?:ld\+)?json", attrs):
+                continue
+            h = base64.b64encode(hashlib.sha256(code.encode()).digest()).decode()
+            if f"'sha256-{h}'" not in script:
+                problems.append(f"{screen}: inline script sha256-{h[:10]}… not in script-src")
+    return problems
+
+
+def p5_live(kind: str) -> Callable[[], tuple[bool, str]]:
+    """The deployed site (preview or production) serves HEAD, every screen returns 200 with the
+    required headers, and every inline script's hash is in the CSP."""
+
+    def _check() -> tuple[bool, str]:
+        base = _p5_sites()[kind].rstrip("/")
+        bypass = kind == "preview"
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
+                              capture_output=True, text=True).stdout.strip()
+        problems, pages = [], {}
+        st, _, body = _p5_fetch(base + "/build.json", bypass)
+        commit = json.loads(body).get("commit") if st == 200 else None
+        if commit != head:
+            problems.append(f"build.json commit {str(commit)[:10]} != HEAD {head[:10]}")
+        hdrs = {}
+        for screen in P5_SCREENS:
+            st, hdrs, body = _p5_fetch(base + screen, bypass)
+            if st != 200:
+                problems.append(f"{screen} -> HTTP {st}")
+                continue
+            pages[screen] = body
+            for h, parts in P5_REQUIRED_HEADERS.items():
+                got = hdrs.get(h, "").lower().replace(" ", "")
+                problems += [f"{screen} {h} lacks {p}" for p in parts if p not in got]
+        st, _, _ = _p5_fetch(base + "/no-such-page-qday/", bypass)
+        if st != 404:
+            problems.append(f"unknown path -> HTTP {st}, expected 404")
+        if pages:
+            problems += _p5_csp_problems(hdrs.get("content-security-policy", ""), pages)
+        return not problems, "; ".join(problems[:6]) or f"{kind} {base}: HEAD, headers, CSP ok"
+
+    return _check
+
+
+def p5_preview_protected() -> tuple[bool, str]:
+    base = _p5_sites()["preview"].rstrip("/")
+    st, hdrs, _ = _p5_fetch(base + "/", bypass=False, follow=False)
+    loc = hdrs.get("location", "")
+    ok = st in (401, 403) or (300 <= st < 400 and "vercel.com" in loc)
+    return ok, f"preview without login -> HTTP {st}" + (f" to {loc[:40]}" if loc else "")
+
+
+def p5_observatory() -> tuple[bool, str]:
+    import urllib.parse
+    import urllib.request
+
+    host = urllib.parse.urlparse(_p5_sites()["production"]).hostname
+    url = f"https://observatory-api.mdn.mozilla.net/api/v2/scan?host={host}"
+    req = urllib.request.Request(url, method="POST", headers={"User-Agent": "qday-gate"})
+    res = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    grade = res.get("grade")
+    return grade == "A+", f"{host}: Observatory {grade} (score {res.get('score')})"
+
+
+def p5_ssllabs() -> tuple[bool, str]:
+    import urllib.parse
+    import urllib.request
+
+    host = urllib.parse.urlparse(_p5_sites()["production"]).hostname
+    api = f"https://api.ssllabs.com/api/v3/analyze?host={host}&fromCache=on&maxAge=24&all=done"
+    deadline = time.time() + 600
+    while time.time() < deadline:
+        req = urllib.request.Request(api, headers={"User-Agent": "qday-gate"})
+        res = json.loads(urllib.request.urlopen(req, timeout=60).read())
+        if res.get("status") in ("READY", "ERROR"):
+            grades = [e.get("grade") for e in res.get("endpoints", [])]
+            ok = res["status"] == "READY" and grades and all(g == "A+" for g in grades)
+            return bool(ok), f"{host}: SSL Labs {res['status']} {grades}"
+        time.sleep(20)
+    return False, f"{host}: SSL Labs did not finish in 10 min"
+
+
+def p5_strict(expr: str) -> Callable[[], tuple[bool, str]]:
+    return pytest_selects(expr, path="tests/phase5", strict=True)
+
+
 # ---------- checks ----------
 
 REGRESSION: list[Check] = [
@@ -1244,7 +1887,62 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("timeline tests pass (no xfail/skip)", p4_strict("timeline")),
         Py("phase 4 honesty audit written", file_exists("tests/phase4/AUDIT.md")),
     ],
-    5: [],
+    # Labels carry the sub-phase; lead runs the gate at the end of 5a and 5b too and
+    # expects that sub-phase's checks (and the earlier ones) to pass.
+    5: [
+        Py("[5a] phase 5 tests exist", has_tests(5)),
+        Py("[5a] web/package-lock.json committed",
+           lambda: (bool(subprocess.run(["git", "ls-files", "web/package-lock.json"], cwd=ROOT,
+                                        capture_output=True, text=True).stdout.strip()),
+                    "git ls-files web/package-lock.json")),
+        Cmd("[5a] npm ci", ["npm", "--prefix", "web", "ci", "--no-audit", "--no-fund"]),
+        Cmd("[5a] lint (eslint, 0 warnings)", ["npm", "--prefix", "web", "run", "lint"]),
+        Cmd("[5a] typecheck", ["npm", "--prefix", "web", "run", "typecheck"]),
+        Cmd("[5a] npm run build (static export)", ["npm", "--prefix", "web", "run", "build"]),
+        Cmd("[5a] npm audit: no high/critical", ["npm", "--prefix", "web", "audit",
+                                                 "--audit-level=high"]),
+        Py("[5a] no .env or env reads in web/ (NODE_ENV only)", p5_no_env_in_web),
+        Py("[5a] canary scan: no .env value or secret pattern in out/ or data", p5_canary_scan),
+        Py("[5a] data files carry no secret-, credential- or path-named key",
+           p5_data_keys_allowed),
+        Py("[5a] no source maps in out/", p5_no_source_maps),
+        Py("[5a] no third-party script, style, font or image", p5_no_third_party),
+        Py("[5a] tweak panel in source, absent from out/", p5_tweak_panel_absent),
+        Py("[5a] text tokens >= 4.5:1, --sim >= 3:1 on every background", p5_token_contrast),
+        Py("[5a] .env never committed", p5_env_never_committed),
+        Cmd("[5a] gitleaks: no secret in git history",
+            ["gitleaks", "git", "--redact", "--no-banner", "."]),
+        Py("[5a] gitleaks pre-commit hook and GitHub Action", p5_hooks_and_ci),
+        Py("[5a] GitHub Dependabot on (+ secret scanning, push protection if public)",
+           p5_github_secret_scanning),
+        Py("[5a] preview needs a Vercel login", p5_preview_protected),
+        Py("[5a] preview serves HEAD with required headers and hash CSP", p5_live("preview")),
+        Py("[5a] security tests pass (no xfail/skip)", p5_strict("security")),
+        Py("[5a] tweak tests pass (no xfail/skip)", p5_strict("tweak")),
+        Py("[5b] every figure on a page traces to web/public/data", p5_provenance_static),
+        Py("[5b] provenance tests pass (no xfail/skip)", p5_strict("provenance")),
+        Py("[5b] scenario tests pass (no xfail/skip)", p5_strict("scenario")),
+        Py("[5b] keyboard tests pass (no xfail/skip)", p5_strict("keyboard")),
+        Py("[5b] smoke tests pass (no xfail/skip)", p5_strict("smoke")),
+        Py("[5c] home JS <= 200,000 B gzipped", p5_home_js_budget),
+        Py("[5c] reducedmotion tests pass (no xfail/skip)", p5_strict("reducedmotion")),
+        Py("[5c] longtask tests pass (no xfail/skip)", p5_strict("longtask")),
+        Py("[5c] easteregg tests pass (no xfail/skip)", p5_strict("easteregg")),
+        Py("[5d] Lighthouse mobile: perf >= 0.90, a11y = 1.00, LCP < 2 s, CLS < 0.05",
+           p5_lighthouse),
+        Py("[5d] web data files valid against their schemas, <= 5 MB", p4_web_schemas),
+        Py("[5d] margins, ranks, family order still recomputed from data", p4_inventory),
+        Cmd("[5d] web data reproduces", [PY, "scripts/build_data.py", "--verify"]),
+        Cmd("[5d] no QPU used since phase 4",
+            ["git", "diff", "--quiet", "phase-4-done", "--", "results/budget.json",
+             "results/hardware"]),
+        Py("[5d] phase 5 honesty audit written", file_exists("tests/phase5/AUDIT.md")),
+        # run after the merge to main has deployed to production:
+        Py("[live] production serves HEAD with required headers and hash CSP",
+           p5_live("production")),
+        Py("[live] Mozilla HTTP Observatory grade A+", p5_observatory),
+        Py("[live] SSL Labs grade A+", p5_ssllabs),
+    ],
     6: [],
 }
 
@@ -1266,8 +1964,8 @@ def run(check: Check) -> tuple[bool, str, float]:
 
 
 def main() -> int:
-    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
-        print("usage: uv run python scripts/gate.py <phase>")
+    if len(sys.argv) not in (2, 3) or not sys.argv[1].isdigit():
+        print("usage: uv run python scripts/gate.py <phase> [<sub-phase, e.g. 5a>]")
         return 2
     phase = int(sys.argv[1])
     if phase not in PHASE_CHECKS:
@@ -1275,6 +1973,13 @@ def main() -> int:
         return 2
 
     checks = REGRESSION + PHASE_CHECKS[phase]
+    upto = sys.argv[2] if len(sys.argv) == 3 else None
+    if upto:  # a sub-phase checkpoint: its checks and every earlier sub-phase's, never [live]
+        checks = REGRESSION + [
+            c for c in PHASE_CHECKS[phase]
+            if c.label.startswith("[") and c.label[1:].split("]")[0] <= upto
+            and not c.label.startswith("[live]")
+        ]
     rows = []
     for c in checks:
         ok, detail, secs = run(c)
@@ -1285,10 +1990,10 @@ def main() -> int:
     verdict = "PASSED" if passed else "FAILED"
     print(f"\nGate {phase}: {verdict} ({sum(ok for _, ok, _, _ in rows)}/{len(rows)} checks)")
 
-    out = ROOT / ".coord" / "gates" / f"phase-{phase}.md"
+    out = ROOT / ".coord" / "gates" / f"phase-{phase}{'-' + upto if upto else ''}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     lines = [
-        f"# Gate report — phase {phase}",
+        f"# Gate report — phase {phase}" + (f" (checkpoint {upto})" if upto else ""),
         "",
         f"{datetime.now():%Y-%m-%d %H:%M} · **{verdict}**",
         "",
