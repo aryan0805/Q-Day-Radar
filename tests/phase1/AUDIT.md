@@ -15,10 +15,31 @@ be misled in any other way.
 
 | circuit | answer read? | label | theory | scoring | open items |
 |---|---|---|---|---|---|
-| `shor15_textbook` | by design (hand-built for a=7, drops U^(2^j) for j>=2 because r divides 4) | `compiled`: correct | OK 0.500 | OK | **F1 blocker**, F7 |
-| `shor15_beauregard` | no: 28 cswaps for every coprime a (verified) | `generic`: correct | OK 0.500 | OK | F4 |
-| `shor21_beauregard` | no: 45 cswaps for every coprime a (verified) | `generic`: correct | OK 0.3307 | OK | F4 |
-| `grover_present_k2..k5` | no: gate structure identical for every key apart from the X gates that set the ciphertext target (verified) | `generic`: correct | OK 1.0 / 0.9453 / 0.9613 / 0.9992 | OK | F5, F6 |
+| `shor15_textbook` | by design (hand-built for a=7, drops U^(2^j) for j>=2 because r divides 4) | `compiled`: correct | OK 0.500 | OK | F1 closed (9891f8f), F7 closed |
+| `shor15_beauregard` | no: 28 cswaps for every coprime a (verified) | `generic`: correct | OK 0.500 | OK | F4 closed (P005) |
+| `shor21_beauregard` | no: 45 cswaps for every coprime a (verified) | `generic`: correct | OK 0.3307 | OK | F4 closed (P005) |
+| `grover_present_k2..k5` | no: gate structure identical for every key apart from the X gates that set the ciphertext target (verified) | `generic`: correct | OK 1.0 / 0.9453 / 0.9613 / 0.9992 | OK | F5 carried to Phase 3, F6 closed |
+
+## Status at `phase-1-done` (commit 9891f8f)
+
+| finding | status | evidence |
+|---|---|---|
+| F1 textbook x13 block | **closed** in 9891f8f | `shor_textbook.py` swap order fixed; `test_shor_textbook_blocks_multiply_by_7_to_the_power_mod_15` passes for powers 1, 2, 4, 8 |
+| F2 one-sided success check | **closed** (P004) | two-sided `abs(success - theory) <= 0.02` in my metrics tests; gate change reported by lead (I did not read `gate.py`) |
+| F3 dephasing claim | **closed** (my correction) | P003 CORRECTION, dephasing tests, `chance_baseline` verified for all 7 circuits |
+| F4 cost spread over `a` | **closed** (P005) | `benchmarks/phase1-spread-over-a.*`; rules now in PLAN.md Phase 3 |
+| F5 Grover cost vs AES | **open, carried to Phase 3** | rule recorded in PLAN.md (`peel_last_sbox=False` for AES projections); nothing to fix in Phase 1 code |
+| F6 pair-count guard | **closed** | `test_grover_registry_plaintexts_give_m_equal_one_for_every_key`; plan A (2 pairs for k <= 4) passes it |
+| F7 `compiled_reason` | **closed** in 9891f8f | metadata field, test added |
+| F8 registry/builder agreement | **closed** in 9891f8f | `registry._check_metadata`, rejection tests added |
+| F9 logical vs transpiled depth | **closed** in 9891f8f | `shor_textbook.py` docstring (lines 11-12); only that file, not the deck or README |
+| F10 success vs factoring | **open, lead (docs)** | not checked by me |
+| F11 per-case seeds | **closed** (reviewer) | `run()` in `test_shor_beauregard.py` |
+| F12 extra checks | **closed** (reviewer) | key-independent structure, transpiled-circuit simulation, two-sided metrics |
+
+Suite at the tag: ruff clean, 307 pass (`-m "not hardware"`), `-k leak` 61, `-k shor` 133,
+`-k grover` 108, no xfail / xpass / skip. Seeds and shots: tests use 8192 shots with a seed per
+case; transpile costs are 5-seed medians (seeds 1234..1238) at optimization level 3.
 
 What was checked and is fine, with evidence in `tests/phase1/`:
 - Post-processing never rescues a wrong shot (`test_leak_postprocess_*`); the success rule
@@ -34,7 +55,7 @@ What was checked and is fine, with evidence in `tests/phase1/`:
 
 ## Findings, ranked
 
-### F1. BLOCKER (claim is false, no number changes): textbook "x7" block computes x13 · verified
+### F1. BLOCKER (claim is false, no number changes): textbook "x7" block computes x13 · verified · CLOSED in 9891f8f
 `quantum/circuits/shor_textbook.py:28-33` is documented as multiplication by 7 mod 15 and the
 metadata says `a=7`. The power-1 block maps `x -> 13x mod 15` (13 = 7^-1). Powers 2, 4 and 8
 are right. The order and the QPE distribution are the same for `a` and `a^-1`, so no
@@ -42,6 +63,8 @@ distribution test can see it; only a block-level test does.
 Test: `test_shor_textbook_blocks_multiply_by_7_to_the_power_mod_15[1]` fails today (the other
 three powers pass). Architect's suggested fix: `cswap(w0,w1); cswap(w1,w2); cswap(w2,w3)` before
 the CX gates (I did not verify this fix; the test will). Owner: **builder**.
+Resolution: builder applied that swap order in 9891f8f and the test passes; the textbook then costs 181
+2q at seed 1234 (180 before), inside seed noise.
 My own gap: the earlier textbook tests could not catch this, and I passed units 1+2 on them.
 
 ### F2. CONCERN: the success check is one-sided · reported, reasoning confirmed
