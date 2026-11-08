@@ -93,6 +93,7 @@ function bars(ci: number, mode: Mode): Bar[] {
 
 export function LabView() {
   const [mode, setMode] = useState<Mode>("all");
+  const [openCard, setOpenCard] = useState<number | null>(null);
   const firstCompiled = lab.circuits.findIndex((c) => c.kind === "compiled");
   return (
     <section aria-labelledby="lab-h">
@@ -212,6 +213,53 @@ export function LabView() {
                 <span data-axis>0.5</span>
                 <span data-axis>1</span>
               </div>
+              {c.hardware.length ? (
+                <>
+                  <button
+                    type="button"
+                    className="expand-btn"
+                    aria-expanded={openCard === ci}
+                    aria-controls={`detail-${ci}`}
+                    onClick={() => setOpenCard(openCard === ci ? null : ci)}
+                  >
+                    {openCard === ci ? "Hide every run" : "Show every run"}
+                  </button>
+                  {openCard === ci ? (
+                    <div id={`detail-${ci}`} className="expand-panel">
+                      <div className="tbl-wrap">
+                        <table className="tbl">
+                          <caption className="sr-only">Every hardware run of this circuit</caption>
+                          <thead>
+                            <tr>
+                              <th scope="col">Setting</th>
+                              <th scope="col">Score</th>
+                              <th scope="col">Low</th>
+                              <th scope="col">High</th>
+                              <th scope="col">Repeat spread</th>
+                              <th scope="col">Shots</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {c.hardware.map((h, hi) => {
+                              const q = `${p}.hardware[${hi}]`;
+                              return (
+                                <tr key={h.config}>
+                                  <td><Traced src={`lab:${q}.config`} /></td>
+                                  <td><Fig src={`lab:${q}.success_probability`} digits={3} label="hardware" /></td>
+                                  <td><Fig src={`lab:${q}.wilson_95[0]`} digits={3} label="hardware" /></td>
+                                  <td><Fig src={`lab:${q}.wilson_95[1]`} digits={3} label="hardware" /></td>
+                                  <td><Fig src={`lab:${q}.repeat_spread`} digits={3} nullText="none" label="hardware" /></td>
+                                  <td><Fig src={`lab:${q}.shots_pooled`} group digits={0} label="hardware" /></td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
             </article>
           );
         })}

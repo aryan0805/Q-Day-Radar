@@ -23,6 +23,16 @@ const ROW_Y0 = 30;
 const ROW_DY = 24;
 
 const gates = hero.circuit.gates;
+
+// One-line explanation of each gate, shown on hover (an SVG <title>).
+const GATE_HELP: Record<string, string> = {
+  h: "Hadamard: puts a qubit into an equal mix of zero and one.",
+  x: "NOT: flips a qubit between zero and one.",
+  cx: "Controlled NOT: flips the target qubit only if the control qubit is one.",
+  cswap: "Controlled swap: swaps two qubits only if the control qubit is one.",
+  qft_dg: "Inverse quantum Fourier transform: turns the hidden repeating pattern into a number we can read.",
+  measure: "Measurement: reads a qubit as zero or one.",
+};
 const nQubits = hero.circuit.n_qubits;
 const wireY = (q: number) => ROW_Y0 + q * ROW_DY;
 const gateX = (layer: number) => WIRE_X0 + layer * LAYER_DX;
@@ -44,7 +54,7 @@ function CircuitSvg() {
         const bottom = Math.max(...ys);
         if (g.op === "qft_dg") {
           return (
-            <g key={i} className="h-gate">
+            <g key={i} className="h-gate"><title>{GATE_HELP[g.op] ?? g.op}</title>
               <rect x={r2(x - 20)} y={top - 11} width="40" height={bottom - top + 22} rx="3" fill="var(--bg-2)" stroke="var(--q)" />
               <text x={x} y={r2((top + bottom) / 2 + 4)} textAnchor="middle" fill="var(--q)" fontSize="13">QFT†</text>
             </g>
@@ -52,7 +62,7 @@ function CircuitSvg() {
         }
         if (g.op === "measure") {
           return (
-            <g key={i} className="h-gate">
+            <g key={i} className="h-gate"><title>{GATE_HELP[g.op] ?? g.op}</title>
               <rect x={r2(x - 10)} y={wireY(g.qubits[0] ?? 0) - 9} width="20" height="18" rx="2" fill="var(--bg-2)" stroke="var(--pqc)" />
               <path d={`M ${r2(x - 6)} ${wireY(g.qubits[0] ?? 0) + 4} A 7 7 0 0 1 ${r2(x + 6)} ${wireY(g.qubits[0] ?? 0) + 4}`} fill="none" stroke="var(--pqc)" />
             </g>
@@ -60,14 +70,14 @@ function CircuitSvg() {
         }
         if (g.op === "h" || g.op === "x") {
           return (
-            <g key={i} className="h-gate">
+            <g key={i} className="h-gate"><title>{GATE_HELP[g.op] ?? g.op}</title>
               <rect x={r2(x - 10)} y={wireY(g.qubits[0] ?? 0) - 9} width="20" height="18" rx="2" fill="var(--bg-2)" stroke="var(--q)" />
               <text x={x} y={wireY(g.qubits[0] ?? 0) + 4} textAnchor="middle" fill="var(--text-1)" fontSize="12">{g.op.toUpperCase()}</text>
             </g>
           );
         }
         return (
-          <g key={i} className="h-gate">
+          <g key={i} className="h-gate"><title>{GATE_HELP[g.op] ?? g.op}</title>
             <line x1={x} x2={x} y1={top} y2={bottom} stroke="var(--q)" />
             {g.qubits.map((q, k) =>
               k === 0 ? (

@@ -811,3 +811,69 @@ main dd {
   padding: 0.25rem 0.75rem 0.75rem;
   font-size: 0.875rem;
 }
+
+/* Margin bars (Inventory): a bar per row, filled from zero */
+.mbar {
+  display: block;
+  max-width: 7rem;
+  height: 3px;
+  margin-bottom: 0.25rem;
+  border-radius: 2px;
+  transform-origin: 0 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mbar {
+    animation: grow calc(var(--dur-reveal) * 1.6) var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 22ms * var(--motion-scale));
+  }
+}
+
+/* Scaling: the markers slide to their new place when the scenario changes; the brace redraws */
+.mk {
+  transition: transform calc(var(--dur-reveal) * 1.5) var(--ease);
+}
+@keyframes brace-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .brace {
+    stroke-dasharray: 1;
+    animation: brace-draw calc(var(--dur-reveal) * 2) var(--ease) both;
+  }
+  .brace-label {
+    animation: pt-in calc(var(--dur-reveal) * 2) var(--ease) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk {
+    transition: none;
+  }
+}
+
+/* Lab: a card opens to show every run */
+.expand-btn {
+  margin-top: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  font: 500 0.8125rem/1.2 var(--font-sans);
+  color: var(--text-1);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.expand-btn:hover {
+  border-color: var(--q);
+}
+@keyframes open-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.expand-panel {
+  margin-top: 0.75rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .expand-panel {
+    animation: open-down var(--dur-reveal) var(--ease) both;
+  }
+}

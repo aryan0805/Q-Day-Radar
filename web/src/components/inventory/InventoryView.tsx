@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { inventory, type Asset, type Scenario } from "../../lib/data";
 import { useScenario } from "../../lib/scenario";
@@ -55,6 +55,33 @@ export function InventoryView() {
   }, [family, exposure, atRisk, sort, scenario]);
 
   const drawerRef = useRef<HTMLDivElement>(null);
+  const tbody = useRef<HTMLTableSectionElement>(null);
+  const tops = useRef<Map<string, number>>(new Map());
+  const order = rows.map((r) => r.asset.id).join("|");
+  const maxMargin = Math.max(1e-9, ...inventory.assets.map((a) => Math.abs(sc(a, scenario).margin_years ?? 0)));
+
+  // FLIP: when the order changes (a new scenario or sort), each row slides from where it was to
+  // where it is now. Off under reduced motion; the duration follows --motion-scale.
+  useLayoutEffect(() => {
+    const body = tbody.current;
+    if (!body) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-scale")) || 1;
+    const next = new Map<string, number>();
+    body.querySelectorAll<HTMLElement>("tr[data-asset-id]").forEach((tr) => {
+      const id = tr.dataset.assetId ?? "";
+      const top = tr.getBoundingClientRect().top;
+      next.set(id, top);
+      const before = tops.current.get(id);
+      if (!reduce && before !== undefined && Math.abs(before - top) > 1 && tr.animate) {
+        tr.animate([{ transform: `translateY(${before - top}px)` }, { transform: "none" }], {
+          duration: 450 * scale,
+          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+        });
+      }
+    });
+    tops.current = next;
+  }, [order]);
   const open = assetParam ? inventory.assets.findIndex((a) => a.id === assetParam) : -1;
   const noFinite = inventory.assets.every((a) => sc(a, scenario).margin_years === null);
 
@@ -143,7 +170,7 @@ export function InventoryView() {
               <th scope="col">Replace with</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref={tbody}>
             {rows.map(({ asset, index }, n) => {
               const p = `assets[${index}]`;
               const s = sc(asset, scenario);
@@ -168,6 +195,14 @@ export function InventoryView() {
                     <CrqcYear index={index} asset={asset} scenario={scenario} />
                   </td>
                   <td style={{ color: margin === null ? "var(--text-2)" : margin < 0 ? "var(--threat)" : "var(--text-1)" }}>
+                    <span
+                      className="mbar"
+                      aria-hidden="true"
+                      style={{
+                        width: `${margin === null ? 0 : (Math.abs(margin) / maxMargin) * 100}%`,
+                        background: margin !== null && margin < 0 ? "var(--threat)" : "var(--warn)",
+                      }}
+                    />
                     <Fig
                       src={`inventory:${p}.by_scenario.${scenario}.margin_years`}
                       digits={1}

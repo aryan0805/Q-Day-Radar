@@ -222,19 +222,22 @@ function BraceChart({ scenario }: { scenario: "optimistic" | "median" | "pessimi
           <line key={v} x1={x(v)} x2={x(v)} y1={base - 4} y2={base + 4} stroke="var(--text-2)" />
         ))}
         <path
+          key={`brace-${scenario}`}
+          className="brace"
+          pathLength={1}
           d={`M ${x(device)} ${base - 70} C ${x(device)} ${base - 100}, ${x(rsa)} ${base - 100}, ${x(rsa)} ${base - 70}`}
           fill="none"
           stroke="var(--warn)"
           strokeWidth="2"
         />
-        <text x={(x(device) + x(rsa)) / 2} y={base - 108} textAnchor="middle" fill="var(--warn)" fontSize="13">
+        <text x={(x(device) + x(rsa)) / 2} y={base - 108} textAnchor="middle" fill="var(--warn)" fontSize="13" className="brace-label">
           the gap
         </text>
         {marks.map((m) => (
-          <g key={m.name}>
-            <line x1={x(m.v)} x2={x(m.v)} y1={base} y2={base - 64 + m.row * 22} stroke={m.colour} strokeWidth="2" />
-            <circle cx={x(m.v)} cy={base} r="4" fill={m.colour} />
-            <text x={x(m.v)} y={base - 68 + m.row * 22} textAnchor={m.v < 1e4 ? "start" : "end"} dx={m.v < 1e4 ? 6 : -6} fill="var(--text-1)" fontSize="13">
+          <g key={m.name} className="mk" style={{ transform: `translate(${x(m.v)}px, 0)` }}>
+            <line x1={0} x2={0} y1={base} y2={base - 64 + m.row * 22} stroke={m.colour} strokeWidth="2" />
+            <circle cx={0} cy={base} r="4" fill={m.colour} />
+            <text x={0} y={base - 68 + m.row * 22} textAnchor={m.v < 1e4 ? "start" : "end"} dx={m.v < 1e4 ? 6 : -6} fill="var(--text-1)" fontSize="12">
               {m.name}
             </text>
           </g>
