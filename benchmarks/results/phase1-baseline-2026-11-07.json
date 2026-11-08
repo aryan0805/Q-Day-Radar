@@ -1,0 +1,182 @@
+{
+  "meta": {
+    "head": "4896340a2c91e90922c21d1dabe2d64b5393306f",
+    "git_status_quantum": "?? quantum/circuits/\n?? quantum/classical/\n?? quantum/metrics.py",
+    "qiskit_version": "2.6.2",
+    "timestamp": "2026-11-07T23:36:57.849662+00:00",
+    "optimization_level": 3,
+    "backend": "FakeKingston",
+    "seeds": [
+      1234,
+      1235,
+      1236,
+      1237,
+      1238
+    ],
+    "state": "BEFORE"
+  },
+  "circuits": {
+    "shor15_textbook": {
+      "logical_qubits": 12,
+      "logical_size": 27,
+      "two_qubit_gates_seed1234": 180,
+      "transpiled_depth_seed1234": 322,
+      "transpile_seconds": [
+        0.009885250008665025,
+        0.007993707986315712,
+        0.007923041004687548
+      ],
+      "transpile_seconds_median": 0.007993707986315712,
+      "two_qubit_by_seed": {
+        "1234": 180,
+        "1235": 179,
+        "1236": 189,
+        "1237": 172,
+        "1238": 180
+      },
+      "two_qubit_min": 172,
+      "two_qubit_median": 180,
+      "two_qubit_max": 189,
+      "metrics_json": {
+        "two_qubit_gates": 180,
+        "transpile_depth": 322,
+        "match": true
+      }
+    },
+    "shor21_beauregard": {
+      "logical_qubits": 13,
+      "logical_size": 21376,
+      "two_qubit_gates_seed1234": 14575,
+      "transpiled_depth_seed1234": 28313,
+      "transpile_seconds": [
+        0.4555490839993581,
+        0.4666399160050787,
+        0.4575956659973599
+      ],
+      "transpile_seconds_median": 0.4575956659973599,
+      "two_qubit_by_seed": {
+        "1234": 14575,
+        "1235": 14606,
+        "1236": 14631,
+        "1237": 14864,
+        "1238": 14585
+      },
+      "two_qubit_min": 14575,
+      "two_qubit_median": 14606,
+      "two_qubit_max": 14864,
+      "metrics_json": {
+        "two_qubit_gates": 14575,
+        "transpile_depth": 28313,
+        "match": true
+      }
+    },
+    "grover_present_k2": {
+      "logical_qubits": 9,
+      "logical_size": 268,
+      "two_qubit_gates_seed1234": 402,
+      "transpiled_depth_seed1234": 901,
+      "transpile_seconds": [
+        0.021664250001776963,
+        0.018568208994111046,
+        0.019270374992629513
+      ],
+      "transpile_seconds_median": 0.019270374992629513,
+      "two_qubit_by_seed": {
+        "1234": 402,
+        "1235": 404,
+        "1236": 397,
+        "1237": 402,
+        "1238": 414
+      },
+      "two_qubit_min": 397,
+      "two_qubit_median": 402,
+      "two_qubit_max": 414,
+      "metrics_json": {
+        "two_qubit_gates": 402,
+        "transpile_depth": 901,
+        "match": true
+      }
+    },
+    "grover_present_k3": {
+      "logical_qubits": 10,
+      "logical_size": 610,
+      "two_qubit_gates_seed1234": 988,
+      "transpiled_depth_seed1234": 2179,
+      "transpile_seconds": [
+        0.0294243750104215,
+        0.03338199999416247,
+        0.04091883299406618
+      ],
+      "transpile_seconds_median": 0.03338199999416247,
+      "two_qubit_by_seed": {
+        "1234": 988,
+        "1235": 1023,
+        "1236": 961,
+        "1237": 953,
+        "1238": 1042
+      },
+      "two_qubit_min": 953,
+      "two_qubit_median": 988,
+      "two_qubit_max": 1042,
+      "metrics_json": {
+        "two_qubit_gates": 988,
+        "transpile_depth": 2179,
+        "match": true
+      }
+    },
+    "grover_present_k4": {
+      "logical_qubits": 11,
+      "logical_size": 974,
+      "two_qubit_gates_seed1234": 1790,
+      "transpiled_depth_seed1234": 3815,
+      "transpile_seconds": [
+        0.04233691701665521,
+        0.03978925000410527,
+        0.03909508397919126
+      ],
+      "transpile_seconds_median": 0.03978925000410527,
+      "two_qubit_by_seed": {
+        "1234": 1790,
+        "1235": 1708,
+        "1236": 1719,
+        "1237": 1646,
+        "1238": 1757
+      },
+      "two_qubit_min": 1646,
+      "two_qubit_median": 1719,
+      "two_qubit_max": 1790,
+      "metrics_json": {
+        "two_qubit_gates": 1790,
+        "transpile_depth": 3815,
+        "match": true
+      }
+    },
+    "grover_present_k5": {
+      "logical_qubits": 12,
+      "logical_size": 1362,
+      "two_qubit_gates_seed1234": 2621,
+      "transpiled_depth_seed1234": 5430,
+      "transpile_seconds": [
+        0.04625566699542105,
+        0.043648374994518235,
+        0.04245349997654557
+      ],
+      "transpile_seconds_median": 0.043648374994518235,
+      "two_qubit_by_seed": {
+        "1234": 2621,
+        "1235": 2697,
+        "1236": 2706,
+        "1237": 2651,
+        "1238": 2654
+      },
+      "two_qubit_min": 2621,
+      "two_qubit_median": 2654,
+      "two_qubit_max": 2706,
+      "metrics_json": {
+        "two_qubit_gates": 2621,
+        "transpile_depth": 5430,
+        "match": true
+      }
+    }
+  }
+}

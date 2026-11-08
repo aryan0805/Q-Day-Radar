@@ -1,0 +1,20 @@
+{
+  "name": "shor15_textbook",
+  "kind": "compiled",
+  "n_qubits": 12,
+  "depth": 11,
+  "two_qubit_gates": 181,
+  "transpile": {
+    "backend": "fake_kingston",
+    "optimization_level": 3,
+    "seed_transpiler": 1234,
+    "depth": 294
+  },
+  "success_probability": 0.50830078125,
+  "theoretical_success": 0.5,
+  "chance_baseline": 0.171875,
+  "shots": 8192,
+  "seed_simulator": 1234,
+  "qiskit_version": "2.6.2",
+  "timestamp": "2026-11-08T00:36:54.292452+00:00"
+}

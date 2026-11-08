@@ -78,12 +78,20 @@ def has_tests(phase: int) -> Callable[[], tuple[bool, str]]:
     return _check
 
 
-def pytest_selects(expr: str, minimum: int = 1) -> Callable[[], tuple[bool, str]]:
-    """At least `minimum` tests match -k expr, and they pass."""
+def pytest_selects(
+    expr: str, minimum: int = 1, path: str | None = None, strict: bool = False
+) -> Callable[[], tuple[bool, str]]:
+    """At least `minimum` tests match -k expr (under `path`, if given), and they pass.
+
+    strict=True also fails on any xfailed, xpassed or skipped test: a known gap
+    parked behind a marker must not count as a pass.
+    """
 
     def _check() -> tuple[bool, str]:
+        where = [path] if path else []
         r = subprocess.run(
-            [PY, "-m", "pytest", "-m", "not hardware", "-k", expr, "-p", "no:cacheprovider"],
+            [PY, "-m", "pytest", *where, "-m", "not hardware", "-k", expr,
+             "-p", "no:cacheprovider"],
             cwd=ROOT, capture_output=True, text=True,
         )
         out = (r.stdout + r.stderr).strip().splitlines()
@@ -91,7 +99,107 @@ def pytest_selects(expr: str, minimum: int = 1) -> Callable[[], tuple[bool, str]
         m = re.search(r"(\d+) passed", last)
         passed = int(m.group(1)) if m else 0
         ok = r.returncode == 0 and passed >= minimum
+        if strict and re.search(r"\d+ (xfailed|xpassed|skipped)", last):
+            ok = False
         return ok, f"-k {expr!r}: {last}"
+
+    return _check
+
+
+# ---------- phase 1: circuits ----------
+
+P1_REQUIRED = {
+    "shor15_textbook": "compiled",
+    "shor15_beauregard": "generic",
+    "shor21_beauregard": "generic",
+    **{f"grover_present_k{k}": "generic" for k in range(2, 6)},
+}
+P1_METRIC_KEYS = {
+    "name", "kind", "n_qubits", "depth", "two_qubit_gates", "transpile",
+    "success_probability", "theoretical_success", "shots", "seed_simulator",
+    "qiskit_version", "timestamp", "chance_baseline",
+}
+P1_TOLERANCE = 0.02
+P1_MIN_SHOTS = 8192
+
+
+def _p1_circuits() -> dict:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from quantum.circuits.registry import build_all
+
+    return build_all()
+
+
+def _p1_metrics(name: str) -> dict:
+    return json.loads((ROOT / "results" / "metrics" / f"{name}.json").read_text())
+
+
+def p1_registry_complete() -> tuple[bool, str]:
+    circuits = _p1_circuits()
+    problems = []
+    for name, want_kind in P1_REQUIRED.items():
+        if name not in circuits:
+            problems.append(f"{name} missing")
+            continue
+        md = circuits[name].metadata or {}
+        if md.get("kind") != want_kind:
+            problems.append(f"{name} kind={md.get('kind')!r}, want {want_kind}")
+        ts = md.get("theoretical_success")
+        if not isinstance(ts, int | float) or not 0.0 <= ts <= 1.0:
+            problems.append(f"{name} theoretical_success={ts!r}")
+    for name, qc in circuits.items():
+        if (qc.metadata or {}).get("kind") not in ("generic", "compiled"):
+            problems.append(f"{name} has no valid kind")
+    return not problems, "; ".join(problems) or f"{len(circuits)} circuits, all labeled"
+
+
+def p1_metrics_complete() -> tuple[bool, str]:
+    circuits = _p1_circuits()
+    problems = []
+    for name, qc in circuits.items():
+        try:
+            m = _p1_metrics(name)
+        except Exception as exc:  # noqa: BLE001
+            problems.append(f"{name}: {type(exc).__name__}")
+            continue
+        missing = P1_METRIC_KEYS - m.keys()
+        if missing:
+            problems.append(f"{name} missing {sorted(missing)}")
+        if m.get("kind") != (qc.metadata or {}).get("kind"):
+            problems.append(f"{name} kind mismatch")
+        if not isinstance(m.get("shots"), int) or m["shots"] < P1_MIN_SHOTS:
+            problems.append(f"{name} shots={m.get('shots')!r}")
+        if (m.get("transpile") or {}).get("backend") != "fake_kingston":
+            problems.append(f"{name} not transpiled for fake_kingston")
+    return not problems, "; ".join(problems) or f"{len(circuits)} metrics files complete"
+
+
+def p1_success_within_tolerance() -> tuple[bool, str]:
+    """Two-sided (P004): a leaking circuit overshoots theory and must fail too."""
+    rows, problems = [], []
+    for name in _p1_circuits():
+        m = _p1_metrics(name)
+        got, want = m["success_probability"], m["theoretical_success"]
+        chance = m.get("chance_baseline")
+        rows.append(f"{name} {got:.3f}/{want:.3f} (chance {chance})")
+        dev = got - want
+        if abs(dev) > P1_TOLERANCE:
+            side = "above" if dev > 0 else "below"
+            problems.append(f"{name} {got:.3f} is {abs(dev):.3f} {side} theory {want:.3f}")
+        if isinstance(chance, int | float) and want > chance and got <= chance:
+            problems.append(f"{name} {got:.3f} not above chance {chance:.3f}")
+    return not problems, "; ".join(problems) or ", ".join(rows)
+
+
+def p1_strict(expr: str) -> Callable[[], tuple[bool, str]]:
+    return pytest_selects(expr, path="tests/phase1", strict=True)
+
+
+def glob_nonempty(pattern: str) -> Callable[[], tuple[bool, str]]:
+    def _check() -> tuple[bool, str]:
+        hits = sorted(ROOT.glob(pattern))
+        return bool(hits), f"{len(hits)} match {pattern}"
 
     return _check
 
@@ -116,7 +224,18 @@ PHASE_CHECKS: dict[int, list[Check]] = {
     ],
     # Lead: at /phase-start N, turn every command-checkable exit criterion
     # in docs/PLAN.md into a check here before BUILD starts.
-    1: [Py("phase 1 tests exist", has_tests(1))],
+    1: [
+        Py("phase 1 tests exist", has_tests(1)),
+        Cmd("metrics regenerate", [PY, "scripts/record_metrics.py"]),
+        Py("registry has all 7 circuits, labeled", p1_registry_complete),
+        Py("metrics JSON complete for every circuit", p1_metrics_complete),
+        Py("|success - theoretical| <= 0.02", p1_success_within_tolerance),
+        Py("leak tests pass (no xfail/skip)", p1_strict("leak")),
+        Py("shor tests pass (no xfail/skip)", p1_strict("shor")),
+        Py("grover tests pass (no xfail/skip)", p1_strict("grover")),
+        Py("honesty audit written", file_exists("tests/phase1/AUDIT.md")),
+        Py("2q-gate benchmark recorded", glob_nonempty("benchmarks/phase1-*")),
+    ],
     2: [Py("phase 2 tests exist", has_tests(2))],
     3: [Py("phase 3 tests exist", has_tests(3))],
     4: [Py("phase 4 tests exist", has_tests(4))],
