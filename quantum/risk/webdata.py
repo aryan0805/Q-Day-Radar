@@ -94,6 +94,7 @@ class ScenariosFile(_M):
     order_notes: dict[str, str]
     model_only: dict[str, Any]
     order_plain: dict[str, str]
+    scenario_plain: dict[str, str]
     gaps: dict[str, Any]
     scenarios: dict[str, Any]
     targets: dict[str, Any]
@@ -130,7 +131,8 @@ class LabCircuit(_M):
     ideal: dict[str, Any]
     noisy: dict[str, Any]
     hardware: list[HardwareEntry]
-    hardware_best: dict[str, Any] | None
+    hardware_headline: dict[str, Any] | None
+    hardware_exploratory: list[dict[str, Any]]
 
 
 class LabFile(_M):
@@ -198,30 +200,42 @@ def gaps(timeline: dict, dev: dict) -> dict:
     return out
 
 
-def _best_hardware(hw: list[dict]) -> dict | None:
-    if not hw:
+HEADLINE_CONFIG = "raw"
+
+
+def _headline_hardware(hw: list[dict]) -> dict | None:
+    """The raw configuration is the headline: it was fixed before the data. The error-suppression
+    settings are shown beside it as exploratory (DECISIONS P2: that rule came after the data)."""
+    raw = [h for h in hw if h["config"] == HEADLINE_CONFIG]
+    if not raw:
         return None
-    best = max(hw, key=lambda h: h["success_probability"])
-    lo, hi = best["wilson_95"]
+    h = raw[0]
     return {
-        "config": best["config"],
-        "success_probability": best["success_probability"],
-        "chance_baseline": best["chance_baseline"],
-        "normalized_score": best["normalized_score"],
-        "verdict": _verdict(lo, hi, best["chance_baseline"]),
+        "config": h["config"],
+        "success_probability": h["success_probability"],
+        "chance_baseline": h["chance_baseline"],
+        "normalized_score": h["normalized_score"],
+        "verdict": _verdict(h["wilson_95"][0], h["chance_baseline"]),
     }
+
+
+def _exploratory(hw: list[dict]) -> list[dict]:
+    return [
+        {
+            "config": h["config"],
+            "success_probability": h["success_probability"],
+            "normalized_score": h["normalized_score"],
+        }
+        for h in hw
+        if h["config"] != HEADLINE_CONFIG
+    ]
 
 
 def _hardware_summary(circuits: list[dict]) -> dict:
-    """How many circuits ran on the real machine and how each scored against random guessing."""
-    best = [c["hardware_best"] for c in circuits if c["hardware_best"]]
-    count = lambda text: sum(b["verdict"].startswith(text) for b in best)  # noqa: E731
-    return {
-        "ran": len(best),
-        "above": count("above"),
-        "no_better": count("no better"),
-        "worse": count("worse"),
-    }
+    """How many circuits ran on the real machine (raw configuration) and how each scored."""
+    heads = [c["hardware_headline"] for c in circuits if c["hardware_headline"]]
+    count = lambda text: sum(h["verdict"].startswith(text) for h in heads)  # noqa: E731
+    return {"ran": len(heads), "above": count("above"), "no_better": count("no better")}
 
 
 def build_lab() -> dict:
@@ -265,7 +279,8 @@ def build_lab() -> dict:
                     )
                 },
                 "hardware": hw,
-                "hardware_best": _best_hardware(hw),
+                "hardware_headline": _headline_hardware(hw),
+                "hardware_exploratory": _exploratory(hw),
             }
         )
     return {
@@ -459,6 +474,35 @@ def order_plain(inv: dict, mo: dict) -> dict[str, str]:
     return out
 
 
+def scenario_plain(timeline: dict, est: dict) -> dict[str, str]:
+    """A plain sentence per scenario, derived by comparing its inputs with the median's."""
+    fit = timeline["fit"]
+    growth = {
+        fit["ci95"][0]: "hardware that grows as fast as the trend allows",
+        fit["doubling_years"]: "hardware that grows along the central trend",
+        fit["ci95"][1]: "hardware that grows as slowly as the trend allows",
+    }
+    med = est["scenarios"]["median"]
+    out: dict[str, str] = {}
+    for sc, spec in est["scenarios"].items():
+        parts = []
+        cyc, base = (
+            spec["qec_scheme"]["cycle_time_seconds"],
+            med["qec_scheme"]["cycle_time_seconds"],
+        )
+        if cyc != base:
+            parts.append("chips that run " + ("slower" if cyc > base else "faster"))
+        err, ebase = spec["physical_error_rate"], med["physical_error_rate"]
+        if err != ebase:
+            parts.append("chips that make " + ("more" if err > ebase else "fewer") + " errors")
+        g = growth.get(timeline["scenarios"][sc]["doubling_years"], "hardware growth from the fit")
+        text = f"This scenario assumes {g}"
+        if parts:
+            text += ", and " + " and ".join(parts) + " than the median"
+        out[sc] = text + "."
+    return out
+
+
 def deadlines() -> list[dict]:
     lit = common.literature()
     scopes = {
@@ -483,13 +527,9 @@ def _inventory_file(timeline: dict) -> dict:
     return {**inv, "deadlines": deadlines(), "summary": summary(inv)}
 
 
-def _verdict(lo: float, hi: float, chance: float) -> str:
-    """Plain verdict from the 95% interval against random guessing."""
-    if lo > chance:
-        return "above random guessing"
-    if hi < chance:
-        return "worse than random guessing"
-    return "no better than random guessing"
+def _verdict(lo: float, chance: float) -> str:
+    """Plain verdict from the 95% interval against random guessing (no threshold)."""
+    return "above random guessing" if lo > chance else "no better than random guessing"
 
 
 def build_all() -> dict[str, dict]:
@@ -505,6 +545,7 @@ def build_all() -> dict[str, dict]:
             "order_notes": order_notes(timeline, est, mo),
             "model_only": mo,
             "order_plain": order_plain(inv, mo),
+            "scenario_plain": scenario_plain(timeline, est),
             "gaps": gaps(timeline, device()),
             "scenarios": est["scenarios"],
             "targets": est["targets"],

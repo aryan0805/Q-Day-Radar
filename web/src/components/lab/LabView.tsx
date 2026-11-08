@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import lab from "../../../public/data/lab.json";
 import { register, resolve } from "../../lib/data";
 import { Fig, type ProvLabel } from "../Fig";
@@ -120,7 +120,14 @@ export function LabView() {
           A circuit is <em>compiled</em> when its multiplications are built for one fixed problem, so
           the answer is built in; it is <em>generic</em> when it works for any input. Hardware runs
           use three settings: raw, dd (dynamical decoupling) and dd_twirl (decoupling with Pauli
-          twirling). The thin line on a bar is the Wilson confidence interval for shot noise.
+          twirling). The thin line on a bar is the Wilson confidence interval for shot noise. The
+          headline score is the raw setting, which was fixed before the data.
+        </p>
+        <p style={{ margin: "0 0 0.5rem" }}>
+          The error-suppression settings were compared with raw after the data were seen. A gain
+          counts only if it exceeds both the larger Wilson half-width and the larger spread between
+          repeat runs. That rule was set after the data, with many comparisons, few repeats and no
+          correction, so every gain is exploratory.
         </p>
         <p style={{ margin: 0 }}>
           Hardware batch <Traced src="lab:hardware_batch" />, run once with the human&apos;s approval.
@@ -148,17 +155,32 @@ export function LabView() {
                 ) : (
                   "A general-purpose version."
                 )}{" "}
-                {c.hardware_best ? (
+                {c.hardware_headline ? (
                   <>
-                    On the real machine its best run scored{" "}
-                    <Fig src={`lab:${p}.hardware_best.success_probability`} scale={100} digits={1} unit="%" label="hardware"
-                      note="The share of shots that found the right answer." />
+                    On the real machine its standard run scored{" "}
+                    <Fig src={`lab:${p}.hardware_headline.success_probability`} scale={100} digits={1} unit="%" label="hardware"
+                      note="The raw run: the share of shots that found the right answer." />
                     . Random guessing scores{" "}
-                    <Fig src={`lab:${p}.hardware_best.chance_baseline`} scale={100} digits={1} unit="%" label="computed from data" />
-                    , so it was <Traced src={`lab:${p}.hardware_best.verdict`} />. It closed{" "}
-                    <Fig src={`lab:${p}.hardware_best.normalized_score`} scale={100} digits={1} unit="%" label="hardware"
+                    <Fig src={`lab:${p}.hardware_headline.chance_baseline`} scale={100} digits={1} unit="%" label="computed from data" />
+                    , so it was <Traced src={`lab:${p}.hardware_headline.verdict`} />. It closed{" "}
+                    <Fig src={`lab:${p}.hardware_headline.normalized_score`} scale={100} digits={1} unit="%" label="hardware"
                       note="The share of the gap between random guessing and a perfect score." />{" "}
                     of the gap to a perfect score.
+                    {c.hardware_exploratory.length ? (
+                      <>
+                        {" "}
+                        Exploratory, with error suppression and decided after the data:{" "}
+                        {c.hardware_exploratory.map((e, ei) => (
+                          <Fragment key={e.config}>
+                            {ei > 0 ? ", " : ""}
+                            <Traced src={`lab:${p}.hardware_exploratory[${ei}].config`} />{" "}
+                            <Fig src={`lab:${p}.hardware_exploratory[${ei}].success_probability`} scale={100} digits={1} unit="%"
+                              label="hardware" note="Exploratory: with error suppression, decided after the data." />
+                          </Fragment>
+                        ))}
+                        .
+                      </>
+                    ) : null}
                   </>
                 ) : (
                   "It was not run on the real machine."

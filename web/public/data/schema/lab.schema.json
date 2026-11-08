@@ -124,7 +124,15 @@
           "title": "Hardware",
           "type": "array"
         },
-        "hardware_best": {
+        "hardware_exploratory": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Hardware Exploratory",
+          "type": "array"
+        },
+        "hardware_headline": {
           "anyOf": [
             {
               "additionalProperties": true,
@@ -134,7 +142,7 @@
               "type": "null"
             }
           ],
-          "title": "Hardware Best"
+          "title": "Hardware Headline"
         },
         "ideal": {
           "additionalProperties": true,
@@ -161,7 +169,8 @@
         "ideal",
         "noisy",
         "hardware",
-        "hardware_best"
+        "hardware_headline",
+        "hardware_exploratory"
       ],
       "title": "LabCircuit",
       "type": "object"

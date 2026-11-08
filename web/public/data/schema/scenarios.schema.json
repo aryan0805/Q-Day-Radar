@@ -36,6 +36,13 @@
       "title": "Scenario Notes",
       "type": "object"
     },
+    "scenario_plain": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Scenario Plain",
+      "type": "object"
+    },
     "scenarios": {
       "additionalProperties": true,
       "title": "Scenarios",
@@ -58,6 +65,7 @@
     "order_notes",
     "model_only",
     "order_plain",
+    "scenario_plain",
     "gaps",
     "scenarios",
     "targets",

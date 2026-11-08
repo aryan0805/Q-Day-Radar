@@ -90,6 +90,7 @@ ALLOWED: dict[str, frozenset[str]] = {
     ),
     "scenarios": frozenset(
         {
+            "scenario_plain",
             "order_plain",
             "gaps",
             "over_device",
@@ -222,8 +223,8 @@ ALLOWED: dict[str, frozenset[str]] = {
             "ran",
             "above",
             "no_better",
-            "worse",
-            "hardware_best",
+            "hardware_headline",
+            "hardware_exploratory",
             "verdict",
             "device",
             "n_qubits",

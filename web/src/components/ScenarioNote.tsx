@@ -8,6 +8,7 @@ import { resolve, type Scenario } from "../lib/data";
 import { useScenario } from "../lib/scenario";
 import { Fig } from "./Fig";
 import { Tech } from "./Tech";
+import { Traced } from "./Traced";
 
 interface Field {
   name: string;
@@ -24,12 +25,6 @@ const FIELDS: Field[] = [
   { name: "hardware doubling time", path: (s: Scenario) => `timeline.scenarios.${s}.doubling_years`, unit: "years", digits: 2 },
 ];
 
-const PLAIN: Record<Scenario, string> = {
-  median: "You are looking at the middle scenario. It follows the trend in past quantum hardware.",
-  optimistic: "You are looking at the optimistic scenario. It assumes quantum computers get better, and get better faster, than the middle case.",
-  pessimistic: "You are looking at the pessimistic scenario. It assumes quantum computers run slower, and improve more slowly, than the middle case.",
-};
-
 export function ScenarioNote() {
   const { scenario } = useScenario();
   const differs =
@@ -39,7 +34,7 @@ export function ScenarioNote() {
   return (
     <>
       <p className="muted" style={{ fontSize: "0.9375rem" }}>
-        {PLAIN[scenario]} Use the buttons at the top to switch. A scenario is a guess about how fast quantum computers will improve.
+        <Traced src={`scenarios:scenario_plain.${scenario}`} /> A scenario is a guess about how fast quantum computers will improve. Use the buttons at the top to switch.
       </p>
       {scenario === "median" ? null : (
         <Tech>

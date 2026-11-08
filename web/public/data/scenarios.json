@@ -139,6 +139,11 @@
     "optimistic": "At least one Shor attack fits inside the runtime cap.",
     "pessimistic": "At least one Shor attack fits inside the runtime cap."
   },
+  "scenario_plain": {
+    "median": "This scenario assumes hardware that grows along the central trend.",
+    "optimistic": "This scenario assumes hardware that grows as fast as the trend allows, and chips that make fewer errors than the median.",
+    "pessimistic": "This scenario assumes hardware that grows as slowly as the trend allows, and chips that run slower than the median."
+  },
   "scenarios": {
     "median": {
       "error_budget": 0.01,
