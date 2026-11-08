@@ -485,3 +485,105 @@ select {
   background: var(--bg-0);
   font-size: 0.875rem;
 }
+
+/* ---- Hero (the Q-Day sequence) ---- */
+.hero-wrap {
+  height: 340vh;
+  margin-bottom: 2rem;
+}
+.hero-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  align-content: center;
+  gap: 0.75rem;
+  height: 100dvh;
+  max-height: 56rem;
+}
+.hero-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+}
+.hero-layers {
+  position: relative;
+  aspect-ratio: 800 / 360;
+  min-height: 13rem;
+}
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.hero-step {
+  margin: 0 0 0.25rem;
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+.hero-svg {
+  width: 100%;
+  height: 100%;
+}
+.hero-factors {
+  display: grid;
+  grid-template-columns: minmax(6rem, 10rem) 1fr;
+  align-items: center;
+  gap: 1.5rem;
+}
+.hero-lock {
+  width: 100%;
+  height: auto;
+}
+.fact-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  font-size: clamp(1rem, 2.2vw, 1.375rem);
+}
+.hero-caption {
+  align-self: end;
+  margin: 0;
+  color: var(--pqc);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.hero-notes {
+  color: var(--text-2);
+  font-size: 0.8125rem;
+}
+.hero-notes p {
+  margin: 0 0 0.25rem;
+}
+.hero-replay {
+  justify-self: start;
+}
+
+/* Reduced motion: no scrubbing, no animation; the four end states form a static strip. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-wrap {
+    height: auto;
+  }
+  .hero-stage {
+    position: static;
+    height: auto;
+    max-height: none;
+  }
+  .hero-layers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1rem;
+    aspect-ratio: auto;
+  }
+  .hero-layer {
+    position: static;
+    opacity: 1 !important;
+  }
+  .hero-svg {
+    height: auto;
+  }
+  .hero-replay {
+    display: none;
+  }
+}

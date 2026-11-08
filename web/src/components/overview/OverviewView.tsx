@@ -7,6 +7,14 @@ import { useScenario, withScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
 import { ScenarioNote } from "../ScenarioNote";
+import dynamic from "next/dynamic";
+
+// The hero (and GSAP, and hero.json) is its own chunk, fetched after the page is interactive, so
+// it is not part of the home bundle that index.html loads.
+const Hero = dynamic(() => import("../hero/Hero").then((m) => m.Hero), {
+  ssr: false,
+  loading: () => <div className="hero-wrap" aria-hidden="true" />,
+});
 
 const SIZE = 540;
 const C = SIZE / 2;
@@ -59,6 +67,7 @@ export function OverviewView() {
   const sum = `summary.${scenario}`;
   return (
     <>
+      <Hero />
       <section aria-labelledby="ov-h">
         <h1 id="ov-h" style={{ fontSize: "2.25rem", marginBlock: "0 0.5rem" }}>
           When does quantum computing break what you use?

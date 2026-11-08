@@ -1,11 +1,16 @@
 "use client";
 
-import { lab, scaling, scenarios } from "../../lib/data";
+import lab from "../../../public/data/lab.json";
+import scaling from "../../../public/data/scaling.json";
+import { register, scenarios } from "../../lib/data";
 import { sci } from "../../lib/format";
 import { useScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
 import { ScenarioNote } from "../ScenarioNote";
+
+register("lab", lab);
+register("scaling", scaling);
 
 const W = 640;
 const H = 340;

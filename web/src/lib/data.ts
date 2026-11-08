@@ -2,18 +2,17 @@
 // carry the "<file>:<path>" it came from (data-src) and the gate can recompute it.
 import inventory from "../../public/data/inventory.json";
 import scenarios from "../../public/data/scenarios.json";
-import scaling from "../../public/data/scaling.json";
-import lab from "../../public/data/lab.json";
 
 export const SCENARIOS = ["optimistic", "median", "pessimistic"] as const;
 export type Scenario = (typeof SCENARIOS)[number];
 export type Inventory = typeof inventory;
 export type Asset = Inventory["assets"][number];
 
-export { inventory, scenarios, scaling, lab };
+export { inventory, scenarios };
 
-// hero.json (large) registers itself when the hero module loads; the other files are always here.
-const registry: Record<string, unknown> = { inventory, scenarios, scaling, lab };
+// inventory and scenarios are on every screen. lab, scaling and hero are large, so the screen that
+// needs one registers it when its module loads and the other routes never ship it.
+const registry: Record<string, unknown> = { inventory, scenarios };
 export function register(name: string, data: unknown): void {
   registry[name] = data;
 }

@@ -512,6 +512,7 @@
           "11111111": 1
         },
         "finished": "2026-11-08T07:48:06.821726+00:00",
+        "finished_date": "2026-11-08",
         "index": 1,
         "isa_sha256": "786f213e3dfa623b630f606122c7eb81060e9727be5ac0c2fa20cad8f7edb401",
         "job_id": "dbo2f2oou4as73b5dgr0",
@@ -753,6 +754,7 @@
           "11111111": 2
         },
         "finished": "2026-11-08T07:49:38.982883+00:00",
+        "finished_date": "2026-11-08",
         "index": 2,
         "isa_sha256": "c3ca2a2250760b8433baca83ced315156c90544c302821bbc8d755c2c184acd1",
         "job_id": "dbo2ids4148s7391s0bg",
@@ -1002,6 +1004,7 @@
           "11111111": 1
         },
         "finished": "2026-11-08T07:50:42.027134+00:00",
+        "finished_date": "2026-11-08",
         "index": 3,
         "isa_sha256": "786f213e3dfa623b630f606122c7eb81060e9727be5ac0c2fa20cad8f7edb401",
         "job_id": "dbo2j4oqtr0c73adtbng",
@@ -1223,6 +1226,7 @@
           "11111110": 4
         },
         "finished": "2026-11-08T09:28:45.460930+00:00",
+        "finished_date": "2026-11-08",
         "index": 17,
         "isa_sha256": "5bc49f5c4c213bb3ac549a00b60bb65d58d04d6930fcbfd616175fb58e7e3687",
         "job_id": "dbo3tlgqtr0c73adv52g",
@@ -1457,6 +1461,7 @@
           "11111111": 1
         },
         "finished": "2026-11-08T09:28:45.714700+00:00",
+        "finished_date": "2026-11-08",
         "index": 18,
         "isa_sha256": "3558fe900affefeb4596f07bc7aa70c626cb407e52edc79cca0a4c783e6d7285",
         "job_id": "dbo3tls4148s7391tqs0",
@@ -1699,6 +1704,7 @@
           "11111111": 3
         },
         "finished": "2026-11-08T09:28:45.961063+00:00",
+        "finished_date": "2026-11-08",
         "index": 19,
         "isa_sha256": "786f213e3dfa623b630f606122c7eb81060e9727be5ac0c2fa20cad8f7edb401",
         "job_id": "dbo3tls4148s7391tqt0",

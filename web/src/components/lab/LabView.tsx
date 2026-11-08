@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { lab, resolve } from "../../lib/data";
+import lab from "../../../public/data/lab.json";
+import { register, resolve } from "../../lib/data";
 import { Fig, type ProvLabel } from "../Fig";
 import { Traced } from "../Traced";
+
+register("lab", lab);
 
 type Mode = "all" | "ideal" | "noisy" | "hardware";
 const MODES: { id: Mode; name: string }[] = [

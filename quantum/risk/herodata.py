@@ -66,6 +66,7 @@ def _hardware(batch_dir: Path) -> dict:
                 "config": j["config"],
                 "shots": j["shots"],
                 "finished": j["finished"],
+                "finished_date": j["finished"].split("T")[0],
                 "status": j["status"],
                 "counts": dict(sorted(j["counts"].items())),
             }

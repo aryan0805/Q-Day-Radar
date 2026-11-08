@@ -247,6 +247,7 @@ ALLOWED: dict[str, frozenset[str]] = {
     ),
     "hero": frozenset(
         {
+            "finished_date",
             "a",
             "backend",
             "batch",
