@@ -136,9 +136,7 @@ def test_noisy_bell_is_close_to_ideal_but_not_perfect(seed):
 def test_ideal_sim_never_leaks_on_the_same_circuit(seed):
     """Control for the test above: same transpiled circuit, noiseless backend."""
     isa = _isa_bell(seed)
-    counts = (
-        get_ideal_simulator().run(isa, shots=SHOTS, seed_simulator=seed).result().get_counts()
-    )
+    counts = get_ideal_simulator().run(isa, shots=SHOTS, seed_simulator=seed).result().get_counts()
     assert set(counts) == {"00", "11"}, counts
 
 

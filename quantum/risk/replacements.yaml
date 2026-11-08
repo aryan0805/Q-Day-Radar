@@ -1,0 +1,13 @@
+# Replacement per (family, usage). standard_id and nist_deadline_id are literature.yaml ids that
+# the fact-checker has verified. The algorithm names are our recommendation (a design choice that
+# follows the standards named); nothing is tuned to a ranking.
+rules:
+  - {family: RSA, usage: signature, replacement: ML-DSA-65, standard_id: fips204_ml_dsa, nist_deadline_id: nistir8547_disallow_after}
+  - {family: RSA, usage: key_exchange, replacement: ML-KEM-768, standard_id: fips203_ml_kem, nist_deadline_id: nistir8547_disallow_after}
+  - {family: ECC, usage: signature, replacement: ML-DSA-65, standard_id: fips204_ml_dsa, nist_deadline_id: nistir8547_disallow_after}
+  - {family: ECC, usage: key_exchange, replacement: ML-KEM-768, standard_id: fips203_ml_kem, nist_deadline_id: nistir8547_disallow_after}
+  - {family: AES, usage: encryption, replacement: AES-256 (keep; 256-bit keys), standard_id: fips197_aes, nist_deadline_id: null}
+  - {family: SHA, usage: hash, replacement: SHA-384 or SHA3-256 (keep; no SHA-1), standard_id: fips180_4_sha2, nist_deadline_id: null}
+  - {family: ML-KEM, usage: key_exchange, replacement: ML-KEM (already post-quantum), standard_id: fips203_ml_kem, nist_deadline_id: null}
+  - {family: ML-DSA, usage: signature, replacement: ML-DSA (already post-quantum), standard_id: fips204_ml_dsa, nist_deadline_id: null}
+  - {family: SLH-DSA, usage: signature, replacement: SLH-DSA (already post-quantum), standard_id: fips205_slh_dsa, nist_deadline_id: null}

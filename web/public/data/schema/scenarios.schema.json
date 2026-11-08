@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "crqc_label": {
+      "title": "Crqc Label",
+      "type": "string"
+    },
+    "order_notes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Order Notes",
+      "type": "object"
+    },
+    "scenario_notes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Scenario Notes",
+      "type": "object"
+    },
+    "scenarios": {
+      "additionalProperties": true,
+      "title": "Scenarios",
+      "type": "object"
+    },
+    "targets": {
+      "additionalProperties": true,
+      "title": "Targets",
+      "type": "object"
+    },
+    "timeline": {
+      "additionalProperties": true,
+      "title": "Timeline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "crqc_label",
+    "scenario_notes",
+    "order_notes",
+    "scenarios",
+    "targets",
+    "timeline"
+  ],
+  "title": "ScenariosFile",
+  "type": "object"
+}

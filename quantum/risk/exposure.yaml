@@ -1,0 +1,23 @@
+# DESIGN CHOICE (not measured, not from literature): how much more urgent an asset is when more
+# parties can reach it. Used as exposure_weight in the shortfall = weight * max(0, -margin).
+# Only the order internet > partner > internal is meant; the values are ours.
+label: design_choice
+weights:
+  internet: 3
+  partner: 2
+  internal: 1
+
+# DESIGN CHOICES for the risk model (not measured, not from literature):
+# as_of: the date the whole analysis is "as of" (baseline = the latest hardware point up to it).
+# runtime_cap_years: an attack is feasible only if one run takes at most this many years.
+as_of: "2026-11-08"
+runtime_cap_years: 1
+
+# DESIGN CHOICE: the one inclusion rule for the hardware-history points (target: timeline).
+# It is a definition, applied to every point in quantum/estimate/literature.yaml.
+timeline_inclusion_rule: >-
+  The largest physical-qubit count of a gate-model quantum processor that its maker or an
+  authoritative source reports as a BUILT device in that calendar year (first unveiled as hardware,
+  not merely on a roadmap), counted as announced physical qubits whether or not all are calibrated
+  or verified. Excluded: quantum annealers, analog simulators, and atom arrays with no gate
+  operations shown. Qubit count only; the series says nothing about qubit quality.

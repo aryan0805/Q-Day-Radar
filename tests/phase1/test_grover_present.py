@@ -44,9 +44,7 @@ def _all_pairs_necessary(k, key, n_pairs):
     for pts in itertools.combinations(range(16), n_pairs):
         pairs = make_pairs(key, pts)
         full = set(consistent_keys(k, pairs))
-        if all(
-            set(consistent_keys(k, pairs[:i] + pairs[i + 1 :])) > full for i in range(n_pairs)
-        ):
+        if all(set(consistent_keys(k, pairs[:i] + pairs[i + 1 :])) > full for i in range(n_pairs)):
             out.append(pts)
     return out
 

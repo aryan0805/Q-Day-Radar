@@ -92,7 +92,7 @@ def test_estimate_literature_schema_and_coverage():
             "locator",
             "retrieved",
         } <= set(e), f"{e.get('id')}: {e.keys()}"
-        assert e["target"] in (*ref.TARGETS, "other"), e["id"]
+        assert e["target"] in (*ref.TARGETS, "other", "timeline"), e["id"]  # timeline: Phase 4
         assert str(e["source_url"]).startswith("https://"), e["id"]
         assert str(e["locator"]).strip(), e["id"]
         retrieved = (

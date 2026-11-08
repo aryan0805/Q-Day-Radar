@@ -342,6 +342,7 @@ def calibration(qdk, qt, scal: dict) -> dict:
         method="measured: ECAdd bloq, symbolic n evaluated at 256",
     )
     comps += _physical_rows(lit)
+    comps += _v2_rows(lit)
     comps += _aes_projection(qdk, lit)
     return {"comparisons": comps}
 
@@ -515,3 +516,68 @@ def _aes_projection(qdk: dict[str, dict], lit: dict) -> list[dict]:
             "iterations, times 4 to give T-equivalents (Grassl's column is T gates).",
         },
     ]
+
+
+def _v2_rows(lit: dict) -> list[dict]:
+    """Physical model v2 fed each paper's own logical qubits at that paper's error rate, against the
+    paper's own physical-qubit figure. Pre-registered tolerance (lead): RSA two-sided within the
+    factor, ECC one-sided (v2 must not exceed the factor times the paper's bound)."""
+    spec = physical.load_spec()["physical_v2"]
+    factor = float(spec["tolerance_factor"])
+    rows = []
+    for target, lit_id, qubits_id, err_id, kind in (
+        (
+            "rsa2048",
+            "g2025_physical_qubits_rsa2048",
+            "g2025_max_algorithmic_logical_qubits",
+            "g2025_physical_error_rate",
+            "two_sided",
+        ),
+        (
+            "ecc256",
+            "google2026_physical_qubits_ecc256",
+            "google2026_logical_qubits_ecc256",
+            "google2026_physical_error_rate",
+            "one_sided",
+        ),
+    ):
+        logical = float(lit[qubits_id]["value"])
+        err = float(lit[err_id]["value"])
+        v2 = physical.physical_estimate_v2(logical, err)
+        theirs = float(lit[lit_id]["value"])
+        ratio = v2["physical_qubits"] / theirs
+        within = (1 / factor <= ratio <= factor) if kind == "two_sided" else ratio <= factor
+        rows.append(
+            {
+                "target": target,
+                "estimator": "physical_v2",
+                "method": "measured: physical model v2 fed the paper's own logical qubits",
+                "label": "measured",
+                "quantity": "physical_qubits",
+                "ours": v2["physical_qubits"],
+                "literature_id": lit_id,
+                "literature_value": theirs,
+                "ratio": ratio,
+                "tolerance": {"kind": kind, "factor": factor, "within": within},
+                "input_logical_qubits": logical,
+                "input_logical_qubits_id": qubits_id,
+                "v2": v2,
+                "explanation": (
+                    "Pre-registered check (components from Gidney 2025 only). "
+                    + (
+                        "Consistency check on the paper's own numbers (two-sided): v2 rebuilds the "
+                        "paper's accounting, so agreement is expected, not independent evidence."
+                        if kind == "two_sided"
+                        else "Holdout (one-sided): v2 must not exceed the factor times the paper's "
+                        "upper bound. "
+                        + (
+                            "It passes."
+                            if within
+                            else "It FAILS the tolerance. Not tuned. Likely cause, not acted on: "
+                            "v2 carries RSA's cold-storage fraction and compute block over to ECC."
+                        )
+                    )
+                ),
+            }
+        )
+    return rows

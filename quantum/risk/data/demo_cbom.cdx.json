@@ -1,0 +1,1482 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:6f1d1c0a-2b7e-4d5f-9a39-0c4b8e7d1a52",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-08T00:00:00Z",
+    "properties": [
+      {
+        "name": "qday:fictional",
+        "value": "true"
+      },
+      {
+        "name": "qday:company",
+        "value": "Examplia Pay (fictional fintech)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-edge-cert-rsa",
+      "name": "RSA-2048",
+      "description": "public web TLS certificate",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-edge-kex-ecdhe",
+      "name": "ECDH",
+      "description": "TLS key exchange, customer portal",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "key-agree",
+          "cryptoFunctions": [
+            "keygen"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-edge-kex-x25519",
+      "name": "X25519",
+      "description": "TLS key exchange, mobile API",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "key-agree",
+          "cryptoFunctions": [
+            "keygen"
+          ],
+          "curve": "x25519"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-edge-aead",
+      "name": "AES-256-GCM",
+      "description": "TLS record protection",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "ae",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-edge-cert-ecdsa",
+      "name": "ECDSA",
+      "description": "public TLS certificate, API gateway",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-partner-cert-rsa",
+      "name": "RSA-3072",
+      "description": "partner mTLS certificate",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "3072"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "tls-partner-kex",
+      "name": "ECDH",
+      "description": "partner link key exchange",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "key-agree",
+          "cryptoFunctions": [
+            "keygen"
+          ],
+          "curve": "nist/P-384"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "15"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "vpn-ipsec-kex",
+      "name": "ECDH",
+      "description": "branch VPN",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "key-agree",
+          "cryptoFunctions": [
+            "keygen"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "12"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "vpn-ipsec-enc",
+      "name": "AES-128-GCM",
+      "description": "branch VPN payload",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "ae",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "128"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "12"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ssh-bastion-hostkey",
+      "name": "Ed25519",
+      "description": "bastion host key",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "ed25519"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ssh-admin-keys",
+      "name": "RSA-4096",
+      "description": "administrator keys",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "4096"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "code-signing-release",
+      "name": "RSA-3072",
+      "description": "firmware and app release signing",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "3072"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "20"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "6"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "code-signing-bootloader",
+      "name": "ECDSA",
+      "description": "device secure-boot root",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "nist/P-384"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "25"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "8"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "payments-hsm-master",
+      "name": "AES-256-CBC",
+      "description": "HSM master key wrapping",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "block-cipher",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "25"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "payments-card-pan-enc",
+      "name": "AES-128-CBC",
+      "description": "stored card numbers",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "block-cipher",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "128"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "20"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "4"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "payments-iso8583-mac",
+      "name": "HMAC-SHA-256",
+      "description": "scheme message authentication",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "mac",
+          "cryptoFunctions": [
+            "tag"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "hash"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "payments-keytransport-rsa",
+      "name": "RSA-2048",
+      "description": "terminal key transport (OAEP)",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "pke",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "15"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "4"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "db-tde-aes",
+      "name": "AES-256-XTS",
+      "description": "database at-rest encryption",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "block-cipher",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "20"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "backup-vault-enc",
+      "name": "AES-256-GCM",
+      "description": "archive vault",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "ae",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "backup-vault-wrap",
+      "name": "RSA-4096",
+      "description": "archive key wrapping",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "pke",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "4096"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "kyc-docs-enc",
+      "name": "AES-128-CTR",
+      "description": "customer identity documents",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "stream-cipher",
+          "cryptoFunctions": [
+            "encrypt",
+            "decrypt"
+          ],
+          "parameterSetIdentifier": "128"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "25"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "encryption"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "audit-log-hash",
+      "name": "SHA-256",
+      "description": "audit log chaining",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "cryptoFunctions": [
+            "digest"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "hash"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "audit-log-sign",
+      "name": "ECDSA",
+      "description": "audit log signing",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "contracts-esign",
+      "name": "RSA-2048",
+      "description": "long-lived signed contracts",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "contracts-timestamp-hash",
+      "name": "SHA-384",
+      "description": "contract timestamping",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "cryptoFunctions": [
+            "digest"
+          ],
+          "parameterSetIdentifier": "384"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "hash"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "jwt-session-ecdsa",
+      "name": "ECDSA",
+      "description": "session tokens",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "oauth-signing-rsa",
+      "name": "RSA-2048",
+      "description": "OAuth token signing",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "email-smime-rsa",
+      "name": "RSA-2048",
+      "description": "signed email to regulators",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "7"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "dnssec-zsk",
+      "name": "ECDSA",
+      "description": "DNSSEC zone signing key",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "nist/P-256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "blockchain-settlement-key",
+      "name": "ECDSA",
+      "description": "settlement ledger keys",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "curve": "secp256k1"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "15"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "6"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "hr-sso-saml",
+      "name": "RSA-2048",
+      "description": "workforce SSO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "2048"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "legacy-erp-rsa1024",
+      "name": "RSA-1024",
+      "description": "legacy ERP interface",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "1024"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "4"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "legacy-sha1",
+      "name": "SHA-1",
+      "description": "legacy checksum",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "cryptoFunctions": [
+            "digest"
+          ],
+          "parameterSetIdentifier": "160"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "hash"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "integrity-sha3",
+      "name": "SHA3-256",
+      "description": "artifact integrity",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "cryptoFunctions": [
+            "digest"
+          ],
+          "parameterSetIdentifier": "256"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "hash"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "edge-pqc-kex-pilot",
+      "name": "ML-KEM-768",
+      "description": "hybrid KEM pilot at the edge",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "kem",
+          "cryptoFunctions": [
+            "encapsulate",
+            "decapsulate"
+          ],
+          "parameterSetIdentifier": "768"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "10"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "partner-pqc-kex",
+      "name": "ML-KEM-1024",
+      "description": "partner key establishment pilot",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "kem",
+          "cryptoFunctions": [
+            "encapsulate",
+            "decapsulate"
+          ],
+          "parameterSetIdentifier": "1024"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "20"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "internal-pqc-kex",
+      "name": "ML-KEM-512",
+      "description": "internal service mesh pilot",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "kem",
+          "cryptoFunctions": [
+            "encapsulate",
+            "decapsulate"
+          ],
+          "parameterSetIdentifier": "512"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "key_exchange"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "pqc-code-signing",
+      "name": "ML-DSA-65",
+      "description": "dual-signed releases",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "65"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "25"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "pqc-doc-signing",
+      "name": "ML-DSA-87",
+      "description": "long-term document signing pilot",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "87"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "partner"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "pqc-internal-sign",
+      "name": "ML-DSA-44",
+      "description": "internal service tokens",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "44"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "5"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "1"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "pqc-firmware-root",
+      "name": "SLH-DSA-SHA2-128s",
+      "description": "firmware root of trust",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "128s"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "3"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internet"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "pqc-archive-sign",
+      "name": "SLH-DSA-SHAKE-256f",
+      "description": "archive attestations",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "signature",
+          "cryptoFunctions": [
+            "sign",
+            "verify"
+          ],
+          "parameterSetIdentifier": "256f"
+        }
+      },
+      "properties": [
+        {
+          "name": "qday:shelf_life_years",
+          "value": "30"
+        },
+        {
+          "name": "qday:migration_years",
+          "value": "2"
+        },
+        {
+          "name": "qday:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "qday:usage",
+          "value": "signature"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-11-08T20:43:01Z",
+  "git_commit": "9c3f3014955fb4ee19f4ffbec47453b4d3495982",
+  "sources": [
+    {
+      "path": "quantum/estimate/literature.yaml",
+      "sha256": "944c9cb58d66284df297f6366d683246384ee5da3a210457817c2f0150e1a16d"
+    },
+    {
+      "path": "quantum/risk/data/demo_cbom.cdx.json",
+      "sha256": "26438c2f600752ff3303af961116325613ba3d2e560976d8e2b1ef57f84d9335"
+    },
+    {
+      "path": "quantum/risk/exposure.yaml",
+      "sha256": "f367c9879deb7f301d7c920664e898b0ef1ca3a9b743799fbb668f535a139baf"
+    },
+    {
+      "path": "quantum/risk/replacements.yaml",
+      "sha256": "8d195bc869986741c45a098f265cbdd33b9e8cc436f392d449b93518f9e1b179"
+    },
+    {
+      "path": "results/estimate/scenarios.json",
+      "sha256": "c855e97a05ac9185f4fc431db7ec0be3292660a5a78f8ede59ab519975a54d28"
+    },
+    {
+      "path": "results/estimate/scaling.json",
+      "sha256": "c494269d700213c7ae0807f16ddaebf98807413cd898d5b48aaee6bd616823ec"
+    },
+    {
+      "path": "results/risk/timeline.json",
+      "sha256": "7e6ea195017b7da1ecd0b9449790c2292a06401533e94912d5cc31d36821d2b9"
+    },
+    {
+      "path": "results/analysis/phase2/summary-batch-20261108T044751Z.json",
+      "sha256": "03ebea1b00fc5db6edf42b425dce99bb26942a446b63b88e331f87e69726e745"
+    },
+    {
+      "path": "results/metrics/grover_present_k2.json",
+      "sha256": "6adc94c54565d540822e8c55df09bd6802ce3614e3bc089517e8fceaa6864839"
+    },
+    {
+      "path": "results/metrics/grover_present_k3.json",
+      "sha256": "4c20d4ccf648ca1e3e6642d49cce7a8dfc2bb21f23cd23f93807c50af51e43d0"
+    },
+    {
+      "path": "results/metrics/grover_present_k4.json",
+      "sha256": "f18d37c58c337235dc0af25ff70f6dc32a2362d529d05941fb32d351b5cd8988"
+    },
+    {
+      "path": "results/metrics/grover_present_k5.json",
+      "sha256": "e5b86ea8b468bba482fcfd7c20608ce5dd9e47f003e7f5905e6771e4a67a1c42"
+    },
+    {
+      "path": "results/metrics/shor15_beauregard.json",
+      "sha256": "750f34febbd5cbd857445f71a437b9af1413e504821860cd0a189f5141643435"
+    },
+    {
+      "path": "results/metrics/shor15_textbook.json",
+      "sha256": "7aac85d4289778952c0c0f41e8a5a86a82dcd30ca37f02a197d331e5724011ef"
+    },
+    {
+      "path": "results/metrics/shor21_beauregard.json",
+      "sha256": "d7ec40f5c96858a88cd2337ebbaa2901aa35accd68d0e2d330b1f70f8641729d"
+    },
+    {
+      "path": "results/noisy/grover_present_k2.json",
+      "sha256": "a5a18992cb281fc31a7d7db707705c35b5886e200c1dce0c55656699f9a307bb"
+    },
+    {
+      "path": "results/noisy/grover_present_k3.json",
+      "sha256": "4659c4c2e417f60740244e3886745bf9ac9f722168ca83b96f5907cc7e775b3f"
+    },
+    {
+      "path": "results/noisy/grover_present_k4.json",
+      "sha256": "2f795c8e3d0d3af9869c9deae3015733a7fc1c16eeab8598ef16ae629a793292"
+    },
+    {
+      "path": "results/noisy/grover_present_k5.json",
+      "sha256": "3fedfe983c13bc5744039fb8f8ed7bdac931f82cefef8431a7c12b94c83000e2"
+    },
+    {
+      "path": "results/noisy/shor15_beauregard.json",
+      "sha256": "6c72b4fcf164c58b63726ae659ec855696a61af2a0031e846b11781c02c80f34"
+    },
+    {
+      "path": "results/noisy/shor15_textbook.json",
+      "sha256": "b1600fcb699e28bb950c2360f9fa75367dbc21250a8cd31d74e5365917a10527"
+    },
+    {
+      "path": "results/noisy/shor21_beauregard.json",
+      "sha256": "63b16cc2de314e5f4b99c5bdfbd1e5ac63ca88438702c1f60de7f03da362ac2d"
+    }
+  ]
+}

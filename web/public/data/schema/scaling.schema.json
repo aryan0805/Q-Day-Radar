@@ -1,0 +1,18 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "fits": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Fits",
+      "type": "array"
+    }
+  },
+  "required": [
+    "fits"
+  ],
+  "title": "ScalingFile",
+  "type": "object"
+}

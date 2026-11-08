@@ -59,9 +59,7 @@ def test_shor_textbook_bit_order_is_weight_2_to_j(counts):
 
 
 def test_shor_textbook_shots_recover_order_4_and_factors_3_5(counts):
-    recovered = {
-        int(b, 2): postprocess.order_from_shot(int(b, 2), 8, 7, 15) for b in counts
-    }
+    recovered = {int(b, 2): postprocess.order_from_shot(int(b, 2), 8, 7, 15) for b in counts}
     assert recovered == {0: None, 64: 4, 128: None, 192: 4}
     assert postprocess.factors_from_order(7, 4, 15) == (3, 5)
 
@@ -113,9 +111,7 @@ def test_shor_registry_names_cover_the_seven_required():
     ],
 )
 def test_shor_registry_theory_matches_independent_qpe_value(name, n, a, t):
-    assert math.isclose(
-        registry.THEORY_FN[name](), shor_theoretical_success(a, n, t), abs_tol=1e-6
-    )
+    assert math.isclose(registry.THEORY_FN[name](), shor_theoretical_success(a, n, t), abs_tol=1e-6)
 
 
 @pytest.mark.parametrize(

@@ -11,7 +11,29 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from quantum.estimate import cases, physical  # noqa: E402
+from quantum.estimate import cases, common, physical  # noqa: E402
+
+
+def _alt(h: dict) -> dict:
+    """An earlier logical source (history): its ids and the counts it gives."""
+    lit = common.literature()
+    return {
+        "source": h["source"],
+        "literature_ids": [h["logical_qubits_id"], h["ccz_id"]],
+        "logical_qubits": int(common.parse_power(lit[h["logical_qubits_id"]]["value"])),
+        "toffoli_count": int(common.parse_power(lit[h["ccz_id"]]["value"])),
+        "superseded_by": lit[h["ccz_id"]].get("superseded_by"),
+    }
+
+
+def _context(c: dict) -> dict:
+    lit = common.literature()
+    return {
+        "source": c["source"],
+        "literature_ids": [c["logical_qubits_id"], c["toffoli_per_run_id"]],
+        "logical_qubits": int(common.parse_power(lit[c["logical_qubits_id"]]["value"])),
+        "note": "context only: logical level, no hardware assumptions",
+    }
 
 
 def build() -> dict:
@@ -40,6 +62,9 @@ def build() -> dict:
                 "source": t["source"],
                 "literature_ids": [v for k, v in t.items() if k.endswith("_id")],
                 "logical_counts": counts,
+                "bound": t.get("bound"),
+                "history": [_alt(h) for h in t.get("history", [])],
+                "context": [_context(c) for c in t.get("context", [])],
                 "repetitions": reps,
                 "measurement_count_assumption": "set equal to CCZ count (not in the source)"
                 if counts["cczCount"]

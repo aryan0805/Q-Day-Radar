@@ -228,8 +228,11 @@ def test_estimate_scenarios_logical_counts_are_the_cited_literature_values(scen,
     assert rsa["numQubits"] == lit_value(lit["g2025_logical_qubits_rsa2048"])
     assert rsa["cczCount"] == lit_value(lit["g2025_toffoli_rsa2048"])
     ecc = scen["targets"]["ecc256"]["logical_source"]["logical_counts"]
-    assert ecc["numQubits"] == lit_value(lit["roetteler2017_logical_qubits_p256"])
-    assert ecc["cczCount"] == lit_value(lit["roetteler2017_toffoli_p256"])
+    # Phase 4 round 2: the ECC-256 source moved from Roetteler 2017 (now history) to Google 2026
+    ids = scen["targets"]["ecc256"]["logical_source"]["literature_ids"]
+    assert ids == ["google2026_logical_qubits_ecc256", "google2026_toffoli_ecc256"], ids
+    assert ecc["numQubits"] == lit_value(lit[ids[0]])
+    assert ecc["cczCount"] == lit_value(lit[ids[1]])
     aes = scen["targets"]["aes128"]["logical_source"]
     assert aes["logical_counts"]["numQubits"] == lit_value(lit["grassl2016_logical_qubits_aes128"])
     total_t = aes["logical_counts"]["tCount"] * aes["repetitions"]

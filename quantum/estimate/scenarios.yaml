@@ -23,9 +23,24 @@ targets:
     ccz_id: g2025_toffoli_rsa2048
   ecc256:
     label: literature
-    source: Roetteler et al. 2017
-    logical_qubits_id: roetteler2017_logical_qubits_p256
-    ccz_id: roetteler2017_toffoli_p256
+    source: Babbush et al. (Google Quantum AI) 2026, preprint arXiv:2603.28846 (also PRX Quantum 7, 031001, same work)
+    logical_qubits_id: google2026_logical_qubits_ecc256
+    ccz_id: google2026_toffoli_ecc256
+    bound: upper
+    # Newest on-family estimate giving BOTH logical qubits and a Toffoli count. Chevignard et al.
+    # (Eurocrypt 2026, 1193 logical qubits, 2^38.98 Toffoli per run) has no hardware assumptions, so
+    # it is context. Earlier estimates stay as history, in this order (oldest last).
+    history:
+      - source: Litinski 2023 (arXiv:2306.08585)
+        logical_qubits_id: litinski2023_logical_qubits
+        ccz_id: litinski2023_toffoli_per_key
+      - source: Roetteler et al. 2017 (arXiv:1706.06752)
+        logical_qubits_id: roetteler2017_logical_qubits_p256
+        ccz_id: roetteler2017_toffoli_p256
+    context:
+      - source: Chevignard, Fouque, Schrottenloher, Eurocrypt 2026 (ePrint 2026/280)
+        logical_qubits_id: chevignard2026_logical_qubits_ecc256
+        toffoli_per_run_id: chevignard2026_toffoli_per_run_ecc256
   aes128:
     label: literature
     source: Grassl et al. 2016
@@ -33,3 +48,17 @@ targets:
     grover_key_bits: 128  # Grassl Sec. 3.4: floor(pi/4 * 2^(k/2)) sequential iterations
     logical_qubits_id: grassl2016_logical_qubits_aes128
     t_id: grassl2016_t_gates_aes128
+
+# Physical model v2 (pre-registered, Phase 4 round 2): components from Gidney 2025 only, ids in
+# literature.yaml. EXTENSION (not from Gidney 2025, labelled): for a physical error rate other than
+# the paper's, the distance follows the standard suppression law (p/p_th)^((d+1)/2) with
+# p_threshold below, scaled so that d = 25 at 1e-3, rounded up to an odd distance.
+physical_v2:
+  hot_distance_id: g2025_code_distance
+  cold_per_logical_id: g2025_cold_storage_physical_per_logical
+  cold_logical_id: g2025_cold_logical_qubits_m
+  max_logical_id: g2025_max_algorithmic_logical_qubits
+  compute_patches_id: g2025_compute_region_hot_patches
+  reference_error_rate_id: g2025_physical_error_rate
+  p_threshold: 0.01   # NOT from Gidney 2025: QDK's default surface-code threshold
+  tolerance_factor: 1.5   # fixed by lead before any run: (a) two-sided on RSA, (b) one-sided on ECC

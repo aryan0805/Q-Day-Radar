@@ -1,0 +1,284 @@
+{
+  "as_of": "2026-11-08",
+  "as_of_year": 2026,
+  "baseline": {
+    "literature_id": "hw_2023_ibm_condor",
+    "qubits": 1121,
+    "year": 2023
+  },
+  "fit": {
+    "ci95": [
+      0.9860246498012681,
+      1.7779269243779472
+    ],
+    "doubling_years": 1.2685314673087982,
+    "holdout": {
+      "actual": 1121.0,
+      "predicted": 2299.007682075933,
+      "rel_error": 1.0508543105048467,
+      "signed_rel_error": 1.0508543105048467,
+      "year": 2025
+    },
+    "intercept": -1585.52524296374,
+    "r2": 0.890078993509129,
+    "residuals": [
+      {
+        "rel": -1.6245694043125707,
+        "year": 2016
+      },
+      {
+        "rel": 0.5467227136808696,
+        "year": 2017
+      },
+      {
+        "rel": 0.4563650613738346,
+        "year": 2018
+      },
+      {
+        "rel": 0.06111315127032392,
+        "year": 2019
+      },
+      {
+        "rel": -0.6215082072267573,
+        "year": 2020
+      },
+      {
+        "rel": -0.5876465428610498,
+        "year": 2021
+      },
+      {
+        "rel": 0.1957787542524443,
+        "year": 2022
+      },
+      {
+        "rel": 0.46350741832921954,
+        "year": 2023
+      },
+      {
+        "rel": 0.0734483868077794,
+        "year": 2024
+      },
+      {
+        "rel": -0.6002045904074124,
+        "year": 2025
+      }
+    ],
+    "slope": 0.7883131209362191
+  },
+  "frontier": [
+    {
+      "qubits": 5,
+      "year": 2016
+    },
+    {
+      "qubits": 50,
+      "year": 2017
+    },
+    {
+      "qubits": 72,
+      "year": 2018
+    },
+    {
+      "qubits": 72,
+      "year": 2019
+    },
+    {
+      "qubits": 72,
+      "year": 2020
+    },
+    {
+      "qubits": 127,
+      "year": 2021
+    },
+    {
+      "qubits": 433,
+      "year": 2022
+    },
+    {
+      "qubits": 1121,
+      "year": 2023
+    },
+    {
+      "qubits": 1121,
+      "year": 2024
+    },
+    {
+      "qubits": 1121,
+      "year": 2025
+    }
+  ],
+  "inclusion_rule": "The largest physical-qubit count of a gate-model quantum processor that its maker or an authoritative source reports as a BUILT device in that calendar year (first unveiled as hardware, not merely on a roadmap), counted as announced physical qubits whether or not all are calibrated or verified. Excluded: quantum annealers, analog simulators, and atom arrays with no gate operations shown. Qubit count only; the series says nothing about qubit quality.",
+  "points": [
+    {
+      "literature_id": "hw_2016_ibm_5q",
+      "qubits": 5,
+      "year": 2016
+    },
+    {
+      "literature_id": "hw_2017_ibm_50q_prototype",
+      "qubits": 50,
+      "year": 2017
+    },
+    {
+      "literature_id": "hw_2018_google_bristlecone",
+      "qubits": 72,
+      "year": 2018
+    },
+    {
+      "literature_id": "hw_2019_google_sycamore",
+      "qubits": 54,
+      "year": 2019
+    },
+    {
+      "literature_id": "hw_2020_ibm_hummingbird",
+      "qubits": 65,
+      "year": 2020
+    },
+    {
+      "literature_id": "hw_2021_ibm_eagle",
+      "qubits": 127,
+      "year": 2021
+    },
+    {
+      "literature_id": "hw_2022_ibm_osprey",
+      "qubits": 433,
+      "year": 2022
+    },
+    {
+      "literature_id": "hw_2023_ibm_condor",
+      "qubits": 1121,
+      "year": 2023
+    },
+    {
+      "literature_id": "hw_2024_tianyan_504",
+      "qubits": 504,
+      "year": 2024
+    },
+    {
+      "literature_id": "hw_2025_fujitsu_riken_256q",
+      "qubits": 256,
+      "year": 2025
+    }
+  ],
+  "runtime_cap_years": 1.0,
+  "scenarios": {
+    "median": {
+      "doubling_years": 1.2685314673087982,
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "feasible": false,
+          "physical_bound": null,
+          "physical_qubits": 52455962.0,
+          "physical_source": "model",
+          "runtime_seconds": 5.636400219269626e+21,
+          "runtime_source": "model"
+        },
+        "ecc256": {
+          "crqc_year": 2037.164342914991,
+          "feasible": true,
+          "physical_bound": "upper",
+          "physical_qubits": 500000.0,
+          "physical_source": "google2026_physical_qubits_ecc256",
+          "runtime_seconds": 9000.0,
+          "runtime_source": "model"
+        },
+        "rsa2048": {
+          "crqc_year": 2038.2357050657808,
+          "feasible": true,
+          "physical_bound": null,
+          "physical_qubits": 897864.0,
+          "physical_source": "g2025_physical_qubits_rsa2048",
+          "runtime_seconds": 754000.0,
+          "runtime_source": "model"
+        }
+      }
+    },
+    "optimistic": {
+      "doubling_years": 0.9860246498012681,
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "feasible": false,
+          "physical_bound": null,
+          "physical_qubits": 12375002.0,
+          "physical_source": "model",
+          "runtime_seconds": 2.8644001114321044e+21,
+          "runtime_source": "model"
+        },
+        "ecc256": {
+          "crqc_year": 2034.6780009772792,
+          "feasible": true,
+          "physical_bound": "upper",
+          "physical_qubits": 500000.0,
+          "physical_source": "google2026_physical_qubits_ecc256",
+          "runtime_seconds": 4680.0,
+          "runtime_source": "model"
+        },
+        "rsa2048": {
+          "crqc_year": 2035.5107666727051,
+          "feasible": true,
+          "physical_bound": null,
+          "physical_qubits": 897864.0,
+          "physical_source": "g2025_physical_qubits_rsa2048",
+          "runtime_seconds": 390000.0,
+          "runtime_source": "model"
+        }
+      }
+    },
+    "pessimistic": {
+      "doubling_years": 1.7779269243779472,
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "feasible": false,
+          "physical_bound": null,
+          "physical_qubits": 52455962.0,
+          "physical_source": "model",
+          "runtime_seconds": 5.636400219269625e+24,
+          "runtime_source": "model"
+        },
+        "ecc256": {
+          "crqc_year": 2041.6475313171863,
+          "feasible": true,
+          "physical_bound": "upper",
+          "physical_qubits": 500000.0,
+          "physical_source": "google2026_physical_qubits_ecc256",
+          "runtime_seconds": 9000000.0,
+          "runtime_source": "model"
+        },
+        "rsa2048": {
+          "crqc_year": null,
+          "feasible": false,
+          "physical_bound": null,
+          "physical_qubits": 897864.0,
+          "physical_source": "g2025_physical_qubits_rsa2048",
+          "runtime_seconds": 754000000.0,
+          "runtime_source": "model"
+        }
+      }
+    }
+  },
+  "sensitivity_raw_series": {
+    "ci95": [
+      1.0660213023098666,
+      3.0754214623231175
+    ],
+    "doubling_years": 1.5832476645167122,
+    "holdout": {
+      "actual": 256.0,
+      "predicted": 1580.645241286153,
+      "rel_error": 5.174395473774035,
+      "signed_rel_error": 5.174395473774035,
+      "year": 2025
+    },
+    "note": "Not used downstream. Fit on the raw per-year points; they are not monotone (IBM moved from size to quality after 2023), so this fit and its holdout are shown only to bound the choice of the frontier.",
+    "r2": 0.7384652397580327
+  },
+  "survey_check": {
+    "delta_years": 3.2357050657808486,
+    "literature_id": "gri2025_half_of_experts_horizon",
+    "model_year": 2038.2357050657808,
+    "survey_year": 2035
+  }
+}

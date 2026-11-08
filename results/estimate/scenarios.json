@@ -79,6 +79,9 @@
       },
       "label": "literature",
       "logical_source": {
+        "bound": null,
+        "context": [],
+        "history": [],
         "label": "literature",
         "literature_ids": [
           "grassl2016_logical_qubits_aes128",
@@ -102,45 +105,79 @@
     "ecc256": {
       "by_scenario": {
         "median": {
-          "code_distance": 33,
-          "logical_qubits": 4798,
-          "physical_qubits": 11166084,
+          "code_distance": 25,
+          "logical_qubits": 2499,
+          "physical_qubits": 3556910,
           "repetitions": 1,
-          "runtime_seconds": 16632000.0
+          "runtime_seconds": 9000.0
         },
         "optimistic": {
-          "code_distance": 17,
-          "logical_qubits": 4798,
-          "physical_qubits": 2981244,
+          "code_distance": 13,
+          "logical_qubits": 2499,
+          "physical_qubits": 931062,
           "repetitions": 1,
-          "runtime_seconds": 8568000.0
+          "runtime_seconds": 4680.0
         },
         "pessimistic": {
-          "code_distance": 33,
-          "logical_qubits": 4798,
-          "physical_qubits": 11166084,
+          "code_distance": 25,
+          "logical_qubits": 2499,
+          "physical_qubits": 3556910,
           "repetitions": 1,
-          "runtime_seconds": 16632000000.0
+          "runtime_seconds": 9000000.0
         }
       },
       "logical_source": {
+        "bound": "upper",
+        "context": [
+          {
+            "literature_ids": [
+              "chevignard2026_logical_qubits_ecc256",
+              "chevignard2026_toffoli_per_run_ecc256"
+            ],
+            "logical_qubits": 1193,
+            "note": "context only: logical level, no hardware assumptions",
+            "source": "Chevignard, Fouque, Schrottenloher, Eurocrypt 2026 (ePrint 2026/280)"
+          }
+        ],
+        "history": [
+          {
+            "literature_ids": [
+              "litinski2023_logical_qubits",
+              "litinski2023_toffoli_per_key"
+            ],
+            "logical_qubits": 6000,
+            "source": "Litinski 2023 (arXiv:2306.08585)",
+            "superseded_by": "google2026_toffoli_ecc256",
+            "toffoli_count": 109000000
+          },
+          {
+            "literature_ids": [
+              "roetteler2017_logical_qubits_p256",
+              "roetteler2017_toffoli_p256"
+            ],
+            "logical_qubits": 2330,
+            "source": "Roetteler et al. 2017 (arXiv:1706.06752)",
+            "superseded_by": "google2026_toffoli_ecc256",
+            "toffoli_count": 126000000000
+          }
+        ],
         "label": "literature",
         "literature_ids": [
-          "roetteler2017_logical_qubits_p256",
-          "roetteler2017_toffoli_p256"
+          "google2026_logical_qubits_ecc256",
+          "google2026_toffoli_ecc256"
         ],
         "logical_counts": {
           "ccixCount": 0,
-          "cczCount": 126000000000,
-          "measurementCount": 126000000000,
-          "numQubits": 2330,
+          "cczCount": 90000000,
+          "measurementCount": 90000000,
+          "numQubits": 1200,
           "rotationCount": 0,
           "rotationDepth": 0,
           "tCount": 0
         },
         "measurement_count_assumption": "set equal to CCZ count (not in the source)",
         "repetitions": 1,
-        "source": "Roetteler et al. 2017"
+        "source": "Babbush et al. (Google Quantum AI) 2026, preprint arXiv:2603.28846 (also PRX Quantum 7, 031001, same work)"
       }
     },
     "rsa2048": {
@@ -168,6 +205,9 @@
         }
       },
       "logical_source": {
+        "bound": null,
+        "context": [],
+        "history": [],
         "label": "literature",
         "literature_ids": [
           "g2025_logical_qubits_rsa2048",

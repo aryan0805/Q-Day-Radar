@@ -82,6 +82,8 @@
   source_url: https://arxiv.org/abs/2505.15917
   locator: "Section 3.2: 'The total number of physical qubits is 897864.'"
   retrieved: 2026-11-08
+  feeds: {target: rsa2048, kind: physical_qubits, qec_family: surface_code_planar, physical_error_rate: 0.001, bound: null}
+  paper_runtime_note: "4.96 days expected (g2025_runtime_rsa2048); context only, not used by the model"
 - id: g2025_runtime_rsa2048
   target: rsa2048
   quantity: expected_runtime
@@ -127,6 +129,7 @@
   source_url: https://arxiv.org/abs/1706.06752
   locator: "Table 2, row ceil(log2 p) = 256, #Qubits; Section 1 'Results'"
   retrieved: 2026-11-08
+  superseded_by: google2026_logical_qubits_ecc256
 - id: roetteler2017_toffoli_p256
   target: ecc256
   quantity: toffoli_count
@@ -136,6 +139,7 @@
   source_url: https://arxiv.org/abs/1706.06752
   locator: "Table 2, row ceil(log2 p) = 256, #Toffoli gates; Section 1 'Results'"
   retrieved: 2026-11-08
+  superseded_by: google2026_toffoli_ecc256
 - id: litinski2023_toffoli_per_key
   target: ecc256
   quantity: toffoli_count
@@ -145,6 +149,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 2.1: '6000 logical qubits and 109 million Toffoli gates per key'"
   retrieved: 2026-11-08
+  superseded_by: google2026_toffoli_ecc256
 - id: litinski2023_logical_qubits
   target: ecc256
   quantity: logical_qubits
@@ -154,6 +159,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 2.1: '6000 logical qubits and 109 million Toffoli gates per key'"
   retrieved: 2026-11-08
+  superseded_by: google2026_logical_qubits_ecc256
 - id: litinski2023_physical_qubits
   target: ecc256
   quantity: physical_qubits
@@ -163,6 +169,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 2.1: 'both require 9.4 million physical qubits'"
   retrieved: 2026-11-08
+  superseded_by: google2026_physical_qubits_ecc256
 - id: litinski2023_runtime_superconducting
   target: ecc256
   quantity: time_per_key
@@ -172,6 +179,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 2.1: 'one key every 484*28 seconds, or 3.8 hours'"
   retrieved: 2026-11-08
+  superseded_by: google2026_runtime_ecc256
 - id: litinski2023_cycle_time_ion
   target: other
   quantity: surface_code_cycle_time
@@ -181,6 +189,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 2.1: 'With a 1 ms code cycle, trapped ions generate one key every 160 days'"
   retrieved: 2026-11-08
+  superseded_by: google2026_physical_qubits_ecc256
 - id: litinski2023_threshold_fraction
   target: other
   quantity: physical_error_rate_over_threshold
@@ -190,6 +199,7 @@
   source_url: https://arxiv.org/abs/2306.08585
   locator: "Section 3 (Conclusion) and Section 2.1: 'logical error rate of pL=10^-d/2 at 10% threshold'"
   retrieved: 2026-11-08
+  superseded_by: google2026_physical_qubits_ecc256
 - id: grassl2016_logical_qubits_aes128
   target: aes128
   quantity: logical_qubits
@@ -234,4 +244,455 @@
   assumptions: "Ancilla-free Clifford+T approximation of a z-rotation to precision epsilon; used as rotation_t_cost(eps) = 3*log2(1/eps)"
   source_url: https://arxiv.org/abs/1403.2975
   locator: "Abstract: 'T-count 3log_2(1/epsilon) + O(log(log(1/epsilon)))'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: hardware history (timeline points) -----------------------------------------------
+# Timeline points: the inclusion rule is stated once, in quantum/risk/exposure.yaml
+# (timeline_inclusion_rule). Qubit count only, not quality.
+- id: hw_2016_ibm_5q
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2016
+  value: 5
+  units: qubits
+  assumptions: "IBM five-qubit superconducting processor on the IBM cloud; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://uk.newsroom.ibm.com/2016-May-04-IBM-Makes-Quantum-Computing-Available-on-IBM-Cloud-to-Accelerate-Innovation
+  locator: "Press release of May 4, 2016, hardware paragraph: 'composed of five superconducting qubits'"
+  retrieved: 2026-11-08
+- id: hw_2017_ibm_50q_prototype
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2017
+  value: 50
+  units: qubits
+  assumptions: "IBM 50-qubit prototype processor, reported as built and measured; the release says access will be offered to IBM Q Network participants (no date). IBM first announced it on 10 Nov 2017 (not read here); inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://au.newsroom.ibm.com/2017-12-14-University-of-Melbourne-joins-as-founding-member-of-IBM-Q-Network-Hub-to-Accelerate-Quantum-Computing
+  locator: "Release of Dec 14, 2017, body text: 'built and measured the first working 50 qubit prototype processor'"
+  retrieved: 2026-11-08
+- id: hw_2018_google_bristlecone
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2018
+  value: 72
+  units: qubits
+  assumptions: "Google Bristlecone superconducting processor; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://research.google/blog/a-preview-of-bristlecone-googles-new-quantum-processor/
+  locator: "Blog post of March 5, 2018, body: 'a square array of 72 qubits'"
+  retrieved: 2026-11-08
+- id: hw_2019_google_sycamore
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2019
+  value: 54
+  units: qubits
+  assumptions: "Google Sycamore, a 54-qubit chip; the experiment ran on 53 qubits (Nature abstract); inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://research.google/blog/quantum-supremacy-using-a-programmable-superconducting-processor/
+  locator: "Blog post of Oct 23, 2019, opening paragraphs: 'a fully programmable 54-qubit processor named Sycamore'"
+  retrieved: 2026-11-08
+- id: hw_2020_ibm_hummingbird
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2020
+  value: 65
+  units: qubits
+  assumptions: "IBM Hummingbird, released to IBM Quantum Network members; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://www.ibm.com/quantum/blog/ibm-quantum-roadmap
+  locator: "Roadmap blog of Sept 15, 2020, hardware paragraph: '65-qubit IBM Quantum Hummingbird processor'"
+  retrieved: 2026-11-08
+- id: hw_2021_ibm_eagle
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2021
+  value: 127
+  units: qubits
+  assumptions: "IBM Eagle; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://newsroom.ibm.com/2021-11-16-IBM-Unveils-Breakthrough-127-Qubit-Quantum-Processor
+  locator: "Press release of Nov 16, 2021, first paragraph: 'new 127-quantum bit (qubit) Eagle processor'"
+  retrieved: 2026-11-08
+- id: hw_2022_ibm_osprey
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2022
+  value: 433
+  units: qubits
+  assumptions: "IBM Osprey; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://newsroom.ibm.com/2022-11-09-IBM-Unveils-400-Qubit-Plus-Quantum-Processor-and-Next-Generation-IBM-Quantum-System-Two
+  locator: "Press release of Nov 9, 2022: 'The new 433 qubit Osprey processor'"
+  retrieved: 2026-11-08
+- id: hw_2023_ibm_condor
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2023
+  value: 1121
+  units: qubits
+  assumptions: "IBM Condor, a fabricated superconducting gate-model chip; the 1,180-atom Atom Computing array (Oct 2023, no gate operations shown) is excluded by the inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://www.ibm.com/quantum/blog/quantum-roadmap-2033
+  locator: "Blog of Dec 4, 2023, hardware section: 'IBM Condor, a 1,121 superconducting qubit quantum processor'"
+  retrieved: 2026-11-08
+- id: hw_2024_ibm_heron_r2
+  target: other
+  quantity: context_gate_model_physical_qubits
+  year: 2024
+  value: 156
+  units: qubits
+  assumptions: "IBM Heron r2 (156 qubits); context only: a larger device unveiled the same year (Tianyan-504, 504 qubits, hw_2024_tianyan_504) is the 2024 timeline point; inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://www.ibm.com/quantum/blog/qdc-2024
+  locator: "QDC 2024 blog of Nov 13, 2024, Heron r2 section: 'This new chip features 156 qubits in a heavy-hex layout'"
+  retrieved: 2026-11-08
+- id: hw_2024_tianyan_504
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2024
+  value: 504
+  units: qubits
+  assumptions: "Xiaohong 504-qubit superconducting chip (system later named Tianyan-504): delivered in April 2024 by the CAS quantum center to QuantumCTek, mainly as a testbed for a kilo-qubit control system; the system was launched on 5 Dec 2024 (Xinhua dateline). Gate-model operation is inferred from the gate-fidelity and circuit-depth indicators the sources mention, not stated. April: gate fidelity, qubit lifetime and circuit depth are expected to reach the performance levels of IBM-class platforms; December: it promises to match their performance. No numeric gate fidelity or demonstrated circuit is published; the rule counts a device whether or not verified. Inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://english.news.cn/20240425/a95b3c190a59486886f4cddc0def31cd/c.html
+  locator: "Xinhua, 25 April 2024, headline 'China launches 504-qubit quantum chip, open to global users', paragraph 1: 'delivered a 504-qubit superconducting quantum computing chip to QuantumCTek'; also China Daily 26 April 2024 (https://www.chinadaily.com.cn/a/202404/26/WS662b15dfa31082fc043c431e.html) and Xinhua 6 Dec 2024 (https://english.news.cn/20241206/9e81bf78af6140c2970e03eb3b73c351/c.html) paragraph 1"
+  retrieved: 2026-11-08
+- id: hw_2025_fujitsu_riken_256q
+  target: timeline
+  quantity: largest_gate_model_physical_qubits
+  year: 2025
+  value: 256
+  units: qubits
+  assumptions: "Fujitsu/RIKEN superconducting quantum computer; the 6,100-atom Caltech tweezer array (Sept 2025, no entangling gates) is excluded by the inclusion rule: see timeline_inclusion_rule in quantum/risk/exposure.yaml"
+  source_url: https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2025/0422-01.html
+  locator: "Press release of April 22, 2025, first paragraph: 'a world-leading 256-qubit superconducting quantum computer'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: expert survey ---------------------------------------------------------------------
+- id: gri2025_half_of_experts_horizon
+  target: other
+  quantity: survey_horizon_years
+  year: 2025
+  value: 10
+  units: years from the 2025 survey
+  assumptions: "Global Risk Institute Quantum Threat Timeline Report 2025 (Mosca and Piani; 26 experts; cover dated March 2026): 13 of 26 experts rated a quantum computer able to factor a 2048-bit number in under 24 hours within 10 years as 'about 50%' or more likely; the report also gives an average likelihood of 28% to 49% within 10 years"
+  source_url: https://globalriskinstitute.org/mp-files/pdf-quantum-threat-timeline-report-2025.pdf/
+  locator: "Section on Figure 30, report pp. 53-54: '(13/26) felt the likelihood of such a computer within 10 years was about 50% or more likely'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: standards and deadlines ----------------------------------------------------------
+- id: fips203_ml_kem
+  target: other
+  quantity: publication_year
+  year: 2024
+  value: 2024
+  units: year
+  assumptions: "FIPS 203, Module-Lattice-Based Key-Encapsulation Mechanism Standard (ML-KEM); final, published August 13, 2024"
+  source_url: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf
+  locator: "Cover page: 'Published: August 13, 2024'"
+  retrieved: 2026-11-08
+- id: fips204_ml_dsa
+  target: other
+  quantity: publication_year
+  year: 2024
+  value: 2024
+  units: year
+  assumptions: "FIPS 204, Module-Lattice-Based Digital Signature Standard (ML-DSA); final, published August 13, 2024"
+  source_url: https://csrc.nist.gov/pubs/fips/204/final
+  locator: "CSRC page, Date Published: August 13, 2024"
+  retrieved: 2026-11-08
+- id: fips205_slh_dsa
+  target: other
+  quantity: publication_year
+  year: 2024
+  value: 2024
+  units: year
+  assumptions: "FIPS 205, Stateless Hash-Based Digital Signature Standard (SLH-DSA); final, published August 13, 2024"
+  source_url: https://csrc.nist.gov/pubs/fips/205/final
+  locator: "CSRC page, Date Published: August 13, 2024"
+  retrieved: 2026-11-08
+- id: fips197_aes
+  target: other
+  quantity: publication_year
+  year: 2023
+  value: 2023
+  units: year
+  assumptions: "FIPS 197, Advanced Encryption Standard; original November 26, 2001, current update May 9, 2023 (editorial)"
+  source_url: https://csrc.nist.gov/pubs/fips/197/final
+  locator: "CSRC page, Date Published: 'November 26, 2001; Updated May 9, 2023'"
+  retrieved: 2026-11-08
+- id: fips180_4_sha2
+  target: other
+  quantity: publication_year
+  year: 2015
+  value: 2015
+  units: year
+  assumptions: "FIPS 180-4, Secure Hash Standard (SHA-1 and SHA-2); current final version August 2015 (it supersedes the 03/06/2012 FIPS 180-4)"
+  source_url: https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+  locator: "CSRC page, Date Published: August 2015"
+  retrieved: 2026-11-08
+- id: fips202_sha3
+  target: other
+  quantity: publication_year
+  year: 2015
+  value: 2015
+  units: year
+  assumptions: "FIPS 202, SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions; August 2015"
+  source_url: https://csrc.nist.gov/pubs/fips/202/final
+  locator: "CSRC page, Date Published: August 2015"
+  retrieved: 2026-11-08
+- id: nistir8547_deprecate_after
+  target: other
+  quantity: deprecation_year
+  year: 2030
+  value: 2030
+  units: year (deprecated after)
+  assumptions: "NIST IR 8547 final (October 2026): RSA, ECDSA and (EC)DH/RSA key establishment at 112 bits or more, and EdDSA at 128 bits or more, are deprecated after 2030"
+  source_url: https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf
+  locator: "Section 4 p. 13 ('NIST will deprecate quantum-vulnerable public-key cryptography after 2030'); Table 2 p. 15; Table 4 pp. 16-17"
+  retrieved: 2026-11-08
+- id: nistir8547_disallow_after
+  target: other
+  quantity: disallowance_year
+  year: 2035
+  value: 2035
+  units: year (disallowed after)
+  assumptions: "NIST IR 8547 final (October 2026): the same algorithms are disallowed after 2035 under NIST standards and guidelines. The final also restates earlier federal deadlines for high value assets and high impact systems (key establishment by 31 December 2030, digital signatures by 31 December 2031), so 2035 is not the only deadline that can apply"
+  source_url: https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf
+  locator: "Section 4 p. 13 ('disallow its use under NIST standards and guidelines after 2035'); Table 2 p. 15; Table 4 pp. 16-17"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: newest ECC-256 estimates ----------------------------------------------------------
+# Fairness rule: each Shor target is compared with its most recent estimate. The newest ECC-256
+# preprints use other hardware (IonQ Sep 2026 trapped ions at 1e-4; Cain et al. Mar 2026 neutral
+# atoms at a 1 ms cycle; Alice & Bob ePrint 2026/2665, Oct 28 2026, cat qubits, read only through
+# secondary sources and therefore not stored). The newest paper on a scenario's own hardware family
+# (surface code, planar, 1e-3, 1 us) is Google (March 2026), a preprint: it gives an upper bound.
+# Entries with a `feeds` block may replace the model's number (scenario rule in the Phase 4 brief).
+- id: google2026_physical_qubits_ecc256
+  target: ecc256
+  quantity: physical_qubits
+  year: 2026
+  value: 500000
+  units: "qubits (upper bound: fewer than half a million)"
+  assumptions: "Babbush et al., Google Quantum AI, preprint arXiv:2603.28846 (30 Mar 2026): secp256k1, planar surface-code variants with storage protected by yokes, 1e-3 physical error rate, 10 us control-system reaction time (the 1 us error-correction round is only an illustration in Sec. II.B, not an assumption of the bound)"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract: 'fewer than half a million physical qubits'"
+  retrieved: 2026-11-08
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+  feeds: {target: ecc256, kind: physical_qubits, qec_family: surface_code_planar, physical_error_rate: 0.001, bound: upper}
+  paper_runtime_note: "23 min for the 90-million-Toffoli circuit (google2026_runtime_ecc256), reaction-limited at a 10 us reaction time; context only, not used by the model"
+- id: google2026_runtime_ecc256
+  target: ecc256
+  quantity: expected_runtime
+  year: 2026
+  value: 23
+  units: minutes (the 90-million-Toffoli circuit; the 70-million-Toffoli circuit takes 18)
+  assumptions: "Same paper and assumptions as google2026_physical_qubits_ecc256; circuit with at most 1200 logical qubits and at most 90 million Toffoli gates; the 9-12 minute figures need a precomputed 'primed' state and are not used"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Section II.B p. 8: '70 or 90 million Toffoli gates can be resolved in 18 or 23 minutes on a superconducting CRQC' (reaction-limited at a 10 us reaction time, 50% overhead per Toffoli)"
+  retrieved: 2026-11-08
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: google2026_physical_error_rate
+  target: other
+  quantity: physical_gate_error_rate
+  year: 2026
+  value: 0.001
+  units: per gate
+  assumptions: "Babbush et al. 2026, planar connectivity"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract: '10^-3 physical error rates and planar connectivity'"
+  retrieved: 2026-11-08
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: google2026_cycle_time
+  target: other
+  quantity: surface_code_cycle_time
+  year: 2026
+  value: 1.0e-6
+  units: seconds
+  assumptions: "Babbush et al. 2026. Only an illustration: in a fast-clock architecture with 1 microsecond error correction rounds the magic-state production needs about 25,000 physical qubits. It is NOT the stated assumption behind the half-million-qubit bound or the 18/23 minutes, which are reaction-limited at a 10 us reaction time"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Section II.B p. 9, magic-state paragraph (illustration): '1 microsecond error correction rounds'"
+  retrieved: 2026-11-08
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: ionq2026_physical_qubits_ecc256
+  target: ecc256
+  quantity: physical_qubits
+  year: 2026
+  value: 19397
+  units: qubits
+  assumptions: "Haener et al., IonQ, preprint arXiv:2609.05625 (4 Sep 2026): secp256k1 on a trapped-ion Walking Cat architecture with qLDPC memory; two-qubit error 1e-4, CCZ injection about 29.5 ms per Toffoli. Hardware differs from every scenario, so this figure is context, not a scenario input"
+  source_url: https://arxiv.org/abs/2609.05625
+  locator: "Abstract: 'approximately 25.7 days using 19,397 physical qubits'"
+  retrieved: 2026-11-08
+- id: ionq2026_runtime_ecc256
+  target: ecc256
+  quantity: expected_runtime
+  year: 2026
+  value: 25.7
+  units: days
+  assumptions: "Same paper and assumptions as ionq2026_physical_qubits_ecc256 (preprint, context only, no feeds). The abstract gives a 63% estimated success probability (a heuristic estimate, p. 7); the rigorous lower bound gives 40.7% per attempt"
+  source_url: https://arxiv.org/abs/2609.05625
+  locator: "Abstract: 'approximately 25.7 days using 19,397 physical qubits'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: Gidney 2025 hardware assumptions (equal to the scenario's) -------------------------
+- id: g2025_physical_error_rate
+  target: other
+  quantity: physical_gate_error_rate
+  year: 2025
+  value: 0.001
+  units: per gate
+  assumptions: "Gidney 2025 'I make the same assumptions as in 2019'"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Abstract: 'a uniform gate error rate of 0.1%'"
+  retrieved: 2026-11-08
+- id: g2025_cycle_time
+  target: other
+  quantity: surface_code_cycle_time
+  year: 2025
+  value: 1.0e-6
+  units: seconds
+  assumptions: "Gidney 2025"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Abstract: 'a surface code cycle time of 1 microsecond'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4: classical deprecation (below 112-bit security) -----------------------------------
+- id: sp800_131a
+  target: other
+  quantity: minimum_security_strength_bits
+  year: 2019
+  value: 112
+  units: bits of security strength (minimum for Federal Government protection)
+  assumptions: "NIST SP 800-131A Revision 2 (March 2019, final). RSA with a modulus below 2048 bits and ECDSA/EdDSA or EC DH/MQV with n below 224 bits are below 112 bits of security and are disallowed for applying protection (RSA 1024 <= n < 2048 and ECDSA 160 <= n < 224 remain legacy use for verifying old signatures only). SHA-1 is disallowed for digital signature generation except where NIST protocol-specific guidance allows it, allowed for legacy signature verification, and acceptable for non-signature uses that do not require collision resistance. Revision 3 exists only as an initial public draft (21 October 2024, proposes a schedule for retiring SHA-1 and 224-bit hashes)"
+  source_url: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
+  locator: "Section 1.2.1 p. 2: 'a security strength of at least 112 bits is required at this time for applying cryptographic protection'; Table 2 p. 9 (RSA len(n) < 2048 and ECDSA len(n) < 224 disallowed); p. 10 ('the length of n shall be at least 224 bits'; 'The length of the modulus n shall be 2048 bits or more'); Table 4 p. 13 (EC DH/MQV len(n) < 224); Table 5 p. 15 (RSA key establishment); Table 8 pp. 18-19 (SHA-1)"
+  retrieved: 2026-11-08
+- id: sp800_57_pt1r5_sha1_collision
+  target: other
+  quantity: sha1_collision_security_strength_bits
+  year: 2020
+  value: 80
+  units: bits (upper bound on SHA-1 collision security strength)
+  assumptions: "NIST SP 800-57 Part 1 Revision 5 (May 2020, final): for digital signatures and other applications requiring collision resistance SHA-1 has a security strength of at most 80 bits (below the 112-bit minimum); for HMAC, key derivation and random bit generation the table does not give SHA-1 that limit"
+  source_url: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
+  locator: "Table 3 (Maximum security strengths for hash and hash-based functions), row <= 80: SHA-1, footnote 74: 'SHA-1 has been demonstrated to provide less than 80 bits of security for digital signatures, which require collision resistance'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4 round 2: newest ECC-256 logical counts ---------------------------------------------
+# The PRX Quantum 7, 031001 (2026) article (doi 10.1103/j3xf-bw18, Crossref record; the APS page was
+# not readable) has the same title, the same nine authors and the same abstract numbers as arXiv
+# 2603.28846. It is ONE work, cross-referenced here, never two independent results.
+- id: google2026_logical_qubits_ecc256
+  target: ecc256
+  quantity: logical_qubits
+  year: 2026
+  value: 1200
+  units: "logical qubits (upper bound: at most 1200)"
+  assumptions: "Babbush et al., Google Quantum AI, secp256k1, circuit variant with at most 1200 logical qubits and at most 90 million Toffoli gates (the other variant: at most 1450 logical qubits and at most 70 million Toffoli gates). Preprint arXiv:2603.28846 (v2 15 Apr 2026); same work as PRX Quantum 7, 031001 (2026), doi 10.1103/j3xf-bw18 (Crossref record). Planar surface code, 1e-3 physical error rate"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract, arXiv PDF page 1 (the abs-page text renders the same line with a strict <): 'either ≤ 1200 logical qubits and ≤ 90 million Toffoli gates or ≤ 1450 logical qubits and ≤ 70 million Toffoli gates'"
+  retrieved: 2026-11-08
+  bound: upper
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: google2026_toffoli_ecc256
+  target: ecc256
+  quantity: toffoli_count
+  year: 2026
+  value: 9.0e+7
+  units: "Toffoli gates (upper bound: at most 90 million)"
+  assumptions: "Same paper and circuit variant as google2026_logical_qubits_ecc256 (at most 1200 logical qubits)"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract, arXiv PDF page 1 (the abs-page text renders the same line with a strict <): 'either ≤ 1200 logical qubits and ≤ 90 million Toffoli gates or ≤ 1450 logical qubits and ≤ 70 million Toffoli gates'"
+  retrieved: 2026-11-08
+  bound: upper
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: google2026_logical_qubits_ecc256_alt
+  target: ecc256
+  quantity: logical_qubits
+  year: 2026
+  value: 1450
+  units: "logical qubits (upper bound: at most 1450)"
+  assumptions: "Babbush et al. 2026, the second circuit variant (at most 1450 logical qubits and at most 70 million Toffoli gates); kept as history, not used as the scenario input"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract, arXiv PDF page 1 (the abs-page text renders the same line with a strict <): 'either ≤ 1200 logical qubits and ≤ 90 million Toffoli gates or ≤ 1450 logical qubits and ≤ 70 million Toffoli gates'"
+  retrieved: 2026-11-08
+  bound: upper
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: google2026_toffoli_ecc256_alt
+  target: ecc256
+  quantity: toffoli_count
+  year: 2026
+  value: 7.0e+7
+  units: "Toffoli gates (upper bound: at most 70 million)"
+  assumptions: "Babbush et al. 2026, the second circuit variant; kept as history"
+  source_url: https://arxiv.org/abs/2603.28846
+  locator: "Abstract, arXiv PDF page 1 (the abs-page text renders the same line with a strict <): 'either ≤ 1200 logical qubits and ≤ 90 million Toffoli gates or ≤ 1450 logical qubits and ≤ 70 million Toffoli gates'"
+  retrieved: 2026-11-08
+  bound: upper
+  also_published_as: "PRX Quantum 7, 031001 (published 2026-08-21, doi 10.1103/j3xf-bw18): metadata match (Crossref, OpenAlex: same title, authors, abstract figures), no registered link to the arXiv entry, APS page unreadable. Treated as one work, never two independent results"
+- id: chevignard2026_logical_qubits_ecc256
+  target: ecc256
+  quantity: logical_qubits
+  year: 2026
+  value: 1193
+  units: "logical qubits, 256-bit curve, with 22 independent runs"
+  assumptions: "Chevignard, Fouque, Schrottenloher, 'Reducing the Number of Qubits in Quantum Discrete Logarithms on Elliptic Curves', EUROCRYPT 2026 (peer reviewed), ePrint 2026/280 (revised 2026-06-04). Logical level only: no physical-qubit count, error rate or cycle time, so it is not on any scenario's hardware family and cannot feed the scenarios. The IACR artifact page lists 1098 qubits and 2^38.10 Toffoli per run; the ePrint revision note says a swap between the P-224 and P-256 numbers in the abstract was corrected, so 1098 may be the P-224 pair (not confirmed from the paper's tables). The Eurocrypt artifact page (2026-07-25) still shows 1098 / 2^38.10; the paper body (Tables 5, 6, 8) could not be read; 22 is the number of runs, so the total is about 22 times the per-run Toffoli count"
+  source_url: https://eprint.iacr.org/2026/280
+  locator: "Abstract (current revision): 'we estimate that 1193 qubits would be necessary, with 22 independent runs'"
+  retrieved: 2026-11-08
+- id: chevignard2026_toffoli_per_run_ecc256
+  target: ecc256
+  quantity: toffoli_count_per_run
+  year: 2026
+  value: "2^38.98"
+  units: "Toffoli gates per run (22 independent runs)"
+  assumptions: "Same paper and caveat as chevignard2026_logical_qubits_ecc256; about 5e11 per run, so far more Toffolis than the Google 2026 circuits but fewer qubits. The Eurocrypt artifact page (2026-07-25) still shows 2^38.10 per run; the paper body could not be read; the 22 independent runs multiply this count"
+  source_url: https://eprint.iacr.org/2026/280
+  locator: "Abstract (current revision): 'using 2^{38.98} Toffoli gates each'"
+  retrieved: 2026-11-08
+
+# ---- Phase 4 round 2: Gidney 2025 physical-layout components (physical model v2) ----------------
+- id: g2025_cold_storage_physical_per_logical
+  target: rsa2048
+  quantity: cold_storage_physical_qubits_per_logical_qubit
+  year: 2025
+  value: 430
+  units: physical qubits per logical qubit (yoked surface code, 2D parity check, 1e-15 per round)
+  assumptions: "Gidney 2025, uniform depolarizing noise at 1e-3; cold logical qubits are roughly triple the density of hot ones"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'yoking with a 2D parity check code reaches a logical error rate of 10^-15 when using 430 physical qubits per logical qubit' (Figure 6)"
+  retrieved: 2026-11-08
+- id: g2025_cold_logical_qubits_m
+  target: rsa2048
+  quantity: cold_storage_logical_qubits
+  year: 2025
+  value: 1280
+  units: logical qubits held in cold storage (the m input qubits, n = 2048)
+  assumptions: "Gidney 2025, n = 2048 row of Table 5 (m = 1280)"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'The m = 1280 input logical qubits are in cold storage'"
+  retrieved: 2026-11-08
+- id: g2025_max_algorithmic_logical_qubits
+  target: rsa2048
+  quantity: logical_qubits_at_maximum
+  year: 2025
+  value: 1409
+  units: logical qubits active at the maximum (loop 4), excluding the compute region
+  assumptions: "Gidney 2025, n = 2048: m + 3f + 2l + len m = 1409, of which 1280 are in cold storage and 131 in hot storage. The paper is not self-consistent here: Table 5 (p. 18) prints 1399 in its Qubits column for n = 2048, 1280 + 131 = 1411, and the printed formula with the stated parameters gives 152 rather than 131; 1409 is the number the text states for the maximum"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'the maximum logical qubit count occurs during loop4 when there are m + 3f + 2l + len m = 1409 logical qubits active'"
+  retrieved: 2026-11-08
+- id: g2025_compute_region_hot_patches
+  target: rsa2048
+  quantity: compute_region_hot_patches
+  year: 2025
+  value: 126
+  units: hot patches (a 7x18 region)
+  assumptions: "Gidney 2025: room for six magic-state factories (cultivation followed by 8T-to-CCZ distillation, each a 3x4 area of hot patches) plus lattice-surgery workspace; 170352 physical qubits at d = 25"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'the compute region will use a 7x18 region of hot patches (170352 physical qubits)'"
+  retrieved: 2026-11-08
+- id: g2025_target_logical_error_per_round
+  target: rsa2048
+  quantity: target_logical_error_rate_per_logical_qubit_round
+  year: 2025
+  value: 1.0e-15
+  units: per logical qubit per round
+  assumptions: "Gidney 2025, chosen for the whole run (about 6.9e13 logical qubit rounds)"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'Choosing a target logical error rate of 10^-15 per logical qubit round'"
   retrieved: 2026-11-08

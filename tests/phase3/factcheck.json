@@ -180,5 +180,292 @@
   "locator": "Abstract",
   "note": "Abstract: 'T-count 3log_2(1/epsilon) + O(log(log(1/epsilon)))' in the typical case; yaml leading coefficient 3. Dropping the additive O(log log) term makes 3*log2(1/eps) a slight underestimate; the PDF body constants were not read.",
   "method": "fact-checker read the abs page; reviewer re-read the abstract in the PDF text (T-count 3 log2(1/eps) + O(log log 1/eps))"
+ },
+ "hw_2016_ibm_5q": {
+  "status": "verified",
+  "checked_url": "https://uk.newsroom.ibm.com/2016-May-04-IBM-Makes-Quantum-Computing-Available-on-IBM-Cloud-to-Accelerate-Innovation",
+  "locator": "Press release 4 May 2016",
+  "note": "Source: 'composed of five superconducting qubits'; yaml 5.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2017_ibm_50q_prototype": {
+  "status": "verified",
+  "checked_url": "https://au.newsroom.ibm.com/2017-12-14-University-of-Melbourne-joins-as-founding-member-of-IBM-Q-Network-Hub-to-Accelerate-Quantum-Computing",
+  "locator": "Release 14 Dec 2017",
+  "note": "Value 50 matches ('built and measured the first working 50 qubit prototype processor'). Two fixes: (1) the page is not the first announcement (IBM announced it 10 Nov 2017; only secondary sources read), the rule says 'first announced'; (2) 'not offered on the cloud' is not what the page says: it says access 'will be offered to participants in the IBM Q Network', no date. Reword the assumptions. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "hw_2018_google_bristlecone": {
+  "status": "verified",
+  "checked_url": "https://research.google/blog/a-preview-of-bristlecone-googles-new-quantum-processor/",
+  "locator": "Blog 5 Mar 2018",
+  "note": "Source: 'scaled to a square array of 72 qubits'; yaml 72.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2019_google_sycamore": {
+  "status": "verified",
+  "checked_url": "https://research.google/blog/quantum-supremacy-using-a-programmable-superconducting-processor/",
+  "locator": "Blog 23 Oct 2019",
+  "note": "Value 54 matches ('a fully programmable 54-qubit processor'); Nature abstract says states on 53 qubits. The yaml says '53 operational in the published experiment': the reason (one qubit not working) appears only in a secondary summary. Reword to what the sources say: 54-qubit chip, experiment on 53 qubits. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "hw_2020_ibm_hummingbird": {
+  "status": "verified",
+  "checked_url": "https://www.ibm.com/quantum/blog/ibm-quantum-roadmap",
+  "locator": "Roadmap blog 15 Sep 2020",
+  "note": "Source: 'this month we quietly released our 65-qubit IBM Quantum Hummingbird processor to our IBM Quantum Network members'; yaml 65. Note: the same post announces Eagle, Osprey and Condor for 2021-2023, so the rule must say 'unveiled as a built device', not 'first announced' (see the rule finding).",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2021_ibm_eagle": {
+  "status": "verified",
+  "checked_url": "https://newsroom.ibm.com/2021-11-16-IBM-Unveils-Breakthrough-127-Qubit-Quantum-Processor",
+  "locator": "Press release 16 Nov 2021",
+  "note": "Source: 'its new 127-quantum bit (qubit) Eagle processor'; yaml 127.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2022_ibm_osprey": {
+  "status": "verified",
+  "checked_url": "https://newsroom.ibm.com/2022-11-09-IBM-Unveils-400-Qubit-Plus-Quantum-Processor-and-Next-Generation-IBM-Quantum-System-Two",
+  "locator": "Press release 9 Nov 2022",
+  "note": "Source: 'The new 433 qubit Osprey processor'; yaml 433.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2023_ibm_condor": {
+  "status": "verified",
+  "checked_url": "https://www.ibm.com/quantum/blog/quantum-roadmap-2033",
+  "locator": "Blog 4 Dec 2023",
+  "note": "Source: 'IBM Condor, a 1,121 superconducting qubit quantum processor'; yaml 1121. Atom Computing 1,180 (24 Oct 2023) calls its system gate-based but the page shows no entangling-gate result; the exclusion lives only in a comment.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2024_ibm_heron_r2": {
+  "status": "verified",
+  "checked_url": "https://www.ibm.com/quantum/blog/qdc-2024",
+  "locator": "QDC 2024 blog 13 Nov 2024",
+  "note": "Value 156 matches ('This new chip features 156 qubits in a heavy-hex layout'). Problem is the claim 'largest verified gate-model processor first announced in 2024': the word 'verified' is not on the page, and a larger superconducting chip exists in 2024 (Xiaohong / Tianyan-504, 504 qubits, delivered Apr 2024, Chinese Academy of Sciences / China Telecom Quantum Group, China Daily 26 Apr 2024). Heron itself was introduced in 2023; r2 is a revision. Either add the 504 point or add a verification clause to the rule; with a frontier fit this does not change the baseline. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "hw_2025_fujitsu_riken_256q": {
+  "status": "verified",
+  "checked_url": "https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2025/0422-01.html",
+  "locator": "Press release 22 Apr 2025",
+  "note": "Source: 'a world-leading 256-qubit superconducting quantum computer'; yaml 256. No >256-qubit gate-model device found for 2025; Harvard/MIT 3,000-atom array shows no gates, Magne is planned only.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "gri2025_half_of_experts_horizon": {
+  "status": "verified",
+  "checked_url": "https://globalriskinstitute.org/mp-files/pdf-quantum-threat-timeline-report-2025.pdf/",
+  "locator": "pp. 53-54 (Figure 30 caption on p. 53); also p. 5",
+  "note": "Source p. 54: '(13/26) felt the likelihood of such a computer within 10 years was about 50% or more likely'; average likelihood 'between 28% and 49% within 10 years, that is, by roughly 2035'. Cover reads MARCH 2026, report titled 2025, 26 respondents. Horizon measured from 'now' = the 2025 survey.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "fips203_ml_kem": {
+  "status": "verified",
+  "checked_url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf",
+  "locator": "Cover page",
+  "note": "Source: 'Published August 13, 2024'; yaml 2024.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "fips204_ml_dsa": {
+  "status": "verified",
+  "checked_url": "https://csrc.nist.gov/pubs/fips/204/final",
+  "locator": "CSRC page, Date Published",
+  "note": "Source: 'Date Published: August 13, 2024'; history '08/13/24: FIPS 204 (Final)'.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "fips205_slh_dsa": {
+  "status": "verified",
+  "checked_url": "https://csrc.nist.gov/pubs/fips/205/final",
+  "locator": "CSRC page, Date Published",
+  "note": "Source: 'Date Published: August 13, 2024'; history '08/13/24: FIPS 205 (Final)'.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "fips197_aes": {
+  "status": "verified",
+  "checked_url": "https://csrc.nist.gov/pubs/fips/197/final",
+  "locator": "CSRC page, Date Published",
+  "note": "Source: 'November 26, 2001; Updated May 9, 2023'; the 2023 update made no technical changes.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "fips180_4_sha2": {
+  "status": "verified",
+  "checked_url": "https://csrc.nist.gov/pubs/fips/180-4/upd1/final",
+  "locator": "CSRC page, Date Published",
+  "note": "Date August 2015 and final status match. The yaml says the 2012 version is 'withdrawn and superseded'; the page says only 'Supersedes: FIPS 180-4 (03/06/2012)' and carries a 2023 planning note that NIST will revise FIPS 180-4. Drop 'withdrawn'. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "fips202_sha3": {
+  "status": "verified",
+  "checked_url": "https://csrc.nist.gov/pubs/fips/202/final",
+  "locator": "CSRC page, Date Published",
+  "note": "Source: 'Date Published: August 2015'. The page carries a 2025 planning note that NIST will update the publication; the 2015 date stands.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "nistir8547_deprecate_after": {
+  "status": "verified",
+  "checked_url": "https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf",
+  "locator": "Section 4 p. 13 (quote); Table 2 p. 15; Table 4 pp. 16-17",
+  "note": "Year 2030 is right ('NIST will deprecate quantum-vulnerable public-key cryptography after 2030'). Fixes: locator pages (the entry says pp. 13-14, tables are on pp. 15 and 16-17); and the assumptions say 'EdDSA ... at 112 bits or more' but Table 2 gives EdDSA >= 128 bits (ECDSA and RSA >= 112). Final dated October 2026, approved 2026-10-21. Also note for downstream use: the final restates earlier federal deadlines for high-value systems (31 Dec 2030 key establishment, 31 Dec 2031 signatures). | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "nistir8547_disallow_after": {
+  "status": "verified",
+  "checked_url": "https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf",
+  "locator": "Section 4 p. 13; Table 2 p. 15; Table 4 pp. 16-17",
+  "note": "Year 2035 is right. Fix the locator pages as for the deprecate entry; the verbatim 'disallow its use under NIST standards and guidelines after 2035' is on p. 17 (key establishment), p. 13 reads 'disallow use under ...'. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "google2026_physical_qubits_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2603.28846",
+  "locator": "Abstract p. 1; Sec. I p. 4; Sec. II.B p. 8",
+  "note": "Source: 'fewer than half a million physical qubits' (abstract, p. 4, p. 8, p. 42); no exact count in pp. 1-17, 42-43, 54-58. Value 500000 is an upper bound and the units say so. Minor: 'yoked storage' is the entry's wording; the paper says storage 'protected by yokes'. Surface code, planar degree-four, p=1e-3, reaction time 10 us (p. 8) supported. | OPEN: the assumptions text still lists '1 us rounds' as an assumption of the half-million bound; the paper's 1 us rounds is only an illustration (Sec. II.B p. 9). Reword: planar surface-code variants, storage protected by 'yokes', 1e-3, 10 us reaction time. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above. | ROUND 2: the also_published_as text states the PRX Quantum identity as fact; it is a metadata match (Crossref/OpenAlex/Google Research), not a registered link; the APS page was not readable. Reword consistently with the four new google2026 ids.",
+  "method": "fact-checker subagent read the primary page/PDF; reviewer re-read the first page of the PDF (pdftotext); edit re-read by reviewer"
+ },
+ "google2026_runtime_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2603.28846",
+  "locator": "Sec. II.B p. 8 (not Introduction)",
+  "note": "Quote verified: '70 or 90 million Toffoli gates can be resolved in 18 or 23 minutes on a superconducting CRQC' (10 us reaction time, 50% overhead per Toffoli; pairing 70M-18, 90M-23 consistent with the circuit sizes). Fix the locator: Sec. II.B p. 8, not Introduction. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above. | ROUND 2: the also_published_as text states the PRX Quantum identity as fact; it is a metadata match (Crossref/OpenAlex/Google Research), not a registered link; the APS page was not readable. Reword consistently with the four new google2026 ids.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "google2026_physical_error_rate": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2603.28846",
+  "locator": "Abstract p. 1",
+  "note": "Source: '10^-3 physical error rates and planar connectivity'; yaml 0.001. | ROUND 2: the also_published_as text states the PRX Quantum identity as fact; it is a metadata match (Crossref/OpenAlex/Google Research), not a registered link; the APS page was not readable. Reword consistently with the four new google2026 ids.",
+  "method": "fact-checker subagent read the primary page/PDF; reviewer re-read the first page of the PDF (pdftotext)"
+ },
+ "google2026_cycle_time": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2603.28846",
+  "locator": "Sec. II.B p. 9 (not Introduction)",
+  "note": "The only '1 microsecond' text is 'In a fast-clock architecture with 1 microsecond error correction rounds, this implies allocating 25,000 physical qubits to magic production': an illustration for magic-state production, not stated as the assumption behind the half-million qubits or the 18/23 minutes (those are 'reaction-limited', reaction time 10 us). The value 1e-6 s is quoted correctly; the claim that it is the paper's cycle-time assumption is not supported, and the locator is wrong. A runtime feed that needs an equal cycle time must not rest on this entry. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above. | ROUND 2: the also_published_as text states the PRX Quantum identity as fact; it is a metadata match (Crossref/OpenAlex/Google Research), not a registered link; the APS page was not readable. Reword consistently with the four new google2026 ids.",
+  "method": "fact-checker subagent read the primary page/PDF; edit re-read by reviewer"
+ },
+ "ionq2026_physical_qubits_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2609.05625",
+  "locator": "Abstract p. 1; Tables II/III p. 21; Eq. E22 p. 62",
+  "note": "Source: '25.7 days using 19,397 physical qubits' (abstract; E22 sums to 19,397). Fixes to the assumptions text: 'logical CNOT about 90 ms' is the naive baseline of the earlier architecture (p. 5), not a parameter of this design (final CCZ injection about 29.5 ms); two-qubit error 1e-4 (p. 5) and qLDPC codes are supported. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; reviewer re-read the first page of the PDF (pdftotext); edit re-read by reviewer"
+ },
+ "ionq2026_runtime_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2609.05625",
+  "locator": "Abstract p. 1; Eq. E23 p. 63",
+  "note": "Source: 'approximately 25.7 days' (2,219,600 s). Fix the assumptions: the 63% success probability is the heuristic-based estimate (p. 7); the rigorous lower bound gives 40.7%; logical failure per attempt about 26%. | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the primary page/PDF; reviewer re-read the first page of the PDF (pdftotext); edit re-read by reviewer"
+ },
+ "g2025_physical_error_rate": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Abstract p. 1; Sec. 3.2 p. 20",
+  "note": "Source: 'a uniform gate error rate of 0.1%'; yaml 0.001.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "g2025_cycle_time": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Abstract p. 1; Sec. 3.2 p. 20",
+  "note": "Source: 'a surface code cycle time of 1 microsecond' (and a 10 us reaction time); yaml 1e-6 seconds.",
+  "method": "fact-checker subagent read the primary page/PDF"
+ },
+ "hw_2024_tianyan_504": {
+  "status": "verified",
+  "checked_url": "https://english.news.cn/20240425/a95b3c190a59486886f4cddc0def31cd/c.html",
+  "locator": "Xinhua 25 Apr 2024 paragraph 1; China Daily 26 Apr 2024; Xinhua dateline 5 Dec 2024",
+  "note": "Value verified: 'delivered a 504-qubit superconducting quantum computing chip to QuantumCTek' (Xiaohong chip, Tianyan-504 system). Three wording fixes: (1) the system launch was 5 Dec 2024 (dateline), not '5-6 Dec' (6 Dec is the URL date); (2) 'expected to match' is not verbatim: April says gate fidelity, qubit lifetime and circuit depth 'are expected to reach the chip performance levels of' IBM-class platforms, December says it 'promises to match the performance of'; (3) the pages never say gate-model/universal/programmable; the April pages call the chip mainly a testbed for a kilo-qubit measurement and control system, so 'gate-model' is an inference from the gate-fidelity and circuit-depth indicators and must be stated as inferred. No numeric gate fidelity, coherence or circuit appears on any page. No larger gate-model device unveiled in 2024 found (secondary sources only; Pasqal 1,110 atoms and Caltech 6,100 atoms are gate-less arrays). | RE-VERIFIED after builder's edit: reviewer re-read the corrected yaml text against the quotes above.",
+  "method": "fact-checker subagent read the three Xinhua / China Daily pages; edit re-read by reviewer"
+ },
+ "sp800_131a": {
+  "status": "verified",
+  "checked_url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf",
+  "locator": "Section 1.2.1 p. 2; Table 2 p. 9 and RSA/ECDSA text p. 10; Table 4 p. 13; Table 5 p. 15; Table 8 and text pp. 18-19",
+  "note": "VERIFIED: the 112-bit minimum (1.2.1, p. 2 verbatim); RSA len(n) < 2048 is Disallowed for signature generation (Table 2) and for key establishment/transport (Table 5; no legacy row there), legacy use only for signature verification of 1024 <= len(n) < 2048; Rev. 2 is March 2019 final; Rev. 3 is an initial public draft of 21 Oct 2024 (no final found as of 2026-11-08, search only). WRONG in the entry: (1) 'and for all other applications': SHA-1 is disallowed only for digital signature generation (except where NIST protocol-specific guidance allows it), legacy use for verification, and ACCEPTABLE for non-digital-signature applications that do not require collision resistance (Table 8 and text, pp. 18-19); (2) 'ECC threshold ... not printed as such': Rev. 2 prints it: Table 2 (p. 9) and p. 10 'the length of n shall be at least 224 bits' (ECDSA/EdDSA, 1/2-of-n rule), Table 4 (p. 13) EC DH/MQV len(n) < 224 Disallowed; consistent with SP 800-57 Pt 1 Rev. 5 Table 2 (112 bits <-> f = 224-255). Locators: 1.2.1 not 1.2; RSA paragraph is p. 10. SP 800-57 Pt 1 Rev. 5 Table 3 (p. 56) and footnote 74 put SHA-1 at <= 80 bits for collision-resistance uses, which is the real basis for treating SHA-1 as breakable now. | RE-VERIFIED after builder's rewrite: reviewer re-read the new yaml text against the quotes above (SHA-1 sentence, 224 printed, locators).",
+  "method": "fact-checker subagent read the Rev. 2 PDF pages as images (pp. 1-27) and SP 800-57 Pt 1 Rev. 5 Table 2/3; edit re-read by reviewer"
+ },
+ "sp800_57_pt1r5_sha1_collision": {
+  "status": "verified",
+  "checked_url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf",
+  "locator": "Table 3 (printed p. 56), row '<= 80', column 'Digital Signatures and Other Applications Requiring Collision Resistance': SHA-1 (footnote 74)",
+  "note": "Reviewer read the PDF text (pdftotext). Cover: SP 800-57 Part 1 Revision 5, May 2020. Table 3 'Maximum security strengths for hash and hash-based functions': row '<= 80' lists SHA-1 (footnote 74) in the collision-resistance column; the HMAC/KMAC/KDF/RBG column lists SHA-1 under 128 bits. Footnote 74: 'SHA-1 has been demonstrated to provide less than 80 bits of security for digital signatures, which require collision resistance. At the publication of this Recommendation, the security strength against digital signature collisions remains the subject of speculation.' Value 80 = the table's upper bound; yaml matches. The entry's remark that the HMAC/KDF/RBG column gives SHA-1 no such limit is right (it gives 128).",
+  "method": "reviewer read the PDF text with pdftotext; the table and footnote 74 had also been read by the fact-checker subagent"
+ },
+ "g2025_cold_storage_physical_per_logical": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2 p. 18; Figure 6 p. 19",
+  "note": "Quote: 'yoking with a 2D parity check code reaches a logical error rate of 10^-15 when using 430 physical qubits per logical qubit. So cold logical qubits will be roughly triple the density of hot logical qubits.' Value 430 matches (1352/430 = 3.14). Figure 6 uses deliberately pessimistic fit parameters (caption, p. 19); the 1e-3 uniform depolarizing noise is stated on p. 20.",
+  "method": "fact-checker subagent read PDF pp. 17-21 as images"
+ },
+ "g2025_cold_logical_qubits_m": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Table 5 n = 2048 row and Section 3.2, p. 18",
+  "note": "Quote: 'The m = 1280 input logical qubits are in cold storage, and so cover 1280 * 430 = 550400 physical qubits.' Table 5 n = 2048: m = 1280; Figure 7 (p. 21) labels 1280 cold logical qubits.",
+  "method": "fact-checker subagent read PDF pp. 17-21 as images"
+ },
+ "g2025_max_algorithmic_logical_qubits": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2 p. 18 (Table 4 loop4 row)",
+  "note": "VERIFIED AS A QUOTE: 'the maximum logical qubit count occurs during loop4 when there are m + 3f + 2l + len m = 1409 logical qubits active ... The remaining 3f + 2l + len m = 131 logical qubits are in hot storage, and so cover 131 * 1352 = 177112 physical qubits.' FLAG, the paper is internally inconsistent: Table 5 (p. 18) n = 2048 row prints 1399 in its Qubits column; 1280 + 131 = 1411, not 1409; the printed formula with the stated parameters gives 3f + 2l + len m = 152, not 131 (131 matches 3f + l + len m). The paper's own downstream numbers use 131 (177112; 1537 total logical qubits). So 1409 is the paper's text, not a settled count: anything built on it (the cold fraction 1280/1409 in physical model v2) inherits a +-1% ambiguity (1399, 1409, 1411).",
+  "method": "fact-checker subagent read PDF pp. 17-21 as images"
+ },
+ "g2025_compute_region_hot_patches": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2, pp. 18-20",
+  "note": "Quote: 'the compute region will use a 7x18 region of hot patches (170352 physical qubits). This is enough for six magic state factories, each covering a 3x4 area of hot patches, as well as three columns of workspace.' The value 126 is DERIVED (7 * 18; 126 * 1352 = 170352), not printed. Cultivation followed by 8T-to-CCZ distillation and d = 25 confirmed on p. 18. Figure 7 shows 195K for hot storage = 8x18 patches (a rounded mock-up, 144 patches) against 131 in the text.",
+  "method": "fact-checker subagent read PDF pp. 17-21 as images"
+ },
+ "g2025_target_logical_error_per_round": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2 p. 18",
+  "note": "Quote: 'Choosing a target logical error rate of 10^-15 per logical qubit round'; 1600 * 12 * 60 * 60 * 10^6 = 6.9e13 logical qubit rounds (1600 is the paper's rounded-up bound, 12 h rounded from 12.07 h).",
+  "method": "fact-checker subagent read PDF pp. 17-21 as images"
+ },
+ "google2026_logical_qubits_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/abs/2603.28846",
+  "locator": "Abstract (PDF page 1)",
+  "note": "Value 1200, bound upper. Numbers and bound direction VERIFIED in the abstract of arXiv 2603.28846 v1 and v2 (PDF page 1 prints 'either <= 1200 logical qubits and <= 90 million Toffoli gates or <= 1450 logical qubits and <= 70 million Toffoli gates', read as page images; the abs-page text and API summary render the same figures with a strict '<'; v1 and v2 abstracts identical; only the v2 change is a ZKP software-bug patch). Locator: no source prints '<=' character for character; quote the PDF abstract with the symbol it shows. IDENTITY with PRX Quantum 7, 031001 (doi 10.1103/j3xf-bw18), published 2026-08-21 per Crossref: UNVERIFIED as a registry assertion (Crossref relation empty, arXiv lists no journal reference, APS page 403), SUPPORTED by metadata: Crossref, OpenAlex and Google Research list the same title, the same nine authors in the same order and the same abstract figures (<=1200 / <=90M / <=1450 / <=70M, 10^-3, planar, fewer than half a million physical qubits); OpenAlex merges the two records. The journal body was not read. The entry should say 'metadata match, no registered link, APS page unreadable' instead of stating identity as fact. | RE-VERIFIED after builder's edit: reviewer re-read the corrected locator (PDF abstract with the real symbols) and the hedged also_published_as text.",
+  "method": "fact-checker subagent read arXiv v1/v2 PDFs as images, the abs page, Crossref, OpenAlex, Semantic Scholar, Google Research and ePrint 2026/625; APS and doi.org returned 403; edit re-read by reviewer"
+ },
+ "google2026_toffoli_ecc256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/abs/2603.28846",
+  "locator": "Abstract (PDF page 1)",
+  "note": "Value 9e7, bound upper. Numbers and bound direction VERIFIED in the abstract of arXiv 2603.28846 v1 and v2 (PDF page 1 prints 'either <= 1200 logical qubits and <= 90 million Toffoli gates or <= 1450 logical qubits and <= 70 million Toffoli gates', read as page images; the abs-page text and API summary render the same figures with a strict '<'; v1 and v2 abstracts identical; only the v2 change is a ZKP software-bug patch). Locator: no source prints '<=' character for character; quote the PDF abstract with the symbol it shows. IDENTITY with PRX Quantum 7, 031001 (doi 10.1103/j3xf-bw18), published 2026-08-21 per Crossref: UNVERIFIED as a registry assertion (Crossref relation empty, arXiv lists no journal reference, APS page 403), SUPPORTED by metadata: Crossref, OpenAlex and Google Research list the same title, the same nine authors in the same order and the same abstract figures (<=1200 / <=90M / <=1450 / <=70M, 10^-3, planar, fewer than half a million physical qubits); OpenAlex merges the two records. The journal body was not read. The entry should say 'metadata match, no registered link, APS page unreadable' instead of stating identity as fact. | RE-VERIFIED after builder's edit: reviewer re-read the corrected locator (PDF abstract with the real symbols) and the hedged also_published_as text.",
+  "method": "fact-checker subagent read arXiv v1/v2 PDFs as images, the abs page, Crossref, OpenAlex, Semantic Scholar, Google Research and ePrint 2026/625; APS and doi.org returned 403; edit re-read by reviewer"
+ },
+ "google2026_logical_qubits_ecc256_alt": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/abs/2603.28846",
+  "locator": "Abstract (PDF page 1)",
+  "note": "Value 1450, bound upper; entry carries no also_published_as (add or omit consistently). Numbers and bound direction VERIFIED in the abstract of arXiv 2603.28846 v1 and v2 (PDF page 1 prints 'either <= 1200 logical qubits and <= 90 million Toffoli gates or <= 1450 logical qubits and <= 70 million Toffoli gates', read as page images; the abs-page text and API summary render the same figures with a strict '<'; v1 and v2 abstracts identical; only the v2 change is a ZKP software-bug patch). Locator: no source prints '<=' character for character; quote the PDF abstract with the symbol it shows. IDENTITY with PRX Quantum 7, 031001 (doi 10.1103/j3xf-bw18), published 2026-08-21 per Crossref: UNVERIFIED as a registry assertion (Crossref relation empty, arXiv lists no journal reference, APS page 403), SUPPORTED by metadata: Crossref, OpenAlex and Google Research list the same title, the same nine authors in the same order and the same abstract figures (<=1200 / <=90M / <=1450 / <=70M, 10^-3, planar, fewer than half a million physical qubits); OpenAlex merges the two records. The journal body was not read. The entry should say 'metadata match, no registered link, APS page unreadable' instead of stating identity as fact. | RE-VERIFIED after builder's edit: reviewer re-read the corrected locator (PDF abstract with the real symbols) and the hedged also_published_as text.",
+  "method": "fact-checker subagent read arXiv v1/v2 PDFs as images, the abs page, Crossref, OpenAlex, Semantic Scholar, Google Research and ePrint 2026/625; APS and doi.org returned 403; edit re-read by reviewer"
+ },
+ "google2026_toffoli_ecc256_alt": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/abs/2603.28846",
+  "locator": "Abstract (PDF page 1)",
+  "note": "Value 7e7, bound upper; entry carries no also_published_as. Numbers and bound direction VERIFIED in the abstract of arXiv 2603.28846 v1 and v2 (PDF page 1 prints 'either <= 1200 logical qubits and <= 90 million Toffoli gates or <= 1450 logical qubits and <= 70 million Toffoli gates', read as page images; the abs-page text and API summary render the same figures with a strict '<'; v1 and v2 abstracts identical; only the v2 change is a ZKP software-bug patch). Locator: no source prints '<=' character for character; quote the PDF abstract with the symbol it shows. IDENTITY with PRX Quantum 7, 031001 (doi 10.1103/j3xf-bw18), published 2026-08-21 per Crossref: UNVERIFIED as a registry assertion (Crossref relation empty, arXiv lists no journal reference, APS page 403), SUPPORTED by metadata: Crossref, OpenAlex and Google Research list the same title, the same nine authors in the same order and the same abstract figures (<=1200 / <=90M / <=1450 / <=70M, 10^-3, planar, fewer than half a million physical qubits); OpenAlex merges the two records. The journal body was not read. The entry should say 'metadata match, no registered link, APS page unreadable' instead of stating identity as fact. | RE-VERIFIED after builder's edit: reviewer re-read the corrected locator (PDF abstract with the real symbols) and the hedged also_published_as text.",
+  "method": "fact-checker subagent read arXiv v1/v2 PDFs as images, the abs page, Crossref, OpenAlex, Semantic Scholar, Google Research and ePrint 2026/625; APS and doi.org returned 403; edit re-read by reviewer"
+ },
+ "chevignard2026_logical_qubits_ecc256": {
+  "status": "verified",
+  "checked_url": "https://eprint.iacr.org/2026/280",
+  "locator": "Abstract of the current ePrint revision",
+  "note": "VERIFIED against the ePrint abstract, current revision (2026-06-04, 'last of 2 revisions', received 2026-02-17): 'For n = 256 we estimate that 1193 qubits would be necessary, with 22 independent runs, ... using 2^{38.98} Toffoli gates each'. Revision note on the ePrint page: 'Correction of another typo in the abstract (swap between numbers for P-224 and P-256).' CONFLICT recorded: the IACR Eurocrypt artifact page (published 2026-07-25, LNCS 16541 pp. 371-401) still shows 'For n = 256 ... 1098 qubits ... 2^{38.10} Toffoli gates each'; 1098 / 2^38.10 is the P-224 pair per the authors' correction note and secondary sources (postquantum.com), not a primary table. NOT READ: the paper body (PDF 403): Tables 5, 6, 8 would settle it. The 22 is the number of independent runs, the Toffoli count is per run (total about 22 x per run). Context-only entry: it feeds no scenario. Peer review inferred from the EUROCRYPT 2026 venue (ePrint: 'A minor revision of an IACR publication in EUROCRYPT 2026').",
+  "method": "fact-checker subagent read the ePrint page, the artifact page and README; the paper PDF could not be opened (403)"
+ },
+ "chevignard2026_toffoli_per_run_ecc256": {
+  "status": "verified",
+  "checked_url": "https://eprint.iacr.org/2026/280",
+  "locator": "Abstract of the current ePrint revision",
+  "note": "VERIFIED against the ePrint abstract, current revision (2026-06-04, 'last of 2 revisions', received 2026-02-17): 'For n = 256 we estimate that 1193 qubits would be necessary, with 22 independent runs, ... using 2^{38.98} Toffoli gates each'. Revision note on the ePrint page: 'Correction of another typo in the abstract (swap between numbers for P-224 and P-256).' CONFLICT recorded: the IACR Eurocrypt artifact page (published 2026-07-25, LNCS 16541 pp. 371-401) still shows 'For n = 256 ... 1098 qubits ... 2^{38.10} Toffoli gates each'; 1098 / 2^38.10 is the P-224 pair per the authors' correction note and secondary sources (postquantum.com), not a primary table. NOT READ: the paper body (PDF 403): Tables 5, 6, 8 would settle it. The 22 is the number of independent runs, the Toffoli count is per run (total about 22 x per run). Context-only entry: it feeds no scenario. Peer review inferred from the EUROCRYPT 2026 venue (ePrint: 'A minor revision of an IACR publication in EUROCRYPT 2026').",
+  "method": "fact-checker subagent read the ePrint page, the artifact page and README; the paper PDF could not be opened (403)"
  }
 }

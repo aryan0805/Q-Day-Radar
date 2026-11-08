@@ -1,0 +1,239 @@
+{
+  "$defs": {
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "attack_target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Attack Target"
+        },
+        "by_scenario": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ScenarioResult"
+          },
+          "title": "By Scenario",
+          "type": "object"
+        },
+        "classically_deprecated": {
+          "title": "Classically Deprecated",
+          "type": "boolean"
+        },
+        "exposure": {
+          "title": "Exposure",
+          "type": "string"
+        },
+        "exposure_weight": {
+          "title": "Exposure Weight",
+          "type": "number"
+        },
+        "family": {
+          "title": "Family",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "key_bits": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Key Bits"
+        },
+        "mapping_note": {
+          "title": "Mapping Note",
+          "type": "string"
+        },
+        "migration_years": {
+          "title": "Migration Years",
+          "type": "number"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "nist_deadline_year": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nist Deadline Year"
+        },
+        "replacement": {
+          "$ref": "#/$defs/Replacement"
+        },
+        "shelf_life_years": {
+          "title": "Shelf Life Years",
+          "type": "number"
+        },
+        "usage": {
+          "title": "Usage",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "algorithm",
+        "family",
+        "usage",
+        "attack_target",
+        "mapping_note",
+        "key_bits",
+        "classically_deprecated",
+        "exposure",
+        "exposure_weight",
+        "shelf_life_years",
+        "migration_years",
+        "replacement",
+        "nist_deadline_year",
+        "by_scenario"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "Replacement": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "standard_id": {
+          "title": "Standard Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "standard_id"
+      ],
+      "title": "Replacement",
+      "type": "object"
+    },
+    "ScenarioResult": {
+      "additionalProperties": false,
+      "properties": {
+        "crqc_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Crqc Basis"
+        },
+        "crqc_year": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Crqc Year"
+        },
+        "margin_years": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Margin Years"
+        },
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "shortfall": {
+          "title": "Shortfall",
+          "type": "number"
+        }
+      },
+      "required": [
+        "crqc_year",
+        "crqc_basis",
+        "margin_years",
+        "shortfall",
+        "rank"
+      ],
+      "title": "ScenarioResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "title": "As Of",
+      "type": "string"
+    },
+    "as_of_year": {
+      "title": "As Of Year",
+      "type": "integer"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/Asset"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "crqc_label": {
+      "title": "Crqc Label",
+      "type": "string"
+    },
+    "family_order": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Family Order",
+      "type": "object"
+    },
+    "scenarios": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    }
+  },
+  "required": [
+    "as_of",
+    "as_of_year",
+    "scenarios",
+    "crqc_label",
+    "family_order",
+    "assets"
+  ],
+  "title": "Inventory",
+  "type": "object"
+}

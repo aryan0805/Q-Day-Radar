@@ -1,0 +1,177 @@
+{
+  "$defs": {
+    "HardwareEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "chance_baseline": {
+          "title": "Chance Baseline",
+          "type": "number"
+        },
+        "config": {
+          "title": "Config",
+          "type": "string"
+        },
+        "drift_beyond_shot_noise": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Drift Beyond Shot Noise"
+        },
+        "m3_success_probability_mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "M3 Success Probability Mean"
+        },
+        "normalized_score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Normalized Score"
+        },
+        "predicted_success": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Predicted Success"
+        },
+        "predicted_vs_chance": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Predicted Vs Chance"
+        },
+        "repeat_spread": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Repeat Spread"
+        },
+        "shots_pooled": {
+          "title": "Shots Pooled",
+          "type": "integer"
+        },
+        "success_probability": {
+          "title": "Success Probability",
+          "type": "number"
+        },
+        "theoretical_success": {
+          "title": "Theoretical Success",
+          "type": "number"
+        },
+        "wilson_95": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Wilson 95",
+          "type": "array"
+        }
+      },
+      "required": [
+        "config",
+        "shots_pooled",
+        "success_probability",
+        "wilson_95",
+        "normalized_score",
+        "chance_baseline",
+        "theoretical_success",
+        "predicted_success",
+        "predicted_vs_chance",
+        "repeat_spread",
+        "drift_beyond_shot_noise",
+        "m3_success_probability_mean"
+      ],
+      "title": "HardwareEntry",
+      "type": "object"
+    },
+    "LabCircuit": {
+      "additionalProperties": false,
+      "properties": {
+        "hardware": {
+          "items": {
+            "$ref": "#/$defs/HardwareEntry"
+          },
+          "title": "Hardware",
+          "type": "array"
+        },
+        "ideal": {
+          "additionalProperties": true,
+          "title": "Ideal",
+          "type": "object"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "noisy": {
+          "additionalProperties": true,
+          "title": "Noisy",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "ideal",
+        "noisy",
+        "hardware"
+      ],
+      "title": "LabCircuit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "circuits": {
+      "items": {
+        "$ref": "#/$defs/LabCircuit"
+      },
+      "title": "Circuits",
+      "type": "array"
+    },
+    "hardware_batch": {
+      "title": "Hardware Batch",
+      "type": "string"
+    }
+  },
+  "required": [
+    "hardware_batch",
+    "circuits"
+  ],
+  "title": "LabFile",
+  "type": "object"
+}

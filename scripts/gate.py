@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import subprocess
 import sys
@@ -724,6 +725,410 @@ def p3_strict(expr: str) -> Callable[[], tuple[bool, str]]:
     return pytest_selects(expr, path="tests/phase3", strict=True)
 
 
+# ---------- phase 4: risk engine ----------
+
+P4_CBOM = ROOT / "quantum" / "risk" / "data" / "demo_cbom.cdx.json"
+P4_TIMELINE = ROOT / "results" / "risk" / "timeline.json"
+P4_WEB = ROOT / "web" / "public" / "data"
+P4_FAMILY_TARGET = {
+    "RSA": "rsa2048",
+    "ECC": "ecc256",
+    "AES": "aes128",
+    "SHA": "aes128",
+    "ML-KEM": None,
+    "ML-DSA": None,
+    "SLH-DSA": None,
+}
+P4_DOUBLING = {"optimistic": 0, "median": None, "pessimistic": 1}  # index into ci95, None = point
+P4_YEAR_S = 365.25 * 86400
+P4_UNIT_S = {
+    "second": 1.0,
+    "seconds": 1.0,
+    "s": 1.0,
+    "minute": 60.0,
+    "minutes": 60.0,
+    "hour": 3600.0,
+    "hours": 3600.0,
+    "day": 86400.0,
+    "days": 86400.0,
+}
+P4_QEC_FAMILY = "surface_code_planar"  # every Phase 3 scenario
+P4_MAX_SURVEY_GAP = 10.0
+P4_REL = 1e-6
+
+
+def _close(a, b, rel: float = P4_REL) -> bool:
+    if a is None or b is None:
+        return a is None and b is None
+    return abs(a - b) <= rel * max(1.0, abs(a), abs(b))
+
+
+def _p4_lit() -> dict[str, dict]:
+    return {e.get("id"): e for e in _p3_literature()}
+
+
+def p4_cbom() -> tuple[bool, str]:
+    if not P4_CBOM.exists():
+        return False, f"{P4_CBOM.relative_to(ROOT)} missing"
+    text = P4_CBOM.read_text()
+    problems = []
+    try:
+        from cyclonedx.schema import SchemaVersion
+        from cyclonedx.validation.json import JsonStrictValidator
+
+        err = JsonStrictValidator(SchemaVersion.V1_6).validate_str(text)
+        if err:
+            problems.append(f"CycloneDX 1.6 schema: {str(err)[:120]}")
+    except Exception as exc:  # noqa: BLE001
+        problems.append(f"schema validation unavailable: {exc}")
+    bom = json.loads(text)
+    if bom.get("specVersion") != "1.6":
+        problems.append(f"specVersion {bom.get('specVersion')}")
+    comps = [c for c in bom.get("components", []) if c.get("type") == "cryptographic-asset"]
+    if not 35 <= len(comps) <= 50:
+        problems.append(f"{len(comps)} cryptographic assets, need 35-50")
+    meta = {p.get("name"): p.get("value") for p in bom.get("metadata", {}).get("properties", [])}
+    if meta.get("qday:fictional") != "true":
+        problems.append("metadata property qday:fictional != 'true'")
+    try:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from quantum.risk.models import dump_cbom, parse_cbom
+
+        if json.loads(dump_cbom(parse_cbom(text))) != bom:
+            problems.append("round-trip through quantum.risk.models changes the CBOM")
+    except Exception as exc:  # noqa: BLE001
+        problems.append(f"round-trip: {type(exc).__name__}: {exc}")
+    return not problems, "; ".join(problems[:5]) or f"{len(comps)} assets, valid 1.6, round-trips"
+
+
+def _p4_fit(points: list[dict]) -> tuple[float, list]:
+    from scipy import stats
+
+    xs = [p["year"] for p in points]
+    ys = [math.log2(p["qubits"]) for p in points]
+    n = len(xs)
+    mx, my = sum(xs) / n, sum(ys) / n
+    sxx = sum((x - mx) ** 2 for x in xs)
+    b = sum((x - mx) * (y - my) for x, y in zip(xs, ys, strict=True)) / sxx
+    a = my - b * mx
+    ssr = sum((y - (a + b * x)) ** 2 for x, y in zip(xs, ys, strict=True))
+    se = math.sqrt(ssr / (n - 2) / sxx)
+    t = stats.t.ppf(0.975, n - 2)
+    ci = [1 / (b + t * se), 1 / (b - t * se) if b - t * se > 0 else None]
+    return 1 / b, ci
+
+
+def _p4_frontier(points: list[dict]) -> list[dict]:
+    """Record so far: for each year, the largest device announced up to that year."""
+    out, best = [], 0
+    for p in sorted(points, key=lambda p: (p["year"], p["qubits"])):
+        best = max(best, p["qubits"])
+        if out and out[-1]["year"] == p["year"]:
+            out[-1] = {"year": p["year"], "qubits": best}
+        else:
+            out.append({"year": p["year"], "qubits": best})
+    return out
+
+
+def _p4_expected(t: str, sc: str, model: dict, lit: dict, scen: dict) -> dict:
+    """min(model, every applicable paper feed) for qubits and runtime: (value, source, bound)."""
+    p_sc = scen["physical_error_rate"]
+    best = {
+        "physical_qubits": (model["physical_qubits"], "model", None),
+        "runtime_seconds": (model["runtime_seconds"], "model", None),
+    }
+    for eid, e in sorted(lit.items(), key=lambda kv: str(kv[0])):
+        f = e.get("feeds") or {}
+        if f.get("target") != t or f.get("qec_family") != P4_QEC_FAMILY:
+            continue
+        if f.get("kind") != "physical_qubits":
+            raise ValueError(f"{eid}: feeds kind {f.get('kind')!r}; only physical_qubits may feed")
+        if p_sc > f["physical_error_rate"]:
+            continue
+        key, val = "physical_qubits", float(e["value"])
+        if val < best[key][0]:
+            best[key] = (val, eid, f.get("bound"))
+    return best
+
+
+def p4_timeline() -> tuple[bool, str]:
+    if not P4_TIMELINE.exists():
+        return False, "results/risk/timeline.json missing"
+    tl, lit = _load(P4_TIMELINE), _p4_lit()
+    est_all = _load(P3_EST / "scenarios.json")
+    est, scen = est_all["targets"], est_all["scenarios"]
+    problems = []
+    pts = tl.get("points", [])
+    if len(pts) < 6:
+        problems.append(f"{len(pts)} timeline points, need 6")
+    for p in pts:
+        e = lit.get(p.get("literature_id"))
+        if not e or e.get("target") != "timeline":
+            problems.append(f"point {p.get('literature_id')}: no timeline literature entry")
+        elif not (_close(float(e.get("value")), p["qubits"]) and e.get("year") == p["year"]):
+            problems.append(f"point {p['literature_id']} != literature value/year")
+    if len(pts) >= 3:
+        frontier = _p4_frontier(pts)
+        d, ci = _p4_fit(frontier)
+        fit = tl.get("fit", {})
+        if not (
+            _close(fit.get("doubling_years"), d)
+            and all(_close(x, y) for x, y in zip(fit.get("ci95", [None, None]), ci, strict=False))
+        ):
+            problems.append(
+                f"fit {fit.get('doubling_years')} {fit.get('ci95')} != "
+                f"recomputed on the frontier {d:.6g} {ci}"
+            )
+        if (fit.get("holdout") or {}).get("rel_error") is None:
+            problems.append("no holdout")
+        record = frontier[-1]
+        base = tl.get("baseline", {})
+        if base.get("qubits") != record["qubits"]:
+            problems.append(f"baseline {base.get('qubits')} is not the record {record['qubits']}")
+        cap, as_of = tl.get("runtime_cap_years"), tl.get("as_of_year")
+        crqc_by: dict[str, dict] = {}
+        for sc, idx in P4_DOUBLING.items():
+            s = tl.get("scenarios", {}).get(sc, {})
+            want_d = d if idx is None else ci[idx]
+            if not _close(s.get("doubling_years"), want_d):
+                problems.append(f"{sc}: doubling {s.get('doubling_years')} != {want_d}")
+            for t in P3_TARGETS:
+                r = s.get("targets", {}).get(t)
+                if not r:
+                    problems.append(f"{sc}/{t} missing")
+                    continue
+                want = _p4_expected(t, sc, est[t]["by_scenario"][sc], lit, scen[sc])
+                for key in ("physical_qubits", "runtime_seconds"):
+                    val, src, bound = want[key]
+                    src_key = "physical_source" if key == "physical_qubits" else "runtime_source"
+                    if not _close(r.get(key), val) or r.get(src_key) != src:
+                        problems.append(
+                            f"{sc}/{t}: {key} {r.get(key)} from {r.get(src_key)} "
+                            f"!= min rule {val:.4g} from {src}"
+                        )
+                    if key == "physical_qubits" and r.get("physical_bound") != bound:
+                        problems.append(
+                            f"{sc}/{t}: physical_bound {r.get('physical_bound')} != {bound}"
+                        )
+                P, R = want["physical_qubits"][0], want["runtime_seconds"][0]
+                feasible = R / P4_YEAR_S <= cap
+                doublings = max(0.0, math.log2(P / record["qubits"]))
+                crqc = as_of + want_d * doublings if feasible and want_d else None
+                crqc_by.setdefault(t, {})[sc] = crqc
+                if r.get("feasible") != feasible or not _close(r.get("crqc_year"), crqc):
+                    problems.append(f"{sc}/{t}: crqc_year {r.get('crqc_year')} != {crqc}")
+        for t, by in crqc_by.items():
+            seq = [math.inf if by.get(sc) is None else by[sc] for sc in P4_DOUBLING]
+            if seq != sorted(seq):
+                problems.append(f"{t}: crqc not ordered optimistic <= median <= pessimistic {seq}")
+    sv = tl.get("survey_check") or {}
+    if sv.get("literature_id") not in lit:
+        problems.append("survey_check has no literature entry")
+    elif (
+        abs(sv.get("delta_years", 1e9)) > P4_MAX_SURVEY_GAP
+        and "survey_check" not in (ROOT / "docs" / "DECISIONS.md").read_text()
+    ):
+        problems.append(f"survey gap {sv.get('delta_years')} y not explained in DECISIONS.md")
+    return not problems, "; ".join(problems[:5]) or (
+        f"{len(pts)} points, doubling {tl['fit']['doubling_years']:.3g} y recomputed, "
+        "every crqc_year matches"
+    )
+
+
+def _p4_deprecated(a: dict) -> bool:
+    """Classical security below 112 bits (SP 800-131A Rev. 2; SHA-1 via SP 800-57 Pt 1 Table 3).
+
+    Plain SHA-1 counts only where collision resistance matters (signature or hash use);
+    HMAC/KDF uses of SHA-1 stay acceptable per SP 800-131A, and are a different algorithm string.
+    """
+    bits, fam = a.get("key_bits"), a.get("family")
+    if a.get("algorithm") == "SHA-1":
+        return a.get("usage") in ("signature", "hash")
+    if bits is None:
+        return False
+    return (fam == "RSA" and bits < 2048) or (fam == "ECC" and bits < 224)
+
+
+P4_V2_TOL = 1.5  # fixed at task 15, before BUILD
+P4_V2_CONSISTENCY = "g2025_physical_qubits_rsa2048"  # two-sided: within 1.5x
+P4_V2_HOLDOUT = "google2026_physical_qubits_ecc256"  # one-sided: <= 1.5x the stated bound
+
+
+def p4_phase3_still_holds() -> tuple[bool, str]:
+    """Phase 3's data checks (not its test run, which gate 4's full suite covers)."""
+    fns = [
+        p3_env,
+        p3_literature_checked,
+        p3_qdk_complete,
+        p3_toffoli_equiv_consistent,
+        p3_crosscheck,
+        p3_scaling,
+        p3_calibration,
+        p3_scenarios,
+        p3_no_large_files,
+    ]
+    bad = []
+    for fn in fns:
+        ok, detail = fn()
+        if not ok:
+            bad.append(f"{fn.__name__}: {detail[:80]}")
+    return not bad, "; ".join(bad) or f"{len(fns)} phase 3 data checks pass"
+
+
+P4_V2_REGISTERED = {"code_distance": 25, "hot_patch_qubits": 1352,
+                    "cold_fraction": 1280 / 1409, "compute_region_qubits": 170352.0}
+
+
+def p4_physical_v2() -> tuple[bool, str]:
+    """Human decision (2026-11-08): v2 failed its holdout; the gate checks that the result is
+    recorded truthfully, the registered parameters were not changed, and no scenario adopts v2."""
+    rows = _load(P3_EST / "calibration.json").get("comparisons", [])
+    lit = _p4_lit()
+    problems, msg = [], []
+    for lid, two_sided in ((P4_V2_CONSISTENCY, True), (P4_V2_HOLDOUT, False)):
+        hit = [r for r in rows if r.get("estimator") == "physical_v2"
+               and r.get("quantity") == "physical_qubits" and r.get("literature_id") == lid]
+        if len(hit) != 1 or lid not in lit:
+            problems.append(f"{lid}: {len(hit)} physical_v2 rows")
+            continue
+        r = hit[0]
+        ratio = float(r["ours"]) / float(lit[lid]["value"])  # recomputed, not read
+        within = (1 / P4_V2_TOL <= ratio <= P4_V2_TOL) if two_sided else ratio <= P4_V2_TOL
+        if (r.get("tolerance") or {}).get("within") is not within:
+            problems.append(f"{lid}: row says within={r.get('tolerance', {}).get('within')}, "
+                            f"recomputed {within} ({ratio:.4g}x)")
+        for k, v in P4_V2_REGISTERED.items():
+            if not _close((r.get("v2") or {}).get(k), v):
+                problems.append(f"{lid}: v2.{k} {(r.get('v2') or {}).get(k)} != registered {v}")
+        msg.append(f"{lid} {ratio:.3g}x {'pass' if within else 'FAIL'}")
+        v2_value = float(r["ours"])
+        est = _load(P3_EST / "scenarios.json")["targets"][r.get("target", "")]["by_scenario"]
+        if any(_close(s["physical_qubits"], v2_value) for s in est.values()):
+            problems.append(f"{lid}: a scenario uses the v2 value, but v2 failed its holdout")
+    return not problems, "; ".join(problems) or (
+        "recorded truthfully, registered parameters unchanged, not adopted: " + ", ".join(msg))
+
+
+def p4_ecc_inputs_current() -> tuple[bool, str]:
+    src = _load(P3_EST / "scenarios.json")["targets"]["ecc256"]["logical_source"]
+    lit, fc = _p4_lit(), (_load(P3_FACTCHECK) if P3_FACTCHECK.exists() else {})
+    ids = src.get("literature_ids", [])
+    problems = [
+        f"{i}: not a verified literature entry"
+        for i in ids
+        if i not in lit or fc.get(i, {}).get("status") != "verified"
+    ]
+    problems += [
+        f"{i}: superseded by {lit[i]['superseded_by']}"
+        for i in ids
+        if i in lit and lit[i].get("superseded_by")
+    ]
+    if not src.get("history"):
+        problems.append("logical_source.history (Roetteler 2017) missing")
+    return not problems, "; ".join(problems) or f"ECC-256 logical counts from {ids}"
+
+
+def p4_inventory() -> tuple[bool, str]:
+    path = P4_WEB / "inventory.json"
+    if not path.exists() or not P4_TIMELINE.exists():
+        return False, "inventory.json or timeline.json missing"
+    import yaml
+
+    inv, tl, lit = _load(path), _load(P4_TIMELINE), _p4_lit()
+    weights = yaml.safe_load((ROOT / "quantum" / "risk" / "exposure.yaml").read_text())
+    weights = weights.get("weights", weights)
+    fc = _load(P3_FACTCHECK) if P3_FACTCHECK.exists() else {}
+    problems, assets = [], inv.get("assets", [])
+    cbom_ids = {
+        c.get("bom-ref")
+        for c in json.loads(P4_CBOM.read_text()).get("components", [])
+        if c.get("type") == "cryptographic-asset"
+    }
+    if {a.get("id") for a in assets} != cbom_ids:
+        problems.append("inventory asset ids != CBOM cryptographic-asset bom-refs")
+    as_of = inv.get("as_of_year")
+    for a in assets:
+        fam = a.get("family")
+        if fam not in P4_FAMILY_TARGET or a.get("attack_target") != P4_FAMILY_TARGET[fam]:
+            problems.append(f"{a.get('id')}: family {fam} -> {a.get('attack_target')}")
+        if not _close(a.get("exposure_weight"), float(weights.get(a.get("exposure"), -1))):
+            problems.append(f"{a.get('id')}: exposure_weight != exposure.yaml")
+        if P4_FAMILY_TARGET.get(fam) and not isinstance(a.get("key_bits"), int):
+            problems.append(f"{a.get('id')}: key_bits missing")
+        sid = (a.get("replacement") or {}).get("standard_id")
+        if sid not in lit or fc.get(sid, {}).get("status") != "verified":
+            problems.append(f"{a.get('id')}: replacement standard {sid!r} not verified")
+    for sc in inv.get("scenarios", []):
+        targets = tl["scenarios"][sc]["targets"]
+        want = {}
+        for a in assets:
+            t = a.get("attack_target")
+            crqc = as_of if _p4_deprecated(a) else (targets[t]["crqc_year"] if t else None)
+            margin = (
+                None
+                if crqc is None
+                else crqc - as_of - (a["shelf_life_years"] + a["migration_years"])
+            )
+            short = a["exposure_weight"] * max(0.0, -margin) if margin is not None else 0.0
+            want[a["id"]] = (crqc, margin, short)
+            got = a["by_scenario"][sc]
+            for k, v in zip(("crqc_year", "margin_years", "shortfall"), want[a["id"]], strict=True):
+                if not _close(got.get(k), v):
+                    problems.append(f"{a['id']}/{sc}: {k} {got.get(k)} != {v}")
+        order = sorted(
+            want, key=lambda i: (-want[i][2], math.inf if want[i][1] is None else want[i][1], i)
+        )
+        for rank, i in enumerate(order, 1):
+            got = next(x for x in assets if x["id"] == i)["by_scenario"][sc].get("rank")
+            if got != rank:
+                problems.append(f"{i}/{sc}: rank {got} != {rank}")
+
+        def _fam_year(f: str, targets: dict = targets) -> float:
+            t = P4_FAMILY_TARGET[f]
+            y = targets[t]["crqc_year"] if t else None
+            return math.inf if y is None else y
+
+        fams = sorted(
+            {a["family"] for a in assets if a["family"] in P4_FAMILY_TARGET},
+            key=lambda f: (_fam_year(f), f),
+        )
+        if inv.get("family_order", {}).get(sc) != fams:
+            problems.append(f"{sc}: family_order {inv.get('family_order', {}).get(sc)} != {fams}")
+    order_msg = ", ".join(
+        f"{s}: {' > '.join(inv.get('family_order', {}).get(s, [])[:3])}"
+        for s in inv.get("scenarios", [])
+    )
+    return not problems, "; ".join(problems[:5]) or f"{len(assets)} assets recomputed; {order_msg}"
+
+
+def p4_web_schemas() -> tuple[bool, str]:
+    files = sorted(P4_WEB.glob("*.json")) if P4_WEB.exists() else []
+    if not files:
+        return False, "no web/public/data/*.json"
+    from jsonschema import validators
+
+    problems = []
+    for f in files:
+        if f.stat().st_size > P3_MAX_FILE_BYTES:
+            problems.append(f"{f.name} over 5 MB")
+        sch = P4_WEB / "schema" / f"{f.stem}.schema.json"
+        if not sch.exists():
+            problems.append(f"{f.name}: no schema")
+            continue
+        schema = _load(sch)
+        cls = validators.validator_for(schema)
+        cls.check_schema(schema)
+        errs = sorted(cls(schema).iter_errors(_load(f)), key=lambda e: list(e.path))
+        if errs:
+            problems.append(f"{f.name}: {errs[0].message[:80]}")
+    return not problems, "; ".join(problems[:5]) or f"{len(files)} data files valid against schemas"
+
+
+def p4_strict(expr: str) -> Callable[[], tuple[bool, str]]:
+    return pytest_selects(expr, path="tests/phase4", strict=True)
+
+
 # ---------- checks ----------
 
 REGRESSION: list[Check] = [
@@ -804,7 +1209,41 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("crosscheck tests pass (no xfail/skip)", p3_strict("crosscheck")),
         Py("phase 3 honesty audit written", file_exists("tests/phase3/AUDIT.md")),
     ],
-    4: [Py("phase 4 tests exist", has_tests(4))],
+    4: [
+        Py("phase 4 tests exist", has_tests(4)),
+        Py("every literature number has a URL and is fact-checked", p3_literature_checked),
+        Py("demo CBOM: valid CycloneDX 1.6, 35-50 assets, fictional, round-trips", p4_cbom),
+        Py("timeline refit, holdout, crqc_year recomputed", p4_timeline),
+        Py("margins, ranks, family order recomputed; replacements verified", p4_inventory),
+        Py("web data files valid against their schemas, <= 5 MB", p4_web_schemas),
+        Py(
+            "ECC-256 inputs are the newest verified estimate (Roetteler as history)",
+            p4_ecc_inputs_current,
+        ),
+        Py(
+            "v2 recorded truthfully (holdout FAILED, not tuned, not adopted)",
+            p4_physical_v2,
+        ),
+        Py("phase 3 data checks still pass after the ECC rerun", p4_phase3_still_holds),
+        Cmd("phase 3 estimates still reproduce", [PY, "scripts/estimate_all.py", "--verify"]),
+        Cmd("web data reproduces", [PY, "scripts/build_data.py", "--verify"]),
+        Cmd(
+            "no QPU used since phase 3",
+            [
+                "git",
+                "diff",
+                "--quiet",
+                "phase-3-done",
+                "--",
+                "results/budget.json",
+                "results/hardware",
+            ],
+        ),
+        Py("cbom tests pass (no xfail/skip)", p4_strict("cbom")),
+        Py("mosca tests pass (no xfail/skip)", p4_strict("mosca")),
+        Py("timeline tests pass (no xfail/skip)", p4_strict("timeline")),
+        Py("phase 4 honesty audit written", file_exists("tests/phase4/AUDIT.md")),
+    ],
     5: [],
     6: [],
 }

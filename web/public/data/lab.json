@@ -1,0 +1,472 @@
+{
+  "circuits": [
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.25,
+          "config": "dd",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.4923518190183183,
+          "normalized_score": 0.31884765625,
+          "predicted_success": 0.651123046875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.004638671875,
+          "shots_pooled": 8192,
+          "success_probability": 0.4891357421875,
+          "theoretical_success": 1.0,
+          "wilson_95": [
+            0.4783185529245924,
+            0.49996311578577174
+          ]
+        },
+        {
+          "chance_baseline": 0.25,
+          "config": "dd_twirl",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.4855288416270861,
+          "normalized_score": 0.3097330729166667,
+          "predicted_success": 0.651123046875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.001708984375,
+          "shots_pooled": 8192,
+          "success_probability": 0.4822998046875,
+          "theoretical_success": 1.0,
+          "wilson_95": [
+            0.47149004674587214,
+            0.4931261550856201
+          ]
+        },
+        {
+          "chance_baseline": 0.25,
+          "config": "raw",
+          "drift_beyond_shot_noise": true,
+          "m3_success_probability_mean": 0.5087261197350585,
+          "normalized_score": 0.3401692708333333,
+          "predicted_success": 0.651123046875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.080078125,
+          "shots_pooled": 8192,
+          "success_probability": 0.505126953125,
+          "theoretical_success": 1.0,
+          "wilson_95": [
+            0.49430028301299817,
+            0.5159488171461558
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.25,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 1.0,
+        "theoretical_success": 1.0
+      },
+      "kind": "generic",
+      "name": "grover_present_k2",
+      "noisy": {
+        "chance_baseline": 0.25,
+        "hellinger_vs_ideal": 0.6906738281249999,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.5875651041666666,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.690673828125,
+        "theoretical_success": 1.0,
+        "wilson_95": [
+          0.6805772372206483,
+          0.7005916782221736
+        ]
+      }
+    },
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.125,
+          "config": "dd",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.1388377351620504,
+          "normalized_score": 0.019196428571428573,
+          "predicted_success": 0.34130859375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.000732421875,
+          "shots_pooled": 8192,
+          "success_probability": 0.1407470703125,
+          "theoretical_success": 0.9453124999999999,
+          "wilson_95": [
+            0.1333846727384383,
+            0.14844623753798608
+          ]
+        },
+        {
+          "chance_baseline": 0.125,
+          "config": "dd_twirl",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.15024055318314272,
+          "normalized_score": 0.032589285714285716,
+          "predicted_success": 0.34130859375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.004150390625,
+          "shots_pooled": 8192,
+          "success_probability": 0.1517333984375,
+          "theoretical_success": 0.9453124999999999,
+          "wilson_95": [
+            0.144127833136533,
+            0.1596654346237928
+          ]
+        },
+        {
+          "chance_baseline": 0.125,
+          "config": "raw",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.14550679431405736,
+          "normalized_score": 0.026636904761904764,
+          "predicted_success": 0.34130859375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.005126953125,
+          "shots_pooled": 8192,
+          "success_probability": 0.1468505859375,
+          "theoretical_success": 0.9453124999999999,
+          "wilson_95": [
+            0.13935127167940856,
+            0.15468094831029436
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.125,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.945068359375,
+        "theoretical_success": 0.9453124999999999
+      },
+      "kind": "generic",
+      "name": "grover_present_k3",
+      "noisy": {
+        "chance_baseline": 0.125,
+        "hellinger_vs_ideal": 0.6329416881032365,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.3348214285714286,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.399658203125,
+        "theoretical_success": 0.9453124999999999,
+        "wilson_95": [
+          0.3891005132398035,
+          0.41030995507389706
+        ]
+      }
+    },
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.0625,
+          "config": "dd",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.07840808758644222,
+          "normalized_score": 0.015889992360580595,
+          "predicted_success": 0.1416015625,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.000244140625,
+          "shots_pooled": 8192,
+          "success_probability": 0.0767822265625,
+          "theoretical_success": 0.9613189697265625,
+          "wilson_95": [
+            0.07121305027097069,
+            0.08274813421029445
+          ]
+        },
+        {
+          "chance_baseline": 0.0625,
+          "config": "dd_twirl",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.06796453995922977,
+          "normalized_score": 0.005025040319157966,
+          "predicted_success": 0.1416015625,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.003662109375,
+          "shots_pooled": 8192,
+          "success_probability": 0.0670166015625,
+          "theoretical_success": 0.9613189697265625,
+          "wilson_95": [
+            0.06180222519784238,
+            0.07263686374217705
+          ]
+        },
+        {
+          "chance_baseline": 0.0625,
+          "config": "raw",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.054396952786973554,
+          "normalized_score": -0.009778456837280366,
+          "predicted_success": 0.1416015625,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.00390625,
+          "shots_pooled": 8192,
+          "success_probability": 0.0537109375,
+          "theoretical_success": 0.9613189697265625,
+          "wilson_95": [
+            0.049034796264301586,
+            0.05880543750077062
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.0625,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.9615478515625,
+        "theoretical_success": 0.9613189697265625
+      },
+      "kind": "generic",
+      "name": "grover_present_k4",
+      "noisy": {
+        "chance_baseline": 0.0625,
+        "hellinger_vs_ideal": 0.40375131408495757,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.17777777777777778,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.2222900390625,
+        "theoretical_success": 0.9613189697265625,
+        "wilson_95": [
+          0.21341765388973108,
+          0.23142275415609478
+        ]
+      }
+    },
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.03125,
+          "config": "dd",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.035150570664745195,
+          "normalized_score": 0.0042878934387787365,
+          "predicted_success": 0.047607421875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.0009765625,
+          "shots_pooled": 8192,
+          "success_probability": 0.035400390625,
+          "theoretical_success": 0.9991823155432941,
+          "wilson_95": [
+            0.03161159553609072,
+            0.03962470908914584
+          ]
+        },
+        {
+          "chance_baseline": 0.03125,
+          "config": "dd_twirl",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.028282843898494947,
+          "normalized_score": -0.0023961757451998822,
+          "predicted_success": 0.047607421875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.000244140625,
+          "shots_pooled": 8192,
+          "success_probability": 0.0289306640625,
+          "theoretical_success": 0.9991823155432941,
+          "wilson_95": [
+            0.025516008942723066,
+            0.032786907386438226
+          ]
+        },
+        {
+          "chance_baseline": 0.03125,
+          "config": "raw",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.027196916890131595,
+          "normalized_score": -0.0036573208742524516,
+          "predicted_success": 0.047607421875,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.000732421875,
+          "shots_pooled": 8192,
+          "success_probability": 0.0277099609375,
+          "theoretical_success": 0.9991823155432941,
+          "wilson_95": [
+            0.024370850048568538,
+            0.03149180433793704
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.03125,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.9986572265625,
+        "theoretical_success": 0.9991823155432941
+      },
+      "kind": "generic",
+      "name": "grover_present_k5",
+      "noisy": {
+        "chance_baseline": 0.03125,
+        "hellinger_vs_ideal": 0.08840898876454917,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.04300504890069262,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.0728759765625,
+        "theoretical_success": 0.9991823155432941,
+        "wilson_95": [
+          0.06744515312577443,
+          0.07870719313899244
+        ]
+      }
+    },
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.171875,
+          "config": "raw",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": null,
+          "normalized_score": 0.009672619047619048,
+          "predicted_success": 0.175537109375,
+          "predicted_vs_chance": "at chance",
+          "repeat_spread": 0.0,
+          "shots_pooled": 4096,
+          "success_probability": 0.175048828125,
+          "theoretical_success": 0.5,
+          "wilson_95": [
+            0.16371721167897543,
+            0.18698938838411197
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.171875,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.50634765625,
+        "theoretical_success": 0.5
+      },
+      "kind": "generic",
+      "name": "shor15_beauregard",
+      "noisy": {
+        "chance_baseline": 0.171875,
+        "hellinger_vs_ideal": 0.06019740568690459,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.035342261904761904,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.1834716796875,
+        "theoretical_success": 0.5,
+        "wilson_95": [
+          0.17523916114009877,
+          0.1920009171292755
+        ]
+      }
+    },
+    {
+      "hardware": [
+        {
+          "chance_baseline": 0.171875,
+          "config": "dd",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.3852113141878012,
+          "normalized_score": 0.5985863095238095,
+          "predicted_success": 0.4287109375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.015380859375,
+          "shots_pooled": 8192,
+          "success_probability": 0.3682861328125,
+          "theoretical_success": 0.5,
+          "wilson_95": [
+            0.3579051924107093,
+            0.3787905439767395
+          ]
+        },
+        {
+          "chance_baseline": 0.171875,
+          "config": "dd_twirl",
+          "drift_beyond_shot_noise": false,
+          "m3_success_probability_mean": 0.3858233412467171,
+          "normalized_score": 0.6015625,
+          "predicted_success": 0.4287109375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.000244140625,
+          "shots_pooled": 8192,
+          "success_probability": 0.3692626953125,
+          "theoretical_success": 0.5,
+          "wilson_95": [
+            0.35887554959093276,
+            0.3797723963506406
+          ]
+        },
+        {
+          "chance_baseline": 0.171875,
+          "config": "raw",
+          "drift_beyond_shot_noise": true,
+          "m3_success_probability_mean": 0.3739471746342396,
+          "normalized_score": 0.5658482142857143,
+          "predicted_success": 0.4287109375,
+          "predicted_vs_chance": "signal",
+          "repeat_spread": 0.037841796875,
+          "shots_pooled": 8192,
+          "success_probability": 0.3575439453125,
+          "theoretical_success": 0.5,
+          "wilson_95": [
+            0.3472343149190771,
+            0.3679871163730015
+          ]
+        }
+      ],
+      "ideal": {
+        "chance_baseline": 0.171875,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.50830078125,
+        "theoretical_success": 0.5
+      },
+      "kind": "compiled",
+      "name": "shor15_textbook",
+      "noisy": {
+        "chance_baseline": 0.171875,
+        "hellinger_vs_ideal": 0.7853563336736675,
+        "noise_model": "fake_kingston",
+        "normalized_score": 0.8151041666666666,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": true,
+        "success_probability": 0.4393310546875,
+        "theoretical_success": 0.5,
+        "wilson_95": [
+          0.42861459908948246,
+          0.4501043823605287
+        ]
+      }
+    },
+    {
+      "hardware": [],
+      "ideal": {
+        "chance_baseline": 0.078125,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "success_probability": 0.3267822265625,
+        "theoretical_success": 0.33074868504884414
+      },
+      "kind": "generic",
+      "name": "shor21_beauregard",
+      "noisy": {
+        "chance_baseline": 0.078125,
+        "hellinger_vs_ideal": 0.04746699455557921,
+        "noise_model": "fake_kingston",
+        "normalized_score": -0.005315310942599774,
+        "seed_simulator": 1234,
+        "shots": 8192,
+        "signal": false,
+        "success_probability": 0.0767822265625,
+        "theoretical_success": 0.33074868504884414,
+        "wilson_95": [
+          0.07121305027097069,
+          0.08274813421029445
+        ]
+      }
+    }
+  ],
+  "hardware_batch": "batch-20261108T044751Z"
+}

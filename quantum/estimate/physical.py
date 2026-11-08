@@ -111,3 +111,42 @@ def target_logical_counts(target: str, spec: dict | None = None) -> tuple[dict, 
     if "t_id" in t:
         counts["tCount"] = round(parse_power(lit[t["t_id"]]["value"]) / reps)
     return counts, reps
+
+
+def physical_estimate_v2(logical_qubits: float, physical_error_rate: float) -> dict:
+    """Physical model v2: Gidney 2025's own layout components (pre-registered, not tuned).
+
+    physical = L * (c * cold + (1 - c) * hot) + compute_patches * hot, with hot = 2 (d + 1)^2
+    physical qubits per hot patch, cold = yoked-storage qubits per logical qubit, and
+    c = m / max_logical the cold fraction of Gidney's own n = 2048 run. Runtime is NOT modelled
+    here (the Phase 3 model's runtime stays in use). The distance is the paper's at its own
+    physical error rate; other rates use the labelled suppression-law extension.
+    """
+    spec = load_spec()["physical_v2"]
+    lit = common.literature()
+    d_ref = int(lit[spec["hot_distance_id"]]["value"])
+    p_ref = float(lit[spec["reference_error_rate_id"]]["value"])
+    cold = float(lit[spec["cold_per_logical_id"]]["value"])
+    c = float(lit[spec["cold_logical_id"]]["value"]) / float(lit[spec["max_logical_id"]]["value"])
+    patches = float(lit[spec["compute_patches_id"]]["value"])
+    p_th = float(spec["p_threshold"])
+    if _close(physical_error_rate, p_ref):
+        d = d_ref
+    else:
+        exact = (d_ref + 1) * math.log(p_ref / p_th) / math.log(physical_error_rate / p_th) - 1
+        d = math.ceil(exact)
+        d += 1 - d % 2  # next odd distance (stays if already odd)
+    hot = 2 * (d + 1) ** 2
+    physical = logical_qubits * (c * cold + (1 - c) * hot) + patches * hot
+    return {
+        "physical_qubits": physical,
+        "code_distance": d,
+        "cold_fraction": c,
+        "hot_patch_qubits": hot,
+        "compute_region_qubits": patches * hot,
+        "distance_extension": not _close(physical_error_rate, p_ref),
+    }
+
+
+def _close(a: float, b: float) -> bool:
+    return abs(a - b) <= 1e-9 * max(abs(a), abs(b))

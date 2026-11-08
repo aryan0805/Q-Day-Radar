@@ -39,9 +39,7 @@ def path(tmp_path: Path) -> Path:
 
 def _write_ledger(path: Path, entries: list[dict], cap: float = 540) -> None:
     path.write_text(
-        json.dumps(
-            {"version": 1, "cap_seconds": cap, "window_days": 28, "entries": entries}
-        )
+        json.dumps({"version": 1, "cap_seconds": cap, "window_days": 28, "entries": entries})
     )
 
 

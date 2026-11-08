@@ -1,0 +1,1847 @@
+{
+  "as_of": "2026-11-08",
+  "as_of_year": 2026,
+  "assets": [
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 10.235705065780849,
+          "rank": 23,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": 7.510766672705131,
+          "rank": 23,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 40,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "RSA",
+      "id": "tls-edge-cert-rsa",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 1.0,
+      "name": "public web TLS certificate",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 1.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ECDH",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -0.8356570850089611,
+          "rank": 11,
+          "shortfall": 2.5069712550268832
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -3.3219990227207745,
+          "rank": 9,
+          "shortfall": 9.965997068162324
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 3.647531317186349,
+          "rank": 8,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "tls-edge-kex-ecdhe",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 2.0,
+      "name": "TLS key exchange, customer portal",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "X25519",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -0.8356570850089611,
+          "rank": 12,
+          "shortfall": 2.5069712550268832
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -3.3219990227207745,
+          "rank": 10,
+          "shortfall": 9.965997068162324
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 3.647531317186349,
+          "rank": 9,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "tls-edge-kex-x25519",
+      "key_bits": 255,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 2.0,
+      "name": "TLS key exchange, mobile API",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "AES-256-GCM",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 41,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 41,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 39,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "AES",
+      "id": "tls-edge-aead",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 1.0,
+      "name": "TLS record protection",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": 9.164342914991039,
+          "rank": 20,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": 6.6780009772792255,
+          "rank": 21,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 13.647531317186349,
+          "rank": 13,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "tls-edge-cert-ecdsa",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 1.0,
+      "name": "public TLS certificate, API gateway",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 1.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-3072",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 8.235705065780849,
+          "rank": 18,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": 5.510766672705131,
+          "rank": 17,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 41,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "RSA",
+      "id": "tls-partner-cert-rsa",
+      "key_bits": 3072,
+      "mapping_note": "RSA-3072 inherits the rsa2048 cost: a lower bound on attacker cost (the real attack is costlier, so the true threat is later).",
+      "migration_years": 2.0,
+      "name": "partner mTLS certificate",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 2.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ECDH",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -6.835657085008961,
+          "rank": 6,
+          "shortfall": 13.671314170017922
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -9.321999022720775,
+          "rank": 7,
+          "shortfall": 18.64399804544155
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": -2.352468682813651,
+          "rank": 5,
+          "shortfall": 4.704937365627302
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "ECC",
+      "id": "tls-partner-kex",
+      "key_bits": 384,
+      "mapping_note": "384-bit curve inherits the ecc256 cost: a lower bound on attacker cost.",
+      "migration_years": 3.0,
+      "name": "partner link key exchange",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 15.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "ECDH",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -3.835657085008961,
+          "rank": 9,
+          "shortfall": 7.671314170017922
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -6.3219990227207745,
+          "rank": 8,
+          "shortfall": 12.643998045441549
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 0.647531317186349,
+          "rank": 6,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "ECC",
+      "id": "vpn-ipsec-kex",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 3.0,
+      "name": "branch VPN",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 12.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "AES-128-GCM",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 42,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 42,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 42,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "AES",
+      "id": "vpn-ipsec-enc",
+      "key_bits": 128,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 2.0,
+      "name": "branch VPN payload",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 12.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "Ed25519",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": 5.164342914991039,
+          "rank": 15,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": 2.6780009772792255,
+          "rank": 16,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 9.647531317186349,
+          "rank": 10,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "ECC",
+      "id": "ssh-bastion-hostkey",
+      "key_bits": 255,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 1.0,
+      "name": "bastion host key",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-4096",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 5.235705065780849,
+          "rank": 16,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": 2.510766672705131,
+          "rank": 15,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 38,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "RSA",
+      "id": "ssh-admin-keys",
+      "key_bits": 4096,
+      "mapping_note": "RSA-4096 inherits the rsa2048 cost: a lower bound on attacker cost (the real attack is costlier, so the true threat is later).",
+      "migration_years": 2.0,
+      "name": "administrator keys",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-3072",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": -13.764294934219151,
+          "rank": 3,
+          "shortfall": 41.292884802657454
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": -16.48923332729487,
+          "rank": 3,
+          "shortfall": 49.46769998188461
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 17,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "RSA",
+      "id": "code-signing-release",
+      "key_bits": 3072,
+      "mapping_note": "RSA-3072 inherits the rsa2048 cost: a lower bound on attacker cost (the real attack is costlier, so the true threat is later).",
+      "migration_years": 6.0,
+      "name": "firmware and app release signing",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 20.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -21.83565708500896,
+          "rank": 1,
+          "shortfall": 65.50697125502688
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -24.321999022720775,
+          "rank": 1,
+          "shortfall": 72.96599706816232
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": -17.35246868281365,
+          "rank": 1,
+          "shortfall": 52.05740604844095
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "code-signing-bootloader",
+      "key_bits": 384,
+      "mapping_note": "384-bit curve inherits the ecc256 cost: a lower bound on attacker cost.",
+      "migration_years": 8.0,
+      "name": "device secure-boot root",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 25.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "AES-256-CBC",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 34,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 34,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 30,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "AES",
+      "id": "payments-hsm-master",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 5.0,
+      "name": "HSM master key wrapping",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 25.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "AES-128-CBC",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 33,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 33,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 29,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "AES",
+      "id": "payments-card-pan-enc",
+      "key_bits": 128,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 4.0,
+      "name": "stored card numbers",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 20.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "HMAC-SHA-256",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 35,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 35,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 31,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "SHA",
+      "id": "payments-iso8583-mac",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 2.0,
+      "name": "scheme message authentication",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SHA-384 or SHA3-256 (keep; no SHA-1)",
+        "standard_id": "fips180_4_sha2"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "hash"
+    },
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": -6.764294934219151,
+          "rank": 7,
+          "shortfall": 13.528589868438303
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": -9.489233327294869,
+          "rank": 6,
+          "shortfall": 18.978466654589738
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 32,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "RSA",
+      "id": "payments-keytransport-rsa",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 4.0,
+      "name": "terminal key transport (OAEP)",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 15.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "AES-256-XTS",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 27,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 27,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 20,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "AES",
+      "id": "db-tde-aes",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 3.0,
+      "name": "database at-rest encryption",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 20.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "AES-256-GCM",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 25,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 25,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 15,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "AES",
+      "id": "backup-vault-enc",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 3.0,
+      "name": "archive vault",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "RSA-4096",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": -22.76429493421915,
+          "rank": 4,
+          "shortfall": 22.76429493421915
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": -25.48923332729487,
+          "rank": 4,
+          "shortfall": 25.48923332729487
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 16,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "RSA",
+      "id": "backup-vault-wrap",
+      "key_bits": 4096,
+      "mapping_note": "RSA-4096 inherits the rsa2048 cost: a lower bound on attacker cost (the real attack is costlier, so the true threat is later).",
+      "migration_years": 5.0,
+      "name": "archive key wrapping",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-KEM-768",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "AES-128-CTR",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 31,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 31,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 26,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "AES",
+      "id": "kyc-docs-enc",
+      "key_bits": 128,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 3.0,
+      "name": "customer identity documents",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "AES-256 (keep; 256-bit keys)",
+        "standard_id": "fips197_aes"
+      },
+      "shelf_life_years": 25.0,
+      "usage": "encryption"
+    },
+    {
+      "algorithm": "SHA-256",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 24,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 24,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 14,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "SHA",
+      "id": "audit-log-hash",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 1.0,
+      "name": "audit log chaining",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SHA-384 or SHA3-256 (keep; no SHA-1)",
+        "standard_id": "fips180_4_sha2"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "hash"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -0.8356570850089611,
+          "rank": 13,
+          "shortfall": 0.8356570850089611
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -3.3219990227207745,
+          "rank": 13,
+          "shortfall": 3.3219990227207745
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 3.647531317186349,
+          "rank": 7,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "ECC",
+      "id": "audit-log-sign",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 2.0,
+      "name": "audit log signing",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": -22.76429493421915,
+          "rank": 2,
+          "shortfall": 45.5285898684383
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": -25.48923332729487,
+          "rank": 2,
+          "shortfall": 50.97846665458974
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 18,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "RSA",
+      "id": "contracts-esign",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 5.0,
+      "name": "long-lived signed contracts",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "SHA-384",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 26,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 26,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 19,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "SHA",
+      "id": "contracts-timestamp-hash",
+      "key_bits": 384,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 2.0,
+      "name": "contract timestamping",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SHA-384 or SHA3-256 (keep; no SHA-1)",
+        "standard_id": "fips180_4_sha2"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "hash"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": 9.164342914991039,
+          "rank": 19,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": 6.6780009772792255,
+          "rank": 20,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 13.647531317186349,
+          "rank": 12,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "jwt-session-ecdsa",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 1.0,
+      "name": "session tokens",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 1.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 10.235705065780849,
+          "rank": 22,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": 7.510766672705131,
+          "rank": 22,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 27,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "RSA",
+      "id": "oauth-signing-rsa",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 1.0,
+      "name": "OAuth token signing",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 1.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 2.2357050657808486,
+          "rank": 14,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": -0.489233327294869,
+          "rank": 14,
+          "shortfall": 0.978466654589738
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 22,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "RSA",
+      "id": "email-smime-rsa",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 3.0,
+      "name": "signed email to regulators",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 7.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": 8.164342914991039,
+          "rank": 17,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": 5.6780009772792255,
+          "rank": 18,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": 12.647531317186349,
+          "rank": 11,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ECC",
+      "id": "dnssec-zsk",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 2.0,
+      "name": "DNSSEC zone signing key",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 1.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ECDSA",
+      "attack_target": "ecc256",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2037.164342914991,
+          "margin_years": -9.835657085008961,
+          "rank": 5,
+          "shortfall": 19.671314170017922
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2034.6780009772792,
+          "margin_years": -12.321999022720775,
+          "rank": 5,
+          "shortfall": 24.64399804544155
+        },
+        "pessimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2041.6475313171863,
+          "margin_years": -5.352468682813651,
+          "rank": 2,
+          "shortfall": 10.704937365627302
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "ECC",
+      "id": "blockchain-settlement-key",
+      "key_bits": 256,
+      "mapping_note": "Curve of about 256 bits is the ecc256 target.",
+      "migration_years": 6.0,
+      "name": "settlement ledger keys",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 15.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-2048",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2038.2357050657808,
+          "margin_years": 9.235705065780849,
+          "rank": 21,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": "trend extrapolation",
+          "crqc_year": 2035.5107666727051,
+          "margin_years": 6.510766672705131,
+          "rank": 19,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 23,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "RSA",
+      "id": "hr-sso-saml",
+      "key_bits": 2048,
+      "mapping_note": "RSA-2048 is the rsa2048 target.",
+      "migration_years": 1.0,
+      "name": "workforce SSO",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 2.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "RSA-1024",
+      "attack_target": "rsa2048",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -9.0,
+          "rank": 8,
+          "shortfall": 9.0
+        },
+        "optimistic": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -9.0,
+          "rank": 11,
+          "shortfall": 9.0
+        },
+        "pessimistic": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -9.0,
+          "rank": 3,
+          "shortfall": 9.0
+        }
+      },
+      "classically_deprecated": true,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "RSA",
+      "id": "legacy-erp-rsa1024",
+      "key_bits": 1024,
+      "mapping_note": "RSA-1024 gives less than 112 bits of classical security and is disallowed by NIST SP 800-131A (literature id sp800_131a): treated as breakable now, so crqc_year = as_of_year (a classical reason, not a quantum one).",
+      "migration_years": 4.0,
+      "name": "legacy ERP interface",
+      "nist_deadline_year": 2035,
+      "replacement": {
+        "algorithm": "ML-DSA-65",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "SHA-1",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -6.0,
+          "rank": 10,
+          "shortfall": 6.0
+        },
+        "optimistic": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -6.0,
+          "rank": 12,
+          "shortfall": 6.0
+        },
+        "pessimistic": {
+          "crqc_basis": "classically deprecated (SP 800-131A), not a quantum estimate",
+          "crqc_year": 2026,
+          "margin_years": -6.0,
+          "rank": 4,
+          "shortfall": 6.0
+        }
+      },
+      "classically_deprecated": true,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "SHA",
+      "id": "legacy-sha1",
+      "key_bits": 160,
+      "mapping_note": "SHA-1 in a signature or hash use: collision security is at most 80 bits (sp800_57_pt1r5_sha1_collision) and NIST SP 800-131A (sp800_131a) disallows it for signature generation. Treated as breakable now, so crqc_year = as_of_year (a classical reason). HMAC or key-derivation uses of SHA-1 are not flagged.",
+      "migration_years": 3.0,
+      "name": "legacy checksum",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SHA-384 or SHA3-256 (keep; no SHA-1)",
+        "standard_id": "fips180_4_sha2"
+      },
+      "shelf_life_years": 3.0,
+      "usage": "hash"
+    },
+    {
+      "algorithm": "SHA3-256",
+      "attack_target": "aes128",
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 29,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 29,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 24,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "SHA",
+      "id": "integrity-sha3",
+      "key_bits": 256,
+      "mapping_note": "Grover on a symmetric primitive: mapped to the aes128 target (AES-256 and SHA-3 are costlier, so this is a lower bound).",
+      "migration_years": 1.0,
+      "name": "artifact integrity",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SHA-384 or SHA3-256 (keep; no SHA-1)",
+        "standard_id": "fips180_4_sha2"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "hash"
+    },
+    {
+      "algorithm": "ML-KEM-768",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 28,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 28,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 21,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ML-KEM",
+      "id": "edge-pqc-kex-pilot",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 1.0,
+      "name": "hybrid KEM pilot at the edge",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-KEM (already post-quantum)",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 10.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "ML-KEM-1024",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 32,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 32,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 28,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "ML-KEM",
+      "id": "partner-pqc-kex",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 1.0,
+      "name": "partner key establishment pilot",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-KEM (already post-quantum)",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 20.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "ML-KEM-512",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 30,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 30,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 25,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "ML-KEM",
+      "id": "internal-pqc-kex",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 1.0,
+      "name": "internal service mesh pilot",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-KEM (already post-quantum)",
+        "standard_id": "fips203_ml_kem"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "key_exchange"
+    },
+    {
+      "algorithm": "ML-DSA-65",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 37,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 37,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 34,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "ML-DSA",
+      "id": "pqc-code-signing",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 2.0,
+      "name": "dual-signed releases",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-DSA (already post-quantum)",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 25.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ML-DSA-87",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 38,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 38,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 35,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "partner",
+      "exposure_weight": 2.0,
+      "family": "ML-DSA",
+      "id": "pqc-doc-signing",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 2.0,
+      "name": "long-term document signing pilot",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-DSA (already post-quantum)",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "ML-DSA-44",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 40,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 40,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 37,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "ML-DSA",
+      "id": "pqc-internal-sign",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 1.0,
+      "name": "internal service tokens",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "ML-DSA (already post-quantum)",
+        "standard_id": "fips204_ml_dsa"
+      },
+      "shelf_life_years": 5.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "SLH-DSA-SHA2-128s",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 39,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 39,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 36,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internet",
+      "exposure_weight": 3.0,
+      "family": "SLH-DSA",
+      "id": "pqc-firmware-root",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 3.0,
+      "name": "firmware root of trust",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SLH-DSA (already post-quantum)",
+        "standard_id": "fips205_slh_dsa"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "signature"
+    },
+    {
+      "algorithm": "SLH-DSA-SHAKE-256f",
+      "attack_target": null,
+      "by_scenario": {
+        "median": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 36,
+          "shortfall": 0.0
+        },
+        "optimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 36,
+          "shortfall": 0.0
+        },
+        "pessimistic": {
+          "crqc_basis": null,
+          "crqc_year": null,
+          "margin_years": null,
+          "rank": 33,
+          "shortfall": 0.0
+        }
+      },
+      "classically_deprecated": false,
+      "exposure": "internal",
+      "exposure_weight": 1.0,
+      "family": "SLH-DSA",
+      "id": "pqc-archive-sign",
+      "key_bits": null,
+      "mapping_note": "Post-quantum standard: no known quantum attack target.",
+      "migration_years": 2.0,
+      "name": "archive attestations",
+      "nist_deadline_year": null,
+      "replacement": {
+        "algorithm": "SLH-DSA (already post-quantum)",
+        "standard_id": "fips205_slh_dsa"
+      },
+      "shelf_life_years": 30.0,
+      "usage": "signature"
+    }
+  ],
+  "crqc_label": "trend extrapolation",
+  "family_order": {
+    "median": [
+      "ECC",
+      "RSA",
+      "AES",
+      "ML-DSA",
+      "ML-KEM",
+      "SHA",
+      "SLH-DSA"
+    ],
+    "optimistic": [
+      "ECC",
+      "RSA",
+      "AES",
+      "ML-DSA",
+      "ML-KEM",
+      "SHA",
+      "SLH-DSA"
+    ],
+    "pessimistic": [
+      "ECC",
+      "AES",
+      "ML-DSA",
+      "ML-KEM",
+      "RSA",
+      "SHA",
+      "SLH-DSA"
+    ]
+  },
+  "scenarios": [
+    "median",
+    "optimistic",
+    "pessimistic"
+  ]
+}

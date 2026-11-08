@@ -242,9 +242,7 @@ def test_leak_shor_beauregard_default_structure_is_independent_of_the_order(n):
     # P003: honest generic = 1 controlled load + (2*bits - 1) full multipliers whatever a (and r)
     bits = n.bit_length()
     want = (2 * bits - 1) * bits
-    got = {
-        a: build_shor(n, a).count_ops().get("cswap", 0) for a in (N15_A if n == 15 else N21_A)
-    }
+    got = {a: build_shor(n, a).count_ops().get("cswap", 0) for a in (N15_A if n == 15 else N21_A)}
     assert set(got.values()) == {want}, got
 
 

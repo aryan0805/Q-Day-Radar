@@ -281,6 +281,60 @@
       "target": "ecc256"
     },
     {
+      "estimator": "physical_v2",
+      "explanation": "Pre-registered check (components from Gidney 2025 only). Consistency check on the paper's own numbers (two-sided): v2 rebuilds the paper's accounting, so agreement is expected, not independent evidence.",
+      "input_logical_qubits": 1409.0,
+      "input_logical_qubits_id": "g2025_max_algorithmic_logical_qubits",
+      "label": "measured",
+      "literature_id": "g2025_physical_qubits_rsa2048",
+      "literature_value": 897864.0,
+      "method": "measured: physical model v2 fed the paper's own logical qubits",
+      "ours": 895160.0000000001,
+      "quantity": "physical_qubits",
+      "ratio": 0.99698840804398,
+      "target": "rsa2048",
+      "tolerance": {
+        "factor": 1.5,
+        "kind": "two_sided",
+        "within": true
+      },
+      "v2": {
+        "code_distance": 25,
+        "cold_fraction": 0.9084457061745919,
+        "compute_region_qubits": 170352.0,
+        "distance_extension": false,
+        "hot_patch_qubits": 1352,
+        "physical_qubits": 895160.0000000001
+      }
+    },
+    {
+      "estimator": "physical_v2",
+      "explanation": "Pre-registered check (components from Gidney 2025 only). Holdout (one-sided): v2 must not exceed the factor times the paper's upper bound. It FAILS the tolerance. Not tuned. Likely cause, not acted on: v2 carries RSA's cold-storage fraction and compute block over to ECC.",
+      "input_logical_qubits": 1200.0,
+      "input_logical_qubits_id": "google2026_logical_qubits_ecc256",
+      "label": "measured",
+      "literature_id": "google2026_physical_qubits_ecc256",
+      "literature_value": 500000.0,
+      "method": "measured: physical model v2 fed the paper's own logical qubits",
+      "ours": 787647.6706884316,
+      "quantity": "physical_qubits",
+      "ratio": 1.5752953413768631,
+      "target": "ecc256",
+      "tolerance": {
+        "factor": 1.5,
+        "kind": "one_sided",
+        "within": false
+      },
+      "v2": {
+        "code_distance": 25,
+        "cold_fraction": 0.9084457061745919,
+        "compute_region_qubits": 170352.0,
+        "distance_extension": false,
+        "hot_patch_qubits": 1352,
+        "physical_qubits": 787647.6706884316
+      }
+    },
+    {
       "estimator": "qdk",
       "explanation": "unreliable (r2=0.765; signed residuals k=2: +0.07, k=3: -0.04, k=4: -0.22, k=5: +0.16). Toy 4-round SPN with a k-bit key, 4 data points (k = 2..5), costed with peel_last_sbox=False; not an AES estimate and no error bar. The qubit count is a straight-line fit of the toy circuits' qubits against k, evaluated at k = 128, so it is not an integer (a fit value, not a circuit).",
       "fit_r2": 0.7646326045913315,
