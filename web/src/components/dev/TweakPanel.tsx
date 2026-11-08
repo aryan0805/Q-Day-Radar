@@ -11,8 +11,7 @@ import { useCallback, useState } from "react";
 const COLOURS = ["q", "threat", "warn", "pqc", "sim", "sim-text", "text-1", "text-2"] as const;
 const RANGES = [
   { name: "glow", min: 0, max: 2, step: 0.05, unit: "" },
-  { name: "dur-ui", min: 0, max: 600, step: 10, unit: "ms" },
-  { name: "dur-reveal", min: 0, max: 1500, step: 25, unit: "ms" },
+  { name: "motion-scale", min: 0.5, max: 2.5, step: 0.05, unit: "" },
   { name: "bg-density", min: 0.5, max: 2, step: 0.05, unit: "" },
   { name: "bg-speed", min: 0, max: 2, step: 0.05, unit: "" },
 ] as const;

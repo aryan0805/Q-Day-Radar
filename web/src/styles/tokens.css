@@ -25,8 +25,12 @@
 
   /* Motion: one easing family, expo-out. Durations are what the tweak panel scales. */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-ui: 180ms;
-  --dur-reveal: 520ms;
+  /* One global scale on every duration (human tweak round 1: about 1.4x slower). The CSS tokens,
+     the keyframe durations, the hero timeline (timeScale = 1 / scale) and the background drift all
+     read it; the tweak panel has a slider. */
+  --motion-scale: 1.4;
+  --dur-ui: calc(180ms * var(--motion-scale));
+  --dur-reveal: calc(520ms * var(--motion-scale));
   --glow: 1;
   /* Background lattice (task 3): the tweak panel scales these */
   --bg-density: 1;

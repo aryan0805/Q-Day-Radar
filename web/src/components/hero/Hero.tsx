@@ -219,6 +219,9 @@ export function Hero() {
           .to(q(".lat-dot"), { opacity: 1, scale: 1, duration: 0.5, stagger: { each: 0.02, from: "center" } }, 7.1)
           .to(q(".lat-lines"), { opacity: 1, duration: 0.6 }, 7.8)
           .to(q(".lat-caption"), { opacity: 1, duration: 0.5 }, 8.3);
+        // One global motion scale (--motion-scale): a larger value is slower.
+        const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-scale")) || 1;
+        tl.timeScale(1 / scale);
         tl.progress(0);
         let replaying = false;
         ScrollTrigger.create({
@@ -231,7 +234,7 @@ export function Hero() {
         });
         replay.current = () => {
           replaying = true;
-          gsap.fromTo(tl, { progress: 0 }, { progress: 1, duration: tl.duration(), ease: "none", onComplete: () => (replaying = false) });
+          gsap.fromTo(tl, { progress: 0 }, { progress: 1, duration: tl.duration() * scale, ease: "none", onComplete: () => (replaying = false) });
         };
       }, stage);
       revert = () => ctx.revert();

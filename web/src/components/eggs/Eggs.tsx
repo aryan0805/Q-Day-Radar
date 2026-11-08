@@ -8,6 +8,7 @@
 // each carries data-literal with that reason.
 import { useCallback, useEffect, useRef, useState } from "react";
 import hero from "../../../public/data/hero.json";
+import { pending } from "../../lib/interaction";
 
 const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 const LIT = "easter egg value, computed in the browser";
@@ -129,16 +130,22 @@ function consoleEgg(): void {
 function useKeys(onCode: (code: "konami" | "shor" | "grover") => void) {
   const buf = useRef<string[]>([]);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement | null;
-      if (t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      buf.current = [...buf.current, e.key.length === 1 ? e.key.toLowerCase() : e.key].slice(-KONAMI.length);
+    const push = (key: string) => {
+      buf.current = [...buf.current, key].slice(-KONAMI.length);
       const seq = buf.current;
       if (seq.length === KONAMI.length && seq.every((k, i) => k === KONAMI[i])) onCode("konami");
       const text = seq.filter((k) => k.length === 1).join("");
       if (text.endsWith("shor")) onCode("shor");
       if (text.endsWith("grover")) onCode("grover");
+    };
+    // keys typed while this chunk was loading
+    pending.keys.forEach(push);
+    pending.keys = [];
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -146,7 +153,11 @@ function useKeys(onCode: (code: "konami" | "shor" | "grover") => void) {
 }
 
 export function Eggs() {
-  const [result, setResult] = useState<Result>(null);
+  const [result, setResult] = useState<Result>(() => {
+    if (!pending.coin) return null; // the coin was clicked while this chunk loaded: replay it
+    pending.coin = false;
+    return { kind: "coin", ...drawFromJob() };
+  });
   const [qday, setQday] = useState(false);
   const [shift, setShift] = useState<{ x: number; y: number } | null>(null);
   const shiftDown = useRef(false);
@@ -181,8 +192,9 @@ export function Eggs() {
   }, []);
   useKeys(onCode);
 
-  // the coin in the footer
+  // the coin in the footer (a click that arrived while this chunk loaded is replayed)
   useEffect(() => {
+
     const onClick = (e: MouseEvent) => {
       if ((e.target as HTMLElement | null)?.closest('[data-egg="coin"]')) setResult({ kind: "coin", ...drawFromJob() });
     };

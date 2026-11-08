@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { inventory, scenarios, type Asset, type Scenario } from "../../lib/data";
+import { onFirstInteraction } from "../../lib/interaction";
 import { useScenario, withScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
@@ -15,12 +16,13 @@ function HeroLoader() {
   const [Hero, setHero] = useState<ComponentType | null>(null);
   useEffect(() => {
     const load = () => void import("../hero/Hero").then((m) => setHero(() => m.Hero));
-    const id = window.setTimeout(() => {
-      const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-      if (idle) idle(load, { timeout: 4000 });
-      else load();
-    }, 1200);
-    return () => window.clearTimeout(id);
+    // Reduced motion shows the static strip, which needs no GSAP: load it when idle. Otherwise
+    // wait for the first interaction (the sequence starts at an empty frame anyway).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const id = window.setTimeout(load, 1200);
+      return () => window.clearTimeout(id);
+    }
+    return onFirstInteraction(load);
   }, []);
   return Hero ? <Hero /> : null;
 }

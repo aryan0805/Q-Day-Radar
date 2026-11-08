@@ -143,7 +143,7 @@ export function LatticeField() {
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
       if (now - last < FRAME_MS) return;
-      clock += ((now - last) / 1000) * num("bg-speed", 1);
+      clock += (((now - last) / 1000) * num("bg-speed", 1)) / Math.max(num("motion-scale", 1), 0.1);
       last = now;
       if (frames++ % 30 === 0) tint = cssRgb("q"); // follows the tweak panel
       gl.uniform2f(uRes, el.width, el.height);

@@ -621,7 +621,7 @@ select {
 @media (prefers-reduced-motion: no-preference) {
   .tbl tbody tr {
     animation: row-in var(--dur-reveal) var(--ease) both;
-    animation-delay: calc(var(--i, 0) * 22ms);
+    animation-delay: calc(var(--i, 0) * 22ms * var(--motion-scale));
   }
   .track .fill {
     transform-origin: 0 50%;
@@ -629,15 +629,15 @@ select {
   }
   .dot {
     animation: decohere calc(var(--dur-reveal) * 1.2) var(--ease) both;
-    animation-delay: var(--d, 0ms);
+    animation-delay: calc(var(--d, 0ms) * var(--motion-scale));
   }
   .sweep {
     transform-origin: 270px 270px;
-    animation: sweep 7s linear infinite;
+    animation: sweep calc(7s * var(--motion-scale)) linear infinite;
   }
   .pt {
     animation: pt-in var(--dur-reveal) var(--ease) both;
-    animation-delay: calc(var(--i, 0) * 12ms);
+    animation-delay: calc(var(--i, 0) * 12ms * var(--motion-scale));
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -730,7 +730,7 @@ html[data-qday="on"] {
 }
 html[data-qday="on"] .dot[data-family="RSA"],
 html[data-qday="on"] .dot[data-family="ECC"] {
-  animation: shatter 700ms var(--ease) forwards;
+  animation: shatter calc(700ms * var(--motion-scale)) var(--ease) forwards;
 }
 html[data-qday="on"] .lock-left { transform: translate(-14px, 4px) rotate(-6deg); }
 html[data-qday="on"] .lock-right { transform: translate(14px, 4px) rotate(6deg); }
@@ -747,10 +747,10 @@ html[data-qday="on"] .lock-right { transform: translate(14px, 4px) rotate(6deg);
   .nf-a,
   .nf-b {
     stroke-dasharray: 1;
-    animation: nf-draw 1.6s var(--ease) both;
+    animation: nf-draw calc(1.6s * var(--motion-scale)) var(--ease) both;
   }
   .nf-b {
-    animation-delay: 0.25s;
+    animation-delay: calc(0.25s * var(--motion-scale));
   }
 }
 
@@ -758,4 +758,36 @@ html[data-qday="on"] .lock-right { transform: translate(14px, 4px) rotate(6deg);
   margin: 0;
   font-size: 1.125rem;
   max-width: 62ch;
+}
+
+/* ---- Running paragraphs are justified (human tweak round 1). Headings, nav, buttons, labels,
+   numbers, table cells and code keep their own alignment. Left-aligned below 480 px, where a
+   narrow measure opens wide gaps. ---- */
+main p,
+main li,
+main dd {
+  text-align: justify;
+  hyphens: auto;
+  text-wrap: pretty;
+}
+.hero-step,
+.hero-caption,
+.hero-notes p,
+.radar-card,
+.why dd,
+.why dt,
+.legend,
+.fig-tip-row,
+.egg-card p,
+.deadlines li {
+  text-align: left;
+  hyphens: manual;
+}
+@media (max-width: 479px) {
+  main p,
+  main li,
+  main dd {
+    text-align: left;
+    hyphens: manual;
+  }
 }
