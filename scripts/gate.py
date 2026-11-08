@@ -1441,7 +1441,9 @@ def p5_lighthouse() -> tuple[bool, str]:
 
 
 def p5_home_js_budget() -> tuple[bool, str]:
-    """Gzipped size of every script out/index.html loads (src, modulepreload and inline)."""
+    """Gzipped size of every script out/index.html names (src, modulepreload and inline).
+    A static lower bound only: chunks fetched after hydration are measured in a browser by
+    reviewer's `bundle` tests (DECISIONS 2026-11-08 P5, GSAP fetched at load)."""
     import gzip
     import re
 
@@ -2036,7 +2038,9 @@ PHASE_CHECKS: dict[int, list[Check]] = {
            p5_readability),
         Py("[5b] justify tests pass (no xfail/skip)", p5_strict("justify")),
         Py("[5b] glossary tests pass (no xfail/skip)", p5_strict("glossary")),
-        Py("[5c] home JS <= 200,000 B gzipped", p5_home_js_budget),
+        Py("[5c] scripts named by index.html <= 200,000 B gzipped", p5_home_js_budget),
+        Py("[5c] bundle tests pass: JS fetched before first interaction <= 200,000 B gz",
+           p5_strict("bundle")),
         Py("[5c] reducedmotion tests pass (no xfail/skip)", p5_strict("reducedmotion")),
         Py("[5c] longtask tests pass (no xfail/skip)", p5_strict("longtask")),
         Py("[5c] easteregg tests pass (no xfail/skip)", p5_strict("easteregg")),
