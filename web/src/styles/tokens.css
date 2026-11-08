@@ -1,0 +1,61 @@
+/*
+ * Design tokens (docs/PHASE5-DESIGN.md §2, corrected by DECISIONS 2026-11-08 · P5 phase-start).
+ *
+ * Every token is declared twice: a plain #rrggbb hex fallback (read by the gate's contrast check)
+ * and, inside @supports, its OKLCH form. The tweak panel (dev only) rewrites these variables.
+ *
+ * Meaning of colour: cyan = measured on hardware or a quantum quantity; red-orange = exposed;
+ * amber = marginal or extrapolated; violet = post-quantum safe; grey-blue = simulated.
+ * Text tokens (text-1 text-2 q threat warn pqc sim-text) are >= 4.5:1 on bg-0/1/2.
+ * `--sim` is for graphics only (>= 3:1); text that says "simulated" uses `--sim-text`.
+ */
+:root {
+  --bg-0: #05070b;
+  --bg-1: #0a0f17;
+  --bg-2: #101826;
+  --line: #1c2a3d;
+  --text-1: #e6eef7;
+  --text-2: #8a9bb0;
+  --q: #36e2c8;
+  --threat: #ff5c47;
+  --warn: #ffb347;
+  --pqc: #8b7cff;
+  --sim: #5b6b80;
+  --sim-text: #7488a0;
+
+  /* Motion: one easing family, expo-out. Durations are what the tweak panel scales. */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-ui: 180ms;
+  --dur-reveal: 520ms;
+  --glow: 1;
+
+  /* Layout */
+  --measure: 68ch;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --radius-card: 6px;
+  --radius-control: 4px;
+}
+
+@supports (color: oklch(0 0 0)) {
+  :root {
+    --bg-0: oklch(0.1 0.01 255);
+    --bg-1: oklch(0.14 0.015 255);
+    --bg-2: oklch(0.19 0.025 255);
+    --line: oklch(0.27 0.035 255);
+    --text-1: oklch(0.95 0.012 250);
+    --text-2: oklch(0.7 0.03 250);
+    --q: oklch(0.82 0.14 180);
+    --threat: oklch(0.69 0.2 31);
+    --warn: oklch(0.82 0.15 70);
+    --pqc: oklch(0.65 0.18 285);
+    --sim: oklch(0.52 0.03 250);
+    --sim-text: oklch(0.65 0.03 250);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-ui: 0ms;
+    --dur-reveal: 0ms;
+  }
+}

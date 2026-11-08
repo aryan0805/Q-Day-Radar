@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-08T20:43:01Z",
-  "git_commit": "9c3f3014955fb4ee19f4ffbec47453b4d3495982",
+  "generated_at": "2026-11-08T22:42:21Z",
+  "git_commit": "c85de6bc3b2638e9fb1fa64e7a2c1cc3703a7f26",
   "sources": [
     {
       "path": "quantum/estimate/literature.yaml",
-      "sha256": "944c9cb58d66284df297f6366d683246384ee5da3a210457817c2f0150e1a16d"
+      "sha256": "66f02c78dd90f5ae398fcbdd5018843dfc7454dc7618326e647f918b2f66b7b1"
     },
     {
       "path": "quantum/risk/data/demo_cbom.cdx.json",
@@ -33,6 +33,146 @@
     {
       "path": "results/analysis/phase2/summary-batch-20261108T044751Z.json",
       "sha256": "03ebea1b00fc5db6edf42b425dce99bb26942a446b63b88e331f87e69726e745"
+    },
+    {
+      "path": "quantum/circuits/shor_textbook.py",
+      "sha256": "992d68650a9399a4d5993a73beab02837b57794b5b9c42be7e5b4464b08047c3"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/plan.json",
+      "sha256": "329f8b8abb072b2c29f6efb378c880eedf5689722b1226f77d08f514b1a434b2"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/0.json",
+      "sha256": "7e12b81a54e104a7ba6623f4cd2425e0c206ccf989f5f03042226c8c36ba9086"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/1.json",
+      "sha256": "0d67511d580075ed551651071feae8438895429c20cffc32b3609812b9e03a5f"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/10.json",
+      "sha256": "107dc7817c9fd87343d9cf7ea4feb0df84750b8bc2b127684bfb9470f9857aca"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/11.json",
+      "sha256": "5ee47824206c65ce4f01fa5fc49d98ea72845bece20c865f1fb550c9c6ca5684"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/12.json",
+      "sha256": "b24c7826f954253b4329a53cf81e5e4b81203096f7bd13a5c52eb0a38ffbe04a"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/13.json",
+      "sha256": "e5bb5dee1116f10bfa9f409e1d2667253b121b77f19f8bd07abd068ce42629ec"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/14.json",
+      "sha256": "34608b1aa988a781a3a9463c716c60f001ac2a34f7ef6628b7d57772dee7cea1"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/15.json",
+      "sha256": "8e577186374ff312aa3a837079ff4e2e5a18a614392a5c9eb49ce6bfa8fc8ed8"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/16.json",
+      "sha256": "b9e8b431db0401fd84e629fc65dd426969cd965ce99ce8525cdb7256a60da3c2"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/17.json",
+      "sha256": "81415a40f5774cf84c88b8965633b093a34e3989dc180ce0f3deb718c6204809"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/18.json",
+      "sha256": "39b5e732e572da14b54fd553336d36c7caabb1c96ba792abec28c81f00239de1"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/19.json",
+      "sha256": "14d8cb9d8060dab2c761f324227e1ce937ffd50cc7a9cf1283fe52e89064fdb1"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/2.json",
+      "sha256": "5ec013c84ff00434401a270b235965ece0637c8c126754a30b6da445f9c8f0db"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/20.json",
+      "sha256": "d1908e1fd8e4461caee1bd0bdd39455ad46a70d6c05452c0bf5edba76e04b870"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/21.json",
+      "sha256": "88843acc18b30824f6174e1f6c7f469130dd0da25bb6de584b38e12824ef4a93"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/22.json",
+      "sha256": "44650a724d91c1ac4a8894eb1457e2d6d590098311042153026eefd25e623fb3"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/23.json",
+      "sha256": "258d2c59e2d7d0de5496c87db8d5019fad85dce3d76d5aa615703aa3abc116fd"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/24.json",
+      "sha256": "bd5efa3e76d134cb71228a61fed6833bcf97810c472191418eb99dc2cddb0103"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/25.json",
+      "sha256": "4fd1bfa33eb141824910360e710bff67d1f1230fdf5f02dfceda3f57460009ae"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/26.json",
+      "sha256": "dfca601e1b4321310da6f500e905774133438465d731503c8e20787b17e237fa"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/27.json",
+      "sha256": "1371392c8be60b1655a1ab875ec1276d066f81ba34a9c52c7f5c12df827fe6e3"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/28.json",
+      "sha256": "89ebef7d9c2dc8f1b72f58a7f9a546e98143fea2e3bdedc3b41548af2786ac77"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/29.json",
+      "sha256": "d5717ba4b62aa7facba74046637343f089a94deeb6d4f223ec98de0743b2da16"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/3.json",
+      "sha256": "72da4bb09680527d7174bbd08df01c3e73fffbed4da5bba0f037579d593d989b"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/30.json",
+      "sha256": "8d0c55f6ccf2acaf284797f45986ce1c23f3941fc81948dcab5be7ac07cb0f9e"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/31.json",
+      "sha256": "181f9fb1845353104e74af9f4172354bbf6c76e58a231bb619fcca5e02b3f9fb"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/32.json",
+      "sha256": "4d8517d19fa1961504694e1229a4d0bc87e05d6c5feabf02f7a39927c0940884"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/4.json",
+      "sha256": "498b08334e9fcbe068d07632dd21ec72b493dd7fe3ea898a8b0696d372eebf14"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/5.json",
+      "sha256": "1fd5354513cec20fa76a7ed5ffe96f7fcd29de613acb3b06c2e3077752d52968"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/6.json",
+      "sha256": "f64c6fa9b1a07814786558abd0921e4c994220c1fead4831475f2aae67fd9540"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/7.json",
+      "sha256": "917f3fddf71b07dc8ac8d5444ffddf20225e9c71f12d5c9e401d4d02ec60357a"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/8.json",
+      "sha256": "73604ee4ea193ba2fa2afbce59dd47564b437677780ef1e7cc12763b421ebc6e"
+    },
+    {
+      "path": "results/hardware/batch-20261108T044751Z/jobs/9.json",
+      "sha256": "a5caba2499e6d31c1738009e06f1b5d956a1d80b0dcfbd246c1b39cb5eb0e01d"
     },
     {
       "path": "results/metrics/grover_present_k2.json",

@@ -453,6 +453,27 @@
   source_url: https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf
   locator: "Section 4 p. 13 ('disallow its use under NIST standards and guidelines after 2035'); Table 2 p. 15; Table 4 pp. 16-17"
   retrieved: 2026-11-08
+# ---- Phase 5: federal accelerated deadlines restated in NIST IR 8547 (shown beside 2035 on screen) ----
+- id: nistir8547_federal_key_establishment_deadline
+  target: other
+  quantity: federal_pqc_deadline_year
+  year: 2030
+  value: 2030
+  units: year (by 31 December)
+  assumptions: "NIST IR 8547 final (October 2026), restating EO 14412 and OMB M-26-15: federal high value assets and high impact systems must adopt post-quantum cryptography for key establishment by December 31, 2030, and Section 4.1.2 (p. 17) says M-26-15 requires high value assets, high impact systems, and other systems with highly sensitive data to transition to quantum-resistant key establishment by December 31, 2030. A deadline directed at federal agencies under EO 14412 / OMB M-26-15; the document does not extend it to non-federal organisations, which it only advises. Earlier than NIST's own 2035 disallow date. Read from NIST's restatement only, not from EO 14412 or OMB M-26-15 themselves"
+  source_url: https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf
+  locator: "Section 4 p. 13 ('These systems must adopt post-quantum cryptography for key establishment by December 31, 2030, and for digital signatures by December 31, 2031'); also Section 1 Introduction p. 1; Section 4.1.2 p. 17 ('which requires high value assets, high impact systems, and other systems with highly sensitive data to transition to quantum-resistant key establishment by December 31, 2030')"
+  retrieved: 2026-11-08
+- id: nistir8547_federal_signature_deadline
+  target: other
+  quantity: federal_pqc_deadline_year
+  year: 2031
+  value: 2031
+  units: year (by 31 December)
+  assumptions: "NIST IR 8547 final (October 2026), restating EO 14412 and OMB M-26-15: federal high value assets and high impact systems must adopt post-quantum cryptography for digital signatures by December 31, 2031. A deadline directed at federal agencies under EO 14412 / OMB M-26-15; the document does not extend it to non-federal organisations, which it only advises. Earlier than NIST's own 2035 disallow date. Read from NIST's restatement only, not from EO 14412 or OMB M-26-15 themselves"
+  source_url: https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf
+  locator: "Section 4 p. 13 ('These systems must adopt post-quantum cryptography for key establishment by December 31, 2030, and for digital signatures by December 31, 2031'); also Section 1 Introduction p. 1"
+  retrieved: 2026-11-08
 
 # ---- Phase 4: newest ECC-256 estimates ----------------------------------------------------------
 # Fairness rule: each Shor target is compared with its most recent estimate. The newest ECC-256

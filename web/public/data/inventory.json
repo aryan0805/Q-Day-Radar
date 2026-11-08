@@ -1810,6 +1810,32 @@
     }
   ],
   "crqc_label": "trend extrapolation",
+  "deadlines": [
+    {
+      "key": "federal_key_establishment",
+      "literature_id": "nistir8547_federal_key_establishment_deadline",
+      "scope": "federal high value assets and high impact systems",
+      "year": 2030
+    },
+    {
+      "key": "federal_signature",
+      "literature_id": "nistir8547_federal_signature_deadline",
+      "scope": "federal high value assets and high impact systems",
+      "year": 2031
+    },
+    {
+      "key": "deprecate_after",
+      "literature_id": "nistir8547_deprecate_after",
+      "scope": "NIST: quantum-vulnerable algorithms deprecated after this year",
+      "year": 2030
+    },
+    {
+      "key": "disallow_after",
+      "literature_id": "nistir8547_disallow_after",
+      "scope": "NIST: quantum-vulnerable algorithms disallowed after this year",
+      "year": 2035
+    }
+  ],
   "family_order": {
     "median": [
       "ECC",

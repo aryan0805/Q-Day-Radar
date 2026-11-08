@@ -1,0 +1,177 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Tailwind v4: expose the tokens as utilities (bg-bg-1, text-text-2, border-line, ...). `inline`
+   keeps the utilities pointing at the CSS variables, so the dev tweak panel can change them. */
+@theme inline {
+  --color-bg-0: var(--bg-0);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-line: var(--line);
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-q: var(--q);
+  --color-threat: var(--threat);
+  --color-warn: var(--warn);
+  --color-pqc: var(--pqc);
+  --color-sim: var(--sim);
+  --color-sim-text: var(--sim-text);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-cond: "IBM Plex Sans Condensed", "IBM Plex Sans", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  background: var(--bg-0);
+  color: var(--text-1);
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg-0);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Every number is mono with tabular figures, so columns of figures line up. */
+.num,
+[data-src],
+[data-axis],
+[data-literal] {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-cond);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--q);
+  text-underline-offset: 0.2em;
+}
+
+/* Focus is never removed (spec §3). */
+:focus-visible {
+  outline: 2px solid var(--q);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--q) 35%, transparent);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -3rem;
+  z-index: 50;
+  padding: 0.5rem 0.9rem;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  color: var(--text-1);
+}
+.skip-link:focus-visible {
+  top: 0.75rem;
+}
+
+/* ---- Buttons (spec §3): rest, hover, pressed, focus ---- */
+.btn {
+  --tint: var(--q);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font: 500 0.9375rem/1.2 var(--font-sans);
+  color: var(--text-1);
+  text-decoration: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, #14202f, #0e1724);
+  border: 1px solid color-mix(in oklch, var(--tint) 35%, transparent);
+  border-radius: var(--radius-control);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 8px 24px -10px color-mix(in oklch, var(--tint) calc(45% * var(--glow)), transparent);
+  transition:
+    box-shadow var(--dur-ui) var(--ease),
+    border-color var(--dur-ui) var(--ease),
+    transform var(--dur-ui) var(--ease);
+}
+.btn:hover {
+  border-color: color-mix(in oklch, var(--tint) 60%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 10px 32px -8px color-mix(in oklch, var(--tint) calc(55% * var(--glow)), transparent);
+}
+.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 4px 12px -8px color-mix(in oklch, var(--tint) calc(45% * var(--glow)), transparent);
+}
+.btn-danger {
+  --tint: var(--threat);
+}
+.btn-safe {
+  --tint: var(--pqc);
+}
+
+/* ---- Cards: contact shadow plus hairline, no glow at rest (spec §3) ---- */
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.55);
+  transition: box-shadow var(--dur-ui) var(--ease);
+}
+.card:hover,
+.card[data-live] {
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.55),
+    0 12px 32px -14px color-mix(in oklch, var(--q) calc(40% * var(--glow)), transparent);
+}
+
+.shell {
+  width: min(100% - 2 * var(--gutter), 72rem);
+  margin-inline: auto;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: var(--radius-control);
+  transition: color var(--dur-ui) var(--ease);
+}
+.nav-link:hover {
+  color: var(--text-1);
+}
+.nav-link[aria-current="page"] {
+  color: var(--text-1);
+  box-shadow: inset 0 -2px 0 var(--q);
+}
+
+.muted {
+  color: var(--text-2);
+}

@@ -5,6 +5,11 @@
       "title": "Crqc Label",
       "type": "string"
     },
+    "model_only": {
+      "additionalProperties": true,
+      "title": "Model Only",
+      "type": "object"
+    },
     "order_notes": {
       "additionalProperties": {
         "type": "string"
@@ -39,6 +44,7 @@
     "crqc_label",
     "scenario_notes",
     "order_notes",
+    "model_only",
     "scenarios",
     "targets",
     "timeline"

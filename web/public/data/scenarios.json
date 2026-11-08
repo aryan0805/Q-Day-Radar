@@ -1,9 +1,95 @@
 {
   "crqc_label": "trend extrapolation",
+  "model_only": {
+    "median": {
+      "family_order": [
+        "ECC",
+        "RSA",
+        "AES",
+        "ML-DSA",
+        "ML-KEM",
+        "SHA",
+        "SLH-DSA"
+      ],
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "physical_qubits": 52455962.0,
+          "runtime_seconds": 5.636400219269626e+21
+        },
+        "ecc256": {
+          "crqc_year": 2040.755079128017,
+          "physical_qubits": 3556910.0,
+          "runtime_seconds": 9000.0
+        },
+        "rsa2048": {
+          "crqc_year": 2041.8148597972283,
+          "physical_qubits": 6346950.0,
+          "runtime_seconds": 754000.0
+        }
+      }
+    },
+    "optimistic": {
+      "family_order": [
+        "ECC",
+        "RSA",
+        "AES",
+        "ML-DSA",
+        "ML-KEM",
+        "SHA",
+        "SLH-DSA"
+      ],
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "physical_qubits": 12375002.0,
+          "runtime_seconds": 2.8644001114321044e+21
+        },
+        "ecc256": {
+          "crqc_year": 2035.562414944912,
+          "physical_qubits": 931062.0,
+          "runtime_seconds": 4680.0
+        },
+        "rsa2048": {
+          "crqc_year": 2036.431980429032,
+          "physical_qubits": 1715750.0,
+          "runtime_seconds": 390000.0
+        }
+      }
+    },
+    "pessimistic": {
+      "family_order": [
+        "ECC",
+        "AES",
+        "ML-DSA",
+        "ML-KEM",
+        "RSA",
+        "SHA",
+        "SLH-DSA"
+      ],
+      "targets": {
+        "aes128": {
+          "crqc_year": null,
+          "physical_qubits": 52455962.0,
+          "runtime_seconds": 5.636400219269625e+24
+        },
+        "ecc256": {
+          "crqc_year": 2046.6801747761788,
+          "physical_qubits": 3556910.0,
+          "runtime_seconds": 9000000.0
+        },
+        "rsa2048": {
+          "crqc_year": null,
+          "physical_qubits": 6346950.0,
+          "runtime_seconds": 754000000.0
+        }
+      }
+    }
+  },
   "order_notes": {
-    "median": "The family order here depends on an upper bound on physical qubits from a preprint: ecc256 (google2026_physical_qubits_ecc256). A different published figure could change the order.",
-    "optimistic": "The family order here depends on an upper bound on physical qubits from a preprint: ecc256 (google2026_physical_qubits_ecc256). A different published figure could change the order.",
-    "pessimistic": "The family order here depends on an upper bound on physical qubits from a preprint: ecc256 (google2026_physical_qubits_ecc256). A different published figure could change the order."
+    "median": "The computed family order (ECC > RSA) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source. With the earlier Roetteler and Litinski logical counts the model alone put RSA first.",
+    "optimistic": "The computed family order (ECC > RSA) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source. With the earlier Roetteler and Litinski logical counts the model alone put RSA first.",
+    "pessimistic": "The computed family order (ECC) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source. With the earlier Roetteler and Litinski logical counts the model alone put RSA first."
   },
   "scenario_notes": {
     "median": "At least one Shor attack fits inside the runtime cap.",

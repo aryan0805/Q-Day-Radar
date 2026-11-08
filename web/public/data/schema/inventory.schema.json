@@ -112,6 +112,35 @@
       "title": "Asset",
       "type": "object"
     },
+    "Deadline": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "literature_id": {
+          "title": "Literature Id",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "year": {
+          "title": "Year",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "key",
+        "literature_id",
+        "year",
+        "scope"
+      ],
+      "title": "Deadline",
+      "type": "object"
+    },
     "Replacement": {
       "additionalProperties": false,
       "properties": {
@@ -208,6 +237,13 @@
       "title": "Crqc Label",
       "type": "string"
     },
+    "deadlines": {
+      "items": {
+        "$ref": "#/$defs/Deadline"
+      },
+      "title": "Deadlines",
+      "type": "array"
+    },
     "family_order": {
       "additionalProperties": {
         "items": {
@@ -231,6 +267,7 @@
     "as_of_year",
     "scenarios",
     "crqc_label",
+    "deadlines",
     "family_order",
     "assets"
   ],

@@ -15,12 +15,23 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
-from quantum.risk import inventory
-from quantum.risk.timeline import SECONDS_PER_YEAR
+from quantum.backends import get_fake_backend
+from quantum.estimate import common
+from quantum.risk import allowlist, herodata, inventory
+from quantum.risk.mapping import FAMILIES, TARGET_OF_FAMILY
+from quantum.risk.timeline import SECONDS_PER_YEAR, crqc_year
 
 ROOT = inventory.ROOT
 EST = ROOT / "results" / "estimate"
 HW_SUMMARY = ROOT / "results" / "analysis" / "phase2" / "summary-batch-20261108T044751Z.json"
+HW_BATCH = ROOT / "results" / "hardware" / HW_SUMMARY.stem.removeprefix("summary-")
+# NIST IR 8547 dates shown beside each other on the Inventory screen: literature ids only.
+DEADLINE_IDS = {
+    "federal_key_establishment": "nistir8547_federal_key_establishment_deadline",
+    "federal_signature": "nistir8547_federal_signature_deadline",
+    "deprecate_after": "nistir8547_deprecate_after",
+    "disallow_after": "nistir8547_disallow_after",
+}
 
 
 class _M(BaseModel):
@@ -59,11 +70,19 @@ class Asset(_M):
     by_scenario: dict[str, ScenarioResult]
 
 
+class Deadline(_M):
+    key: str
+    literature_id: str
+    year: int
+    scope: str
+
+
 class Inventory(_M):
     as_of: str
     as_of_year: int
     scenarios: list[str]
     crqc_label: str
+    deadlines: list[Deadline]
     family_order: dict[str, list[str]]
     assets: list[Asset]
 
@@ -72,6 +91,7 @@ class ScenariosFile(_M):
     crqc_label: str
     scenario_notes: dict[str, str]
     order_notes: dict[str, str]
+    model_only: dict[str, Any]
     scenarios: dict[str, Any]
     targets: dict[str, Any]
     timeline: dict[str, Any]
@@ -114,6 +134,14 @@ class LabFile(_M):
     circuits: list[LabCircuit]
 
 
+class HeroFile(_M):
+    circuit: dict[str, Any]
+    ideal: dict[str, Any]
+    hardware: dict[str, Any]
+    notes: dict[str, str]
+    resolution: dict[str, Any] | None
+
+
 class SourceFile(_M):
     path: str
     sha256: str
@@ -130,6 +158,7 @@ MODELS: dict[str, type[BaseModel]] = {
     "scenarios": ScenariosFile,
     "scaling": ScalingFile,
     "lab": LabFile,
+    "hero": HeroFile,
     "meta": Meta,
 }
 
@@ -194,7 +223,10 @@ def source_files() -> list[Path]:
         EST / "scaling.json",
         inventory.TIMELINE_PATH,
         HW_SUMMARY,
+        ROOT / "quantum" / "circuits" / "shor_textbook.py",
+        HW_BATCH / "plan.json",
     ]
+    files += sorted((HW_BATCH / "jobs").glob("*.json"))
     files += sorted((ROOT / "results" / "metrics").glob("*.json"))
     files += sorted((ROOT / "results" / "noisy").glob("*.json"))
     return files
@@ -230,41 +262,124 @@ def scenario_notes(timeline: dict) -> dict[str, str]:
     return notes
 
 
-def order_notes(timeline: dict) -> dict[str, str]:
-    """Say when a scenario's family order rests on a paper's upper bound (a preprint)."""
+def _family_year(targets: dict, family: str) -> float:
+    """CRQC year of the family's costed attack target; infinity when there is none or no year."""
+    t = TARGET_OF_FAMILY[family]
+    y = targets[t]["crqc_year"] if t else None
+    return float("inf") if y is None else y
+
+
+def _family_order(targets: dict) -> list[str]:
+    return sorted(FAMILIES, key=lambda f: (_family_year(targets, f), f))
+
+
+def order_notes(timeline: dict, est: dict, mo: dict) -> dict[str, str]:
+    """Say what the family order rests on, from the data (no number is typed here).
+
+    Compares the computed order with the model-only order, names the paper-fed targets and the
+    ECC-256 logical source with its bound flag, and records the Phase 4 history as text.
+    """
+    src = est["targets"]["ecc256"]["logical_source"]
+    ids = ", ".join(src["literature_ids"])
+    bound = src.get("bound")
     notes = {}
     for sc, body in timeline["scenarios"].items():
-        rests = [
-            f"{t} ({r['physical_source']})"
-            for t, r in body["targets"].items()
-            if r.get("physical_bound") == "upper"
-        ]
+        computed = _family_order(body["targets"])
+        at_risk = [f for f in computed if _family_year(body["targets"], f) != float("inf")]
+        alone = mo[sc]["family_order"]
+        fed = [t for t, r in body["targets"].items() if r["physical_source"] != "model"]
+        same = computed == alone
+        relation = (
+            "equals the order from the Phase 3 model alone, so the paper feeds move the "
+            "CRQC years but not the order"
+            if same
+            else "differs from the order from the Phase 3 model alone, so the paper feeds "
+            "change the order"
+        )
+        fed_text = (
+            "Physical qubits come from a paper for " + ", ".join(fed) + "; "
+            if fed
+            else "No paper sets physical qubits here; "
+        )
+        bound_text = f" ({bound} bound)" if bound else ""
         notes[sc] = (
-            "The family order here depends on an upper bound on physical qubits from a preprint: "
-            + ", ".join(rests)
-            + ". A different published figure could change the order."
-            if rests
-            else "The family order here rests on the Phase 3 model and on peer-reviewed or "
-            "labelled paper figures only."
+            f"The computed family order ({' > '.join(at_risk)}) {relation}. {fed_text}the "
+            f"ECC-256 logical counts come from {ids}{bound_text}, so the order rests on that "
+            "source. With the earlier Roetteler and Litinski logical counts the model alone "
+            "put RSA first."
         )
     return notes
+
+
+def model_only(timeline: dict, est: dict) -> dict:
+    """The family order from the Phase 3 model alone (no paper feed), next to the computed one.
+
+    Same doubling time, baseline, runtime cap and CRQC formula as the timeline; only the physical
+    qubits differ (the model's, not min(model, paper)).
+    """
+    base = timeline["baseline"]["qubits"]
+    cap = timeline["runtime_cap_years"]
+    out: dict = {}
+    for sc, body in timeline["scenarios"].items():
+        targets = {}
+        for t in body["targets"]:
+            m = est["targets"][t]["by_scenario"][sc]
+            targets[t] = {
+                "physical_qubits": float(m["physical_qubits"]),
+                "runtime_seconds": float(m["runtime_seconds"]),
+                "crqc_year": crqc_year(
+                    float(m["physical_qubits"]),
+                    float(m["runtime_seconds"]),
+                    base,
+                    body["doubling_years"],
+                    timeline["as_of_year"],
+                    cap,
+                ),
+            }
+        out[sc] = {"targets": targets, "family_order": _family_order(targets)}
+    return out
+
+
+def deadlines() -> list[dict]:
+    lit = common.literature()
+    scopes = {
+        "federal_key_establishment": "federal high value assets and high impact systems",
+        "federal_signature": "federal high value assets and high impact systems",
+        "deprecate_after": "NIST: quantum-vulnerable algorithms deprecated after this year",
+        "disallow_after": "NIST: quantum-vulnerable algorithms disallowed after this year",
+    }
+    return [
+        {
+            "key": k,
+            "literature_id": lid,
+            "year": int(lit[lid]["value"]),
+            "scope": scopes[k],
+        }
+        for k, lid in DEADLINE_IDS.items()
+    ]
 
 
 def build_all() -> dict[str, dict]:
     timeline = inventory.load_timeline()
     est = _json(EST / "scenarios.json")
+    mo = model_only(timeline, est)
     data = {
-        "inventory": inventory.build_inventory(inventory.load_cbom(), timeline),
+        "inventory": {
+            **inventory.build_inventory(inventory.load_cbom(), timeline),
+            "deadlines": deadlines(),
+        },
         "scenarios": {
             "crqc_label": inventory.CRQC_LABEL,
             "scenario_notes": scenario_notes(timeline),
-            "order_notes": order_notes(timeline),
+            "order_notes": order_notes(timeline, est, mo),
+            "model_only": mo,
             "scenarios": est["scenarios"],
             "targets": est["targets"],
             "timeline": timeline,
         },
         "scaling": _json(EST / "scaling.json"),
         "lab": build_lab(),
+        "hero": herodata.build_hero(HW_BATCH, get_fake_backend().num_qubits),
     }
     data["meta"] = {
         "git_commit": _git_commit(),
@@ -279,6 +394,9 @@ def build_all() -> dict[str, dict]:
     }
     for name, model in MODELS.items():
         model.model_validate(data[name])  # fail loudly if a file drifts from its model
+        problems = allowlist.check(name, data[name])
+        if problems:
+            raise ValueError(f"{name}.json fails the allow-list: " + "; ".join(problems[:10]))
     return data
 
 
