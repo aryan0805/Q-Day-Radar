@@ -53,6 +53,31 @@ def test_provenance_home_hero_discloses_that_the_circuit_is_compiled(open_page, 
 
 
 @pytest.mark.parametrize("scenario", SCENARIOS)
+def test_provenance_home_hero_technical_layer_says_compiled_and_order_built_in(
+    open_page, scenario
+) -> None:  # noqa: ANN001
+    # Decision (tweak round 1): the plain layer keeps "simplified demo version"; the exact term and
+    # its explanation live in the technical layer AND the glossary. A visitor who never hovers
+    # must still be able to read it, so the tooltip alone does not satisfy this.
+    from quantum.circuits.registry import build_circuit
+
+    kind = build_circuit(load_data("hero")["circuit"]["name"]).metadata["kind"]
+    assert kind == "compiled"
+    page = open_page(f"/?s={scenario}")
+    settle(page, scenario)
+    wake_hero(page)
+    layers = page.locator(".hero-wrap [data-layer='technical']")
+    assert layers.count() >= 1, "the hero has no technical layer"
+    # textContent, not innerText: a closed <details> is not rendered, but it is still in the page
+    text = " ".join(t.lower() for t in layers.all_text_contents())
+    assert kind in text, f"the hero's technical layer does not name the circuit {kind!r}"
+    assert re.search(r"built in|built into|baked in", text), (
+        "the technical layer must say the order is built into the circuit"
+    )
+    assert "generic" not in re.sub(r"not generic|rather than generic|isn.t generic", "", text)
+
+
+@pytest.mark.parametrize("scenario", SCENARIOS)
 def test_provenance_home_figures_are_traced_after_the_hero_loads(open_page, scenario) -> None:  # noqa: ANN001
     # the hero's own figures (job ids, counts, finish time) only exist once its chunk has loaded
     page = open_page(f"/?s={scenario}")

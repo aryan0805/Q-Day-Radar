@@ -8,6 +8,8 @@ digits shown.
 
 from __future__ import annotations
 
+import gzip
+from dataclasses import dataclass
 from typing import Any
 
 from playwright.sync_api import Page
@@ -110,3 +112,61 @@ def wake_hero(page: Page, timeout_ms: int = 10000) -> None:
     page.mouse.move(200, 300)
     page.mouse.wheel(0, 300)
     page.wait_for_selector(".hero-stage .gloss[data-term='compiled']", timeout=timeout_ms)
+
+
+# ---------------------------------------------------------------------------- script budget
+
+GSAP_MARKERS = ("GSAP target", "gsap.com")
+BUDGET_BYTES = 200_000  # gzip -9 of the JS fetched before the first interaction (lead, 2026-11-08)
+# inline <script> bodies that are executable (the CSP rule in helpers.INLINE_JS_TYPES)
+_INLINE = """
+() => [...document.scripts]
+  .filter(s => !s.src && s.textContent.trim() &&
+               ['', 'text/javascript', 'application/javascript', 'module'].includes(s.type))
+  .map(s => s.textContent)
+"""
+
+
+@dataclass(frozen=True)
+class Script:
+    url: str
+    gz: int  # gzip -9 of the body, in bytes
+    gsap: bool  # the body contains GSAP (found by content, so a renamed chunk is still found)
+    inline: bool = False
+
+
+def gz9(data: bytes) -> int:
+    return len(gzip.compress(data, 9))
+
+
+def script_report(page: Page) -> list[Script]:
+    """Every script the page has received so far: each JS response body and each executable inline
+    script, gzip -9 each. Needs `page.qday.responses` (conftest.open_page collects them)."""
+    out: list[Script] = []
+    for r in page.qday.responses:
+        ctype = r.headers.get("content-type", "")
+        if not (r.url.split("?")[0].endswith(".js") or "javascript" in ctype):
+            continue
+        try:
+            body = r.body()
+        except Exception:  # an aborted request has no body; it was not delivered either
+            continue
+        out.append(Script(r.url, gz9(body), any(m.encode() in body for m in GSAP_MARKERS)))
+    for i, text in enumerate(page.evaluate(_INLINE)):
+        out.append(Script(f"inline#{i}", gz9(text.encode("utf-8")), False, inline=True))
+    return out
+
+
+def total_gz(scripts: list[Script]) -> int:
+    return sum(s.gz for s in scripts)
+
+
+def gsap_requested(scripts: list[Script]) -> list[str]:
+    return [s.url for s in scripts if s.gsap]
+
+
+def idle_without_interacting(page: Page, extra_ms: int = 5000) -> None:
+    """The load-time state the budget is measured in: network idle, then a further wait for any
+    timer-started chunk (builder: a hero chunk loads 1.2 s after load in reduced motion)."""
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(extra_ms)

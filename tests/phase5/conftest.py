@@ -105,10 +105,13 @@ def open_page(browser, site: str) -> Iterator[Callable[..., Page]]:  # noqa: ANN
         )
         contexts.append(ctx)
         page = ctx.new_page()
-        log = SimpleNamespace(console=[], pageerrors=[], bad_responses=[], requests=[], base=site)
+        log = SimpleNamespace(
+            console=[], pageerrors=[], bad_responses=[], requests=[], responses=[], base=site
+        )
         page.on("console", lambda m: m.type == "error" and log.console.append(m.text))
         page.on("pageerror", lambda e: log.pageerrors.append(str(e)))
         page.on("request", lambda r: log.requests.append(r.url))
+        page.on("response", lambda r: log.responses.append(r))
         page.on(
             "response",
             lambda r: r.status >= 400 and log.bad_responses.append((r.status, r.url)),
@@ -120,3 +123,22 @@ def open_page(browser, site: str) -> Iterator[Callable[..., Page]]:  # noqa: ANN
     yield _open
     for ctx in contexts:
         ctx.close()
+
+
+@pytest.fixture
+def serve_dir() -> Iterator[Callable[[Path], str]]:
+    """serve_dir(path) -> base URL of a static server over any directory (for synthetic pages
+    that a mutation test builds in tmp_path). Stopped at teardown."""
+    servers: list[_Server] = []
+
+    def _serve(directory: Path) -> str:
+        handler = functools.partial(_Handler, directory=str(directory))
+        server = _Server(("127.0.0.1", 0), handler)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        servers.append(server)
+        return f"http://127.0.0.1:{server.server_address[1]}"
+
+    yield _serve
+    for server in servers:
+        server.shutdown()
+        server.server_close()

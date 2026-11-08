@@ -1,0 +1,67 @@
+{
+  "measured_at": "2026-11-08T23:46:25Z",
+  "budget_gz_bytes": 200000,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "method": "gzip -9 of each JS response body and executable inline script; network idle + 5 s with no interaction, then one wheel scroll",
+  "builds": {
+    "before-dc77fde": {
+      "commit": "dc77fde0bf6325dc546b1f98a9b3cf70ba4c2466",
+      "static_index_html_gz_bytes": 193188,
+      "normal_motion": {
+        "before_interaction_gz_bytes": 249789,
+        "before_interaction_scripts": 19,
+        "gsap_before_interaction": true,
+        "after_one_scroll_gz_bytes": 249789,
+        "after_one_scroll_scripts": 19,
+        "added_by_one_scroll_gz_bytes": 0,
+        "gsap_after_one_scroll": true,
+        "gsap_chunk_gz_bytes": 27327,
+        "other_origin_requests_before": [],
+        "other_origin_requests_total": []
+      },
+      "reduced_motion": {
+        "before_interaction_gz_bytes": 205020,
+        "before_interaction_scripts": 17,
+        "gsap_before_interaction": false,
+        "after_one_scroll_gz_bytes": 205020,
+        "after_one_scroll_scripts": 17,
+        "added_by_one_scroll_gz_bytes": 0,
+        "gsap_after_one_scroll": false,
+        "gsap_chunk_gz_bytes": 0,
+        "other_origin_requests_before": [],
+        "other_origin_requests_total": []
+      }
+    },
+    "after-a7f5ec9": {
+      "commit": "a7f5ec9f1176e843cf476a2b8fb3cd8206e8de54",
+      "static_index_html_gz_bytes": 194546,
+      "normal_motion": {
+        "before_interaction_gz_bytes": 188831,
+        "before_interaction_scripts": 15,
+        "gsap_before_interaction": false,
+        "after_one_scroll_gz_bytes": 251310,
+        "after_one_scroll_scripts": 19,
+        "added_by_one_scroll_gz_bytes": 62479,
+        "gsap_after_one_scroll": true,
+        "gsap_chunk_gz_bytes": 27327,
+        "other_origin_requests_before": [],
+        "other_origin_requests_total": []
+      },
+      "reduced_motion": {
+        "before_interaction_gz_bytes": 198072,
+        "before_interaction_scripts": 16,
+        "gsap_before_interaction": false,
+        "after_one_scroll_gz_bytes": 206541,
+        "after_one_scroll_scripts": 17,
+        "added_by_one_scroll_gz_bytes": 8469,
+        "gsap_after_one_scroll": false,
+        "gsap_chunk_gz_bytes": 0,
+        "other_origin_requests_before": [],
+        "other_origin_requests_total": []
+      }
+    }
+  }
+}
