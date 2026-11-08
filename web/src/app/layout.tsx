@@ -8,6 +8,7 @@ import "@fontsource/ibm-plex-mono/latin-500.css";
 import "../styles/globals.css";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { LatticeField } from "../components/background/LatticeField";
 import { TweakLoader } from "../components/TweakLoader";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <LatticeField />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

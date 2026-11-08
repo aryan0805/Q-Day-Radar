@@ -17,3 +17,4 @@ results/*.lock
 web/.vercel/
 web/tsconfig.tsbuildinfo
 web/next-env.d.ts
+.playwright-mcp/
