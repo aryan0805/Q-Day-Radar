@@ -260,6 +260,11 @@
       },
       "title": "Scenarios",
       "type": "array"
+    },
+    "summary": {
+      "additionalProperties": true,
+      "title": "Summary",
+      "type": "object"
     }
   },
   "required": [
@@ -268,6 +273,7 @@
     "scenarios",
     "crqc_label",
     "deadlines",
+    "summary",
     "family_order",
     "assets"
   ],

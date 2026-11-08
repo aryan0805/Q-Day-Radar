@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-08T22:50:12Z",
-  "git_commit": "e8bcc98c6f2931cd0227430188b26e1078822f86",
+  "generated_at": "2026-11-08T22:59:31Z",
+  "git_commit": "753343a7af786820a4198b3ab58d6096e49bda96",
   "sources": [
     {
       "path": "quantum/estimate/literature.yaml",

@@ -163,6 +163,11 @@
       "title": "Circuits",
       "type": "array"
     },
+    "device": {
+      "additionalProperties": true,
+      "title": "Device",
+      "type": "object"
+    },
     "hardware_batch": {
       "title": "Hardware Batch",
       "type": "string"
@@ -170,6 +175,7 @@
   },
   "required": [
     "hardware_batch",
+    "device",
     "circuits"
   ],
   "title": "LabFile",

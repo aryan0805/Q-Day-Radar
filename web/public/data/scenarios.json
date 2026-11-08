@@ -1,5 +1,43 @@
 {
   "crqc_label": "trend extrapolation",
+  "gaps": {
+    "median": {
+      "ecc256": {
+        "over_device": 3205.128205128205,
+        "over_record": 446.03033006244425,
+        "physical_qubits": 500000.0
+      },
+      "rsa2048": {
+        "over_device": 5755.538461538462,
+        "over_record": 800.9491525423729,
+        "physical_qubits": 897864.0
+      }
+    },
+    "optimistic": {
+      "ecc256": {
+        "over_device": 3205.128205128205,
+        "over_record": 446.03033006244425,
+        "physical_qubits": 500000.0
+      },
+      "rsa2048": {
+        "over_device": 5755.538461538462,
+        "over_record": 800.9491525423729,
+        "physical_qubits": 897864.0
+      }
+    },
+    "pessimistic": {
+      "ecc256": {
+        "over_device": 3205.128205128205,
+        "over_record": 446.03033006244425,
+        "physical_qubits": 500000.0
+      },
+      "rsa2048": {
+        "over_device": 5755.538461538462,
+        "over_record": 800.9491525423729,
+        "physical_qubits": 897864.0
+      }
+    }
+  },
   "model_only": {
     "median": {
       "family_order": [
@@ -87,9 +125,9 @@
     }
   },
   "order_notes": {
-    "median": "The computed family order (ECC > RSA) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source.",
-    "optimistic": "The computed family order (ECC > RSA) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source.",
-    "pessimistic": "The computed family order (ECC) equals the order from the Phase 3 model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source."
+    "median": "The computed family order (ECC > RSA) equals the order from the base cost model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source.",
+    "optimistic": "The computed family order (ECC > RSA) equals the order from the base cost model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source.",
+    "pessimistic": "The computed family order (ECC) equals the order from the base cost model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source."
   },
   "scenario_notes": {
     "median": "At least one Shor attack fits inside the runtime cap.",

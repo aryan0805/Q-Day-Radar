@@ -54,6 +54,7 @@ export default function TweakPanel() {
 
   return (
     <aside
+      data-tweak-panel="QDAY_TWEAK_PANEL"
       aria-label="Design tweaks (development only)"
       style={{
         position: "fixed",

@@ -468,5 +468,10 @@
       }
     }
   ],
+  "device": {
+    "n_qubits": 156,
+    "name": "ibm_kingston",
+    "source": "FakeKingston snapshot of ibm_kingston (qiskit-ibm-runtime)"
+  },
   "hardware_batch": "batch-20261108T044751Z"
 }

@@ -22,6 +22,8 @@ from quantum.classical.postprocess import convergents, factors_from_order, order
 ROOT = Path(__file__).resolve().parents[2]
 CIRCUIT_NAME = "shor15_textbook"
 PROB_DIGITS = 12
+DEVICE_NAME = "ibm_kingston"
+DEVICE_QUBITS_SOURCE = "FakeKingston snapshot of ibm_kingston (qiskit-ibm-runtime)"
 
 
 def _gates(qc) -> list[dict]:
@@ -142,7 +144,7 @@ def build_hero(batch_dir: Path, n_qubits_of_backend: int) -> dict:
         "hardware": {
             **hw,
             "device_qubits": n_qubits_of_backend,
-            "device_qubits_source": "FakeKingston snapshot of ibm_kingston (qiskit-ibm-runtime)",
+            "device_qubits_source": DEVICE_QUBITS_SOURCE,
             "pooled_raw_counts": dict(sorted(pooled.items())),
         },
         "notes": _notes(meta["kind"], meta["a"], meta["N"], hw["backend"]),

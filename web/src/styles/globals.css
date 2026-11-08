@@ -46,9 +46,8 @@ main {
 
 /* Every number is mono with tabular figures, so columns of figures line up. */
 .num,
-[data-src],
-[data-axis],
-[data-literal] {
+.fig,
+[data-axis] {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
@@ -181,4 +180,308 @@ a {
 
 .muted {
   color: var(--text-2);
+}
+
+/* ---- Traced figures and their provenance tooltip ---- */
+.fig-wrap {
+  position: relative;
+  display: inline-block;
+}
+.fig {
+  border-bottom: 1px dotted var(--text-2);
+  cursor: help;
+}
+.fig:focus-visible {
+  outline-offset: 1px;
+}
+.fig-unit {
+  margin-left: 0.25em;
+  color: var(--text-2);
+}
+.fig-tip {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: 40;
+  width: max-content;
+  max-width: min(22rem, 80vw);
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.8);
+  font: 400 0.8125rem/1.4 var(--font-sans);
+  color: var(--text-1);
+  text-align: left;
+}
+.fig-tip-row {
+  display: block;
+  margin-block: 0.15rem;
+  overflow-wrap: anywhere;
+}
+.fig-tip code {
+  font-family: var(--font-mono);
+  color: var(--text-2);
+}
+
+/* ---- Segmented control (scenario switch, filters) ---- */
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--bg-0);
+  overflow: hidden;
+}
+.seg button {
+  padding: 0.35rem 0.8rem;
+  font: 500 0.875rem/1.2 var(--font-sans);
+  color: var(--text-2);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--dur-ui) var(--ease), background var(--dur-ui) var(--ease);
+}
+.seg button + button {
+  border-left: 1px solid var(--line);
+}
+.seg button:hover {
+  color: var(--text-1);
+}
+.seg button[aria-pressed="true"],
+.seg button[aria-checked="true"] {
+  color: var(--text-1);
+  background: var(--bg-2);
+  box-shadow: inset 0 -2px 0 var(--q);
+}
+.seg button:focus-visible {
+  outline-offset: -2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- Controls, table, drawer ---- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: end;
+  margin-block: 1.25rem;
+}
+.controls label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+}
+.controls label.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-1);
+}
+select {
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  color: var(--text-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+}
+.tbl-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: color-mix(in oklch, var(--bg-1) 88%, transparent);
+}
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.tbl th {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font: 600 0.8125rem/1.2 var(--font-cond);
+  color: var(--text-2);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.tbl td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.tbl tbody tr:last-child td {
+  border-bottom: 0;
+}
+.tbl tbody tr:hover {
+  background: color-mix(in oklch, var(--bg-2) 70%, transparent);
+}
+.linkish {
+  padding: 0;
+  font: inherit;
+  color: var(--q);
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgb(0 0 0 / 0.55);
+}
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 61;
+  width: min(30rem, 100vw);
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: var(--bg-1);
+  border-left: 1px solid var(--line);
+  box-shadow: -16px 0 40px -16px rgb(0 0 0 / 0.8);
+}
+.why {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  margin: 0;
+}
+.why dt {
+  color: var(--text-2);
+}
+.why dd {
+  margin: 0;
+  text-align: right;
+}
+.deadlines {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.drawer {
+  outline: none;
+}
+.drawer .fig-tip {
+  left: auto;
+  right: 0;
+}
+
+/* ---- Lab bars ---- */
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: 1rem;
+}
+.bars {
+  display: grid;
+  gap: 0.6rem;
+}
+.barrow {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr 4.2rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+.barlabel {
+  display: grid;
+  line-height: 1.25;
+}
+.chip {
+  font-size: 0.75rem;
+}
+.track {
+  position: relative;
+  height: 1rem;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.track .fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  opacity: 0.85;
+  transition: width var(--dur-reveal) var(--ease);
+}
+.track .whisker {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  background: var(--text-1);
+}
+.track .chance {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  border-left: 2px dashed var(--warn);
+}
+.barval {
+  text-align: right;
+}
+.axis {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.35rem 4.8rem 0 10.1rem;
+  font-size: 0.75rem;
+  color: var(--text-2);
+}
+
+.scale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* ---- Overview ---- */
+.ov-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+}
+.legend i {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+}
+.radar-card {
+  min-height: 2.6rem;
+  margin-block: 0.75rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  font-size: 0.875rem;
+}
+.pill {
+  padding: 0.05rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-0);
+  font-size: 0.875rem;
 }

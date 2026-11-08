@@ -54,9 +54,13 @@ function* walk(dir) {
 export function scan(dirs, envPath) {
   const canaries = envValues(envPath);
   const hits = [];
+  const missing = [];
   let files = 0;
   for (const d of dirs) {
-    if (!existsSync(d)) continue;
+    if (!existsSync(d)) {
+      missing.push(d);
+      continue;
+    }
     for (const file of walk(d)) {
       files += 1;
       const text = readFileSync(file, "latin1");
@@ -70,7 +74,7 @@ export function scan(dirs, envPath) {
       }
     }
   }
-  return { files, canaries: canaries.length, hits };
+  return { files, canaries: canaries.length, hits, missing };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -83,6 +87,12 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   }
   if (dirs.length === 0) dirs.push(resolve(here, "..", "out"), resolve(here, "..", "public", "data"));
   const r = scan(dirs, envPath);
+  // A scan that looked at nothing must not pass: a mistyped path or a failed build is an error.
+  if (r.missing.length || r.files === 0) {
+    for (const d of r.missing) console.error(`canary scan: directory not found: ${d}`);
+    console.error(`canary scan: scanned ${r.files} files; refusing to report a clean result`);
+    process.exit(2);
+  }
   console.log(`canary scan: ${r.files} files, ${r.canaries} .env values in memory, ${r.hits.length} hits`);
   for (const h of r.hits) console.log(`  HIT ${h.kind}: ${h.file}`);
   process.exit(r.hits.length ? 1 : 0);

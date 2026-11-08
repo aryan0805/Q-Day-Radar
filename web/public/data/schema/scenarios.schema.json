@@ -5,6 +5,11 @@
       "title": "Crqc Label",
       "type": "string"
     },
+    "gaps": {
+      "additionalProperties": true,
+      "title": "Gaps",
+      "type": "object"
+    },
     "model_only": {
       "additionalProperties": true,
       "title": "Model Only",
@@ -45,6 +50,7 @@
     "scenario_notes",
     "order_notes",
     "model_only",
+    "gaps",
     "scenarios",
     "targets",
     "timeline"

@@ -1869,5 +1869,28 @@
     "median",
     "optimistic",
     "pessimistic"
-  ]
+  ],
+  "summary": {
+    "median": {
+      "assets_total": 42,
+      "classically_deprecated": 2,
+      "exposed": 13,
+      "soonest_crqc_year": 2037.164342914991,
+      "with_finite_margin": 23
+    },
+    "optimistic": {
+      "assets_total": 42,
+      "classically_deprecated": 2,
+      "exposed": 14,
+      "soonest_crqc_year": 2034.6780009772792,
+      "with_finite_margin": 23
+    },
+    "pessimistic": {
+      "assets_total": 42,
+      "classically_deprecated": 2,
+      "exposed": 5,
+      "soonest_crqc_year": 2041.6475313171863,
+      "with_finite_margin": 13
+    }
+  }
 }

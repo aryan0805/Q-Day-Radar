@@ -83,6 +83,7 @@ class Inventory(_M):
     scenarios: list[str]
     crqc_label: str
     deadlines: list[Deadline]
+    summary: dict[str, Any]
     family_order: dict[str, list[str]]
     assets: list[Asset]
 
@@ -92,6 +93,7 @@ class ScenariosFile(_M):
     scenario_notes: dict[str, str]
     order_notes: dict[str, str]
     model_only: dict[str, Any]
+    gaps: dict[str, Any]
     scenarios: dict[str, Any]
     targets: dict[str, Any]
     timeline: dict[str, Any]
@@ -131,6 +133,7 @@ class LabCircuit(_M):
 
 class LabFile(_M):
     hardware_batch: str
+    device: dict[str, Any]
     circuits: list[LabCircuit]
 
 
@@ -165,6 +168,31 @@ MODELS: dict[str, type[BaseModel]] = {
 
 def _json(path: Path) -> Any:
     return json.loads(path.read_text())
+
+
+def device() -> dict:
+    """The device the hardware batch ran on: its qubit count, from the snapshot we simulate with."""
+    return {
+        "name": herodata.DEVICE_NAME,
+        "n_qubits": get_fake_backend().num_qubits,
+        "source": herodata.DEVICE_QUBITS_SOURCE,
+    }
+
+
+def gaps(timeline: dict, dev: dict) -> dict:
+    """Physical qubits each Shor attack needs, over the device's size and over the record chip."""
+    record = timeline["baseline"]["qubits"]
+    out: dict = {}
+    for sc, body in timeline["scenarios"].items():
+        out[sc] = {}
+        for t in ("rsa2048", "ecc256"):
+            p = body["targets"][t]["physical_qubits"]
+            out[sc][t] = {
+                "physical_qubits": p,
+                "over_device": p / dev["n_qubits"],
+                "over_record": p / record,
+            }
+    return out
 
 
 def build_lab() -> dict:
@@ -210,7 +238,11 @@ def build_lab() -> dict:
                 "hardware": hw,
             }
         )
-    return {"hardware_batch": HW_SUMMARY.stem.removeprefix("summary-"), "circuits": circuits}
+    return {
+        "hardware_batch": HW_SUMMARY.stem.removeprefix("summary-"),
+        "device": device(),
+        "circuits": circuits,
+    }
 
 
 def source_files() -> list[Path]:
@@ -290,10 +322,10 @@ def order_notes(timeline: dict, est: dict, mo: dict) -> dict[str, str]:
         fed = [t for t, r in body["targets"].items() if r["physical_source"] != "model"]
         same = computed == alone
         relation = (
-            "equals the order from the Phase 3 model alone, so the paper feeds move the "
+            "equals the order from the base cost model alone, so the paper feeds move the "
             "CRQC years but not the order"
             if same
-            else "differs from the order from the Phase 3 model alone, so the paper feeds "
+            else "differs from the order from the base cost model alone, so the paper feeds "
             "change the order"
         )
         fed_text = (
@@ -339,6 +371,26 @@ def model_only(timeline: dict, est: dict) -> dict:
     return out
 
 
+def summary(inv: dict) -> dict:
+    """Per-scenario counts the Overview shows, so every figure on screen is a stored value."""
+    out: dict = {}
+    for sc in inv["scenarios"]:
+        margins = [a["by_scenario"][sc]["margin_years"] for a in inv["assets"]]
+        years = [
+            a["by_scenario"][sc]["crqc_year"]
+            for a in inv["assets"]
+            if a["by_scenario"][sc]["crqc_basis"] == inventory.CRQC_LABEL
+        ]
+        out[sc] = {
+            "assets_total": len(inv["assets"]),
+            "with_finite_margin": sum(m is not None for m in margins),
+            "exposed": sum(m is not None and m < 0 for m in margins),
+            "classically_deprecated": sum(a["classically_deprecated"] for a in inv["assets"]),
+            "soonest_crqc_year": min(years) if years else None,
+        }
+    return out
+
+
 def deadlines() -> list[dict]:
     lit = common.literature()
     scopes = {
@@ -358,27 +410,30 @@ def deadlines() -> list[dict]:
     ]
 
 
+def _inventory_file(timeline: dict) -> dict:
+    inv = inventory.build_inventory(inventory.load_cbom(), timeline)
+    return {**inv, "deadlines": deadlines(), "summary": summary(inv)}
+
+
 def build_all() -> dict[str, dict]:
     timeline = inventory.load_timeline()
     est = _json(EST / "scenarios.json")
     mo = model_only(timeline, est)
     data = {
-        "inventory": {
-            **inventory.build_inventory(inventory.load_cbom(), timeline),
-            "deadlines": deadlines(),
-        },
+        "inventory": _inventory_file(timeline),
         "scenarios": {
             "crqc_label": inventory.CRQC_LABEL,
             "scenario_notes": scenario_notes(timeline),
             "order_notes": order_notes(timeline, est, mo),
             "model_only": mo,
+            "gaps": gaps(timeline, device()),
             "scenarios": est["scenarios"],
             "targets": est["targets"],
             "timeline": timeline,
         },
         "scaling": _json(EST / "scaling.json"),
         "lab": build_lab(),
-        "hero": herodata.build_hero(HW_BATCH, get_fake_backend().num_qubits),
+        "hero": herodata.build_hero(HW_BATCH, device()["n_qubits"]),
     }
     data["meta"] = {
         "git_commit": _git_commit(),

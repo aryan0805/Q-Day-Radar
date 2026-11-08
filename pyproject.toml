@@ -19,7 +19,11 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.6"]
+dev = [
+    "pytest>=8",
+    "pytest-playwright>=0.10.0",
+    "ruff>=0.6",
+]
 # Phase 2: readout error mitigation
 mitigation = ["mthree>=3.0"]
 # Phase 3: resource estimators (heavier; install with `uv sync --group estimate`)

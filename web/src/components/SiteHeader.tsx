@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ScenarioSwitch } from "./ScenarioSwitch";
 
 const LINKS = [
   { href: "/", label: "Overview" },
@@ -52,6 +53,7 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
+        <ScenarioSwitch />
       </div>
     </header>
   );

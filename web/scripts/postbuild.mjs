@@ -141,6 +141,10 @@ console.log(
   `postbuild: ${hashes.size} inline-script hashes, headers written to .vercel/output/config.json; ` +
     `canary scan ${result.files} files, ${result.canaries} .env values, ${result.hits.length} hits`,
 );
+if (result.missing.length || result.files === 0) {
+  console.error(`canary scan looked at nothing (missing: ${result.missing.join(", ") || "none"})`);
+  process.exit(2);
+}
 if (result.hits.length) {
   for (const h of result.hits) console.error(`  HIT ${h.kind}: ${h.file}`);
   process.exit(1);

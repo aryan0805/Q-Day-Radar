@@ -9,6 +9,7 @@ import "../styles/globals.css";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { LatticeField } from "../components/background/LatticeField";
+import { ScenarioProvider } from "../lib/scenario";
 import { TweakLoader } from "../components/TweakLoader";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <ScenarioProvider>
         <LatticeField />
         <a className="skip-link" href="#main">
           Skip to content
@@ -33,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <SiteFooter />
         <TweakLoader />
+        </ScenarioProvider>
       </body>
     </html>
   );
