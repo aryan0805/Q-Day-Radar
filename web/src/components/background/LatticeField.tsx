@@ -13,7 +13,7 @@ const FRAME_MS = 1000 / 30;
 const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
 const FRAG = `
 precision mediump float;
-uniform vec2 res; uniform float t; uniform float density; uniform vec2 mouse;
+uniform vec2 res; uniform float t; uniform float density; uniform float dpr; uniform vec2 mouse;
 uniform vec3 tint; uniform float maxAlpha;
 mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 float dots(vec2 p, float cell){
@@ -22,7 +22,7 @@ float dots(vec2 p, float cell){
 }
 void main(){
   vec2 uv = gl_FragCoord.xy;
-  float cell = 34.0 / density;
+  float cell = 34.0 * dpr / density; // 34 CSS px at density 1
   vec2 a = rot(0.0 + t * 0.010) * (uv + vec2(t * 6.0, 0.0));
   vec2 b = rot(0.12 - t * 0.006) * (uv - vec2(0.0, t * 5.0));
   float m = dots(a, cell) * dots(b, cell * 1.03) + 0.35 * (dots(a, cell) + dots(b, cell * 1.03));
@@ -115,11 +115,12 @@ export function LatticeField() {
     const uRes = u("res");
     const uT = u("t");
     const uDensity = u("density");
+    const uDpr = u("dpr");
     const uMouse = u("mouse");
     const uTint = u("tint");
     const uAlpha = u("maxAlpha");
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1) * 0.5; // a soft background: half resolution is enough
     const resize = () => {
       el.width = Math.ceil(window.innerWidth * dpr);
       el.height = Math.ceil(window.innerHeight * dpr);
@@ -147,7 +148,8 @@ export function LatticeField() {
       if (frames++ % 30 === 0) tint = cssRgb("q"); // follows the tweak panel
       gl.uniform2f(uRes, el.width, el.height);
       gl.uniform1f(uT, clock);
-      gl.uniform1f(uDensity, num("bg-density", 1) * dpr);
+      gl.uniform1f(uDensity, num("bg-density", 1));
+      gl.uniform1f(uDpr, dpr);
       gl.uniform2f(uMouse, mouse[0], mouse[1]);
       gl.uniform3f(uTint, tint[0], tint[1], tint[2]);
       gl.uniform1f(uAlpha, MAX_ALPHA);
@@ -174,9 +176,18 @@ export function LatticeField() {
     };
     document.addEventListener("visibilitychange", onVisibility);
     reduced.addEventListener("change", onReduced);
-    start();
+    // Start once the page has loaded and gone idle, so the shader never competes with hydration.
+    const startLater = () => {
+      const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+      starter = window.setTimeout(() => (idle ? idle(start, { timeout: 3000 }) : start()), 1500);
+    };
+    let starter = 0;
+    if (document.readyState === "complete") startLater();
+    else window.addEventListener("load", startLater, { once: true });
 
     return () => {
+      window.clearTimeout(starter);
+      window.removeEventListener("load", startLater);
       stop();
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);

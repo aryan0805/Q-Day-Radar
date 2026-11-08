@@ -126,12 +126,12 @@ export function InventoryView() {
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ asset, index }) => {
+            {rows.map(({ asset, index }, n) => {
               const p = `assets[${index}]`;
               const s = sc(asset, scenario);
               const margin = s.margin_years;
               return (
-                <tr key={asset.id} data-asset-id={asset.id}>
+                <tr key={asset.id} data-asset-id={asset.id} style={{ ["--i" as string]: Math.min(n, 20) }}>
                   <td>
                     <Fig src={`inventory:${p}.by_scenario.${scenario}.rank`} label="computed from data" />
                   </td>

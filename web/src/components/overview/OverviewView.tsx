@@ -7,14 +7,23 @@ import { useScenario, withScenario } from "../../lib/scenario";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
 import { ScenarioNote } from "../ScenarioNote";
-import dynamic from "next/dynamic";
+import { useEffect, type ComponentType } from "react";
 
-// The hero (and GSAP, and hero.json) is its own chunk, fetched after the page is interactive, so
-// it is not part of the home bundle that index.html loads.
-const Hero = dynamic(() => import("../hero/Hero").then((m) => m.Hero), {
-  ssr: false,
-  loading: () => <div className="hero-wrap" aria-hidden="true" />,
-});
+/** The hero (GSAP and hero.json included) is its own chunk, requested once the page is idle, so it is
+ *  not in the home bundle that index.html loads. Its title is rendered by the page itself. */
+function HeroLoader() {
+  const [Hero, setHero] = useState<ComponentType | null>(null);
+  useEffect(() => {
+    const load = () => void import("../hero/Hero").then((m) => setHero(() => m.Hero));
+    const id = window.setTimeout(() => {
+      const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+      if (idle) idle(load, { timeout: 4000 });
+      else load();
+    }, 1200);
+    return () => window.clearTimeout(id);
+  }, []);
+  return Hero ? <Hero /> : null;
+}
 
 const SIZE = 540;
 const C = SIZE / 2;
@@ -67,16 +76,23 @@ export function OverviewView() {
   const sum = `summary.${scenario}`;
   return (
     <>
-      <Hero />
-      <section aria-labelledby="ov-h">
-        <h1 id="ov-h" style={{ fontSize: "2.25rem", marginBlock: "0 0.5rem" }}>
-          When does quantum computing break what you use?
-        </h1>
-        <p className="muted">
-          Q-Day Radar runs real Shor and Grover circuits, scales their cost up to real key sizes, and
-          ranks a fictional company&apos;s cryptography by how soon it is exposed. Each dot below is
-          one asset. The closer to the centre, the less time is left.
-        </p>
+      <div className="hero-wrap" role="group" aria-labelledby="ov-h">
+        <div className="hero-stage">
+          <h1 id="ov-h" className="hero-title">
+            When does quantum computing break what you use?
+          </h1>
+          <p className="muted hero-lead">
+            Q-Day Radar runs real Shor and Grover circuits, scales their cost up to real key sizes,
+            and ranks a fictional company&apos;s cryptography by how soon it is exposed. The
+            sequence below shows one real run, then the radar shows every asset.
+          </p>
+          <HeroLoader />
+        </div>
+      </div>
+      <section aria-labelledby="radar-h">
+        <h2 id="radar-h" style={{ fontSize: "1.5rem", marginBlock: "0 0.5rem" }}>
+          The inventory on a radar
+        </h2>
         <ScenarioNote />
         <div className="ov-grid">
           <figure className="card" style={{ margin: 0 }} aria-labelledby="radar-cap">
@@ -84,7 +100,16 @@ export function OverviewView() {
               <strong>Radar of the inventory</strong>
             </figcaption>
             <svg viewBox={`0 0 ${SIZE} ${SIZE}`} role="group" aria-label="Radar: each dot is an asset" style={{ width: "100%", height: "auto" }}>
+              <defs>
+                <linearGradient id="sweep-fade" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stopColor="var(--q)" stopOpacity="0" />
+                  <stop offset="1" stopColor="var(--q)" stopOpacity="0.22" />
+                </linearGradient>
+              </defs>
               <circle cx={C} cy={C} r={R_OUT} fill="none" stroke="var(--line)" />
+              <g className="sweep" aria-hidden="true">
+                <path d={`M ${C} ${C} L ${C + R_NONE} ${C} A ${R_NONE} ${R_NONE} 0 0 0 ${r2(C + R_NONE * Math.cos(-0.5))} ${r2(C + R_NONE * Math.sin(-0.5))} Z`} fill="url(#sweep-fade)" />
+              </g>
               <circle cx={C} cy={C} r={zero} fill="none" stroke="var(--threat)" strokeDasharray="4 4" opacity="0.7" />
               <circle cx={C} cy={C} r={R_NONE} fill="none" stroke="var(--line)" strokeDasharray="2 5" />
               {families.map((f, i) => {
@@ -106,6 +131,9 @@ export function OverviewView() {
                 return (
                   <a
                     key={p.asset.id}
+                    className="dot"
+                    data-family={p.asset.family}
+                    style={{ ["--d" as string]: `${p.index * 22}ms` }}
                     href={withScenario(`/inventory/?asset=${p.asset.id}`, scenario)}
                     aria-label={`${p.asset.name}: ${col.word}`}
                     onMouseEnter={() => setActive(p.index)}

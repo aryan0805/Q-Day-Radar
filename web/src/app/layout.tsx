@@ -10,6 +10,7 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { LatticeField } from "../components/background/LatticeField";
 import { ScenarioProvider } from "../lib/scenario";
+import { EggLoader } from "../components/eggs/EggLoader";
 import { TweakLoader } from "../components/TweakLoader";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <SiteFooter />
         <TweakLoader />
+        <EggLoader />
         </ScenarioProvider>
       </body>
     </html>

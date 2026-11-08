@@ -71,6 +71,10 @@ a {
   color: var(--q);
   text-underline-offset: 0.2em;
 }
+p a,
+li a {
+  text-decoration: underline;
+}
 
 /* Focus is never removed (spec §3). */
 :focus-visible {
@@ -491,11 +495,16 @@ select {
   height: 340vh;
   margin-bottom: 2rem;
 }
+.hero-body {
+  display: grid;
+  gap: 0.75rem;
+}
 .hero-stage {
   position: sticky;
   top: 0;
   display: grid;
-  align-content: center;
+  align-content: start;
+  padding-top: 4vh;
   gap: 0.75rem;
   height: 100dvh;
   max-height: 56rem;
@@ -586,4 +595,167 @@ select {
   .hero-replay {
     display: none;
   }
+}
+
+/* ---- Motion in each screen (spec §6). One easing family; nothing loops except the radar sweep
+   and the background. All of it is off under prefers-reduced-motion. ---- */
+@keyframes row-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes decohere {
+  from { opacity: 0; filter: blur(6px); }
+  to { opacity: 1; filter: blur(0); }
+}
+@keyframes sweep {
+  to { transform: rotate(360deg); }
+}
+@keyframes pt-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tbl tbody tr {
+    animation: row-in var(--dur-reveal) var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 22ms);
+  }
+  .track .fill {
+    transform-origin: 0 50%;
+    animation: grow calc(var(--dur-reveal) * 1.4) var(--ease) both;
+  }
+  .dot {
+    animation: decohere calc(var(--dur-reveal) * 1.2) var(--ease) both;
+    animation-delay: var(--d, 0ms);
+  }
+  .sweep {
+    transform-origin: 270px 270px;
+    animation: sweep 7s linear infinite;
+  }
+  .pt {
+    animation: pt-in var(--dur-reveal) var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 12ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sweep {
+    display: none;
+  }
+}
+
+/* ---- Easter eggs ---- */
+.coin {
+  padding: 0.2rem 0.6rem;
+  font: 500 0.9375rem/1.2 var(--font-mono);
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.coin:hover {
+  color: var(--q);
+  border-color: var(--q);
+}
+.egg-card {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 70;
+  width: min(34rem, calc(100vw - 2rem));
+  transform: translateX(-50%);
+}
+.egg-close {
+  float: right;
+  margin: 0 0 0.5rem 0.75rem;
+  padding: 0.15rem 0.6rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.egg-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font: 600 0.875rem/1.4 var(--font-mono);
+  color: var(--bg-0);
+  background: var(--threat);
+}
+.egg-vector {
+  position: fixed;
+  z-index: 75;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  transform: translate(-6px, -24px);
+  font-size: 0.8125rem;
+  color: var(--warn);
+}
+.grover-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 2px;
+  margin-block: 0.6rem;
+}
+.grover-grid i {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--q);
+  border-radius: 1px;
+}
+.grover-grid i.hit {
+  background: var(--warn);
+  opacity: 1 !important;
+}
+/* Q-Day mode: the palette flips to the threat colour */
+html[data-qday="on"] {
+  --q: #ff5c47;
+  --pqc: #ffb347;
+  --line: #3a1d1d;
+}
+@keyframes shatter {
+  to { transform: translate(var(--sx, 8px), var(--sy, 14px)) rotate(40deg); opacity: 0.2; }
+}
+html[data-qday="on"] .dot[data-family="RSA"],
+html[data-qday="on"] .dot[data-family="ECC"] {
+  animation: shatter 700ms var(--ease) forwards;
+}
+html[data-qday="on"] .lock-left { transform: translate(-14px, 4px) rotate(-6deg); }
+html[data-qday="on"] .lock-right { transform: translate(14px, 4px) rotate(6deg); }
+
+.nf-paths {
+  width: min(100%, 26rem);
+  margin-top: 1rem;
+}
+@keyframes nf-draw {
+  from { stroke-dashoffset: 1; opacity: 0.2; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nf-a,
+  .nf-b {
+    stroke-dasharray: 1;
+    animation: nf-draw 1.6s var(--ease) both;
+  }
+  .nf-b {
+    animation-delay: 0.25s;
+  }
+}
+
+.hero-lead {
+  margin: 0;
+  font-size: 1.125rem;
+  max-width: 62ch;
 }

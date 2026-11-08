@@ -172,7 +172,6 @@ function LatticeSvg() {
 }
 
 export function Hero() {
-  const wrap = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const replay = useRef<(() => void) | null>(null);
 
@@ -182,7 +181,8 @@ export function Hero() {
     let revert: (() => void) | undefined;
     void (async () => {
       const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
-      if (killed || !wrap.current || !stage.current) return;
+      const wrapEl = document.querySelector<HTMLElement>(".hero-wrap");
+      if (killed || !wrapEl || !stage.current) return;
       gsap.registerPlugin(ScrollTrigger);
       const ctx = gsap.context(() => {
         const q = gsap.utils.selector(stage.current);
@@ -222,7 +222,7 @@ export function Hero() {
         tl.progress(0);
         let replaying = false;
         ScrollTrigger.create({
-          trigger: wrap.current,
+          trigger: wrapEl,
           start: "top top",
           end: "bottom bottom",
           onUpdate: (self) => {
@@ -245,11 +245,7 @@ export function Hero() {
 
   const res = hero.resolution;
   return (
-    <div ref={wrap} className="hero-wrap" aria-labelledby="hero-h">
-      <div ref={stage} className="hero-stage">
-        <h2 id="hero-h" className="hero-title">
-          The Q-Day sequence: a quantum circuit breaks a lock
-        </h2>
+    <div ref={stage} className="hero-body">
         <div className="hero-layers">
           <div data-layer="circuit" className="hero-layer">
             <p className="hero-step">First, the circuit</p>
@@ -303,7 +299,6 @@ export function Hero() {
         <button type="button" className="btn hero-replay" onClick={() => replay.current?.()}>
           Replay the sequence
         </button>
-      </div>
     </div>
   );
 }

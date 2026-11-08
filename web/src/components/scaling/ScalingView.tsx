@@ -109,7 +109,7 @@ function CostChart() {
           return (
             <g key={s.estimator}>
               {f.points.map((p) => (
-                <circle key={p.n_bits} cx={x(p.n_bits)} cy={y(p.value)} r="3" fill={s.colour} />
+                <circle key={p.n_bits} className="pt" style={{ ["--i" as string]: p.n_bits }} cx={x(p.n_bits)} cy={y(p.value)} r="3" fill={s.colour} />
               ))}
               <line x1={x(last.n_bits)} y1={y(last.value)} x2={x(ex.n_bits)} y2={y(ex.value)} stroke={s.colour} strokeDasharray="5 4" />
               <line x1={x(ex.n_bits)} x2={x(ex.n_bits)} y1={y(lo)} y2={y(hi)} stroke={s.colour} strokeWidth="3" />
