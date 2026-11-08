@@ -1633,7 +1633,8 @@ def p5_github_secret_scanning() -> tuple[bool, str]:
                          cwd=ROOT, capture_output=True, text=True).stdout.strip()
     r = subprocess.run(["gh", "api", f"repos/{repo}", "--jq", ".security_and_analysis"],
                        cwd=ROOT, capture_output=True, text=True)
-    sa = json.loads(r.stdout or "{}") or {}
+    raw = r.stdout.strip()
+    sa = json.loads(raw) if raw and raw != "null" else {}  # private repos may return none
     # GitHub secret scanning needs a public repo (or paid GHAS); for a private repo the
     # gitleaks checks above are the secret check (DECISIONS 2026-11-08 P5, human task 1).
     need = [] if vis == "PRIVATE" else ["secret_scanning", "secret_scanning_push_protection"]
@@ -1727,7 +1728,15 @@ def p5_live(kind: str) -> Callable[[], tuple[bool, str]]:
         st, _, body = _p5_fetch(base + "/build.json", bypass)
         commit = json.loads(body).get("commit") if st == 200 else None
         if commit != head:
-            problems.append(f"build.json commit {str(commit)[:10]} != HEAD {head[:10]}")
+            # Vercel builds only web/ (its root directory), so a deployment of an ancestor
+            # commit with an identical web/ tree serves exactly what HEAD would build.
+            anc = commit and subprocess.run(["git", "merge-base", "--is-ancestor", commit, head],
+                                            cwd=ROOT, capture_output=True).returncode == 0
+            same = anc and subprocess.run(["git", "diff", "--quiet", commit, head, "--", "web"],
+                                          cwd=ROOT).returncode == 0
+            if not same:
+                problems.append(f"build.json commit {str(commit)[:10]} is not HEAD {head[:10]} "
+                                "or an ancestor with the same web/ tree")
         hdrs = {}
         for screen in P5_SCREENS:
             st, hdrs, body = _p5_fetch(base + screen, bypass)
