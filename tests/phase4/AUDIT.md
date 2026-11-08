@@ -65,9 +65,9 @@ surface-code timeline may be late; the same applies to neutral-atom and cat-qubi
 | aes128 | median | 5.246e+07 | model | 1.79e+14 | no | never (null) |
 | aes128 | pessimistic | 5.246e+07 | model | 1.79e+17 | no | never (null) |
 
-**The family order depends on the Google bound.** Google's figure is an upper bound ("fewer than half a million"),
-Gidney's is an exact count; a bound is compared with a count, so the ECC-256 CRQC year is the earlier threat by
-construction. Without any paper feed (Phase 3 model only):
+**The family order does not depend on the paper feeds.** The feeds move the CRQC years (median ECC-256: 2037.2 with feeds, 2040.8 from the Phase 3 model alone) but not the order, in any scenario. What the order does rest on is the ECC-256 logical-count input (`google2026_logical_qubits_ecc256` (1200, upper), `google2026_toffoli_ecc256` (9e+07, upper); upper bounds), not on a paper's physical-qubit figure.
+
+Not like for like: a physical-qubit paper figure that is an upper bound (feeds: `g2025_physical_qubits_rsa2048` (897864 qubits), `google2026_physical_qubits_ecc256` (500000 qubits, upper bound)) gives a latest-date bound for that target's CRQC year, while an exact count gives a point estimate. Without any paper feed (Phase 3 model only):
 
 | target | scenario | model physical qubits | CRQC year |
 |---|---|---|---|
@@ -207,7 +207,7 @@ followed at 2026-11-08 15:25, and the first calibration rows were reported at 20
 
 ## 9. Fact-check
 
-67 of 67 literature entries are `verified` in `tests/phase3/factcheck.json` (67 entries, of which 10 are hardware points). Open items
+69 of 69 literature entries are `verified` in `tests/phase3/factcheck.json` (69 entries, of which 10 are hardware points). Open items
 and limits:
 - Google 2026 gives a bound, not a count; its 1 microsecond round is only an illustration in the paper, so no runtime feeds.
 - The 2024 hardware point (Tianyan-504, 504 qubits) is supported only by Chinese state-media reports; gate-model

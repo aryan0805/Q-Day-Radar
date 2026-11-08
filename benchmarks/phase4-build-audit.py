@@ -361,6 +361,32 @@ def facts() -> dict:
         f"{c['source']}: {c['logical_qubits']} logical qubits" for c in esrc["context"]
     )
     f["ecc_also"] = lit["google2026_logical_qubits_ecc256"]["also_published_as"]
+
+    # Section 3 lead: every claim in it is computed from the same data as the tables beside it
+    med_fed = tl["scenarios"]["median"]["targets"]["ecc256"]["crqc_year"]
+    med_model = nofeed_years["median"]["ecc256"]
+    bounds = [i for i in esrc["literature_ids"] if lit[i].get("bound") == "upper"]
+    if f["order_changes"] == "no":
+        f["order_lead"] = (
+            "**The family order does not depend on the paper feeds.** The feeds move the CRQC years "
+            f"(median ECC-256: {yr(med_fed)} with feeds, {yr(med_model)} from the Phase 3 model alone) "
+            "but not the order, in any scenario. What the order does rest on is the ECC-256 "
+            f"logical-count input ({f['ecc_ids']}"
+            + ("; upper bounds" if bounds else "")
+            + "), not on a paper's physical-qubit figure."
+        )
+    else:
+        f["order_lead"] = (
+            "**The family order depends on the paper feeds** (it differs in at least one scenario "
+            f"between the two tables below; median ECC-256: {yr(med_fed)} with feeds, "
+            f"{yr(med_model)} from the model alone)."
+        )
+    f["bound_caveat"] = (
+        "Not like for like: a physical-qubit paper figure that is an upper bound (feeds: "
+        + f["feeds"]
+        + ") gives a latest-date bound for that target's CRQC year, while an exact count gives "
+        "a point estimate. Without any paper feed (Phase 3 model only):"
+    )
     return f
 
 
@@ -421,9 +447,9 @@ surface-code timeline may be late; the same applies to neutral-atom and cat-qubi
 
 {crqc_table}
 
-**The family order depends on the Google bound.** Google's figure is an upper bound ("fewer than half a million"),
-Gidney's is an exact count; a bound is compared with a count, so the ECC-256 CRQC year is the earlier threat by
-construction. Without any paper feed (Phase 3 model only):
+{order_lead}
+
+{bound_caveat}
 
 {nofeed_table}
 

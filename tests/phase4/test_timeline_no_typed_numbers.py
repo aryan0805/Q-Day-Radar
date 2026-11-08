@@ -36,6 +36,13 @@ ALLOWED = {
     ("quantum/risk/timeline.py", 0.975): "two-sided 95% Student-t quantile level (brief)",
     ("scripts/risk_timeline.py", 1e-09): "floating-point comparison tolerance",
     ("scripts/risk_timeline.py", 4): "as_of[:4] slices the year out of an ISO date",
+    # Phase 5 task 6 (builder), reviewed by reviewer 2026-11-08:
+    ("quantum/risk/herodata.py", 12): (
+        "PROB_DIGITS: decimal places kept for ideal-statevector probabilities, and the floor "
+        "below which an outcome (about 5e-13) is float noise and is dropped; the hero's ideal "
+        "counts are not scaled or tuned by it"
+    ),
+    ("quantum/risk/webdata.py", 10): "problems[:10]: at most ten allow-list messages in an error",
 }
 
 
