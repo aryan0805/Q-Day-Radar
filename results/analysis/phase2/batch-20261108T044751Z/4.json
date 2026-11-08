@@ -1,0 +1,17 @@
+{
+  "index": 4,
+  "job_id": "dbo3tjgou4as73b5fh6g",
+  "name": "m3_cal_zeros",
+  "config": "m3_cal",
+  "status": "DONE",
+  "shots": 4096,
+  "isa_sha256": "28136e0bb9c6327b5a2b04a858bea642788d33c8690048243d5f49d48531f3e0",
+  "success_probability": 0.890625,
+  "wilson_95": [
+    0.8806982972702632,
+    0.8998196891302327
+  ],
+  "normalized_score": null,
+  "hellinger_vs_ideal": null,
+  "hellinger_vs_prediction": 0.9607179689391687
+}

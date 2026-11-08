@@ -1,0 +1,17 @@
+{
+  "index": 32,
+  "job_id": "dbo3to5t7fqc73akgvlg",
+  "name": "m3_cal_ones",
+  "config": "m3_cal",
+  "status": "DONE",
+  "shots": 4096,
+  "isa_sha256": "7d2a4649fc5bf03e36a664eaf95952a9b7ae5a0e4d3747f1b9cb7f21a4d03a51",
+  "success_probability": 0.808837890625,
+  "wilson_95": [
+    0.7965086496170335,
+    0.8205883833808585
+  ],
+  "normalized_score": null,
+  "hellinger_vs_ideal": null,
+  "hellinger_vs_prediction": 0.8405435807994656
+}

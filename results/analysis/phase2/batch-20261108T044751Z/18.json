@@ -1,0 +1,31 @@
+{
+  "index": 18,
+  "job_id": "dbo3tls4148s7391tqs0",
+  "name": "shor15_textbook",
+  "config": "dd",
+  "status": "DONE",
+  "shots": 4096,
+  "isa_sha256": "3558fe900affefeb4596f07bc7aa70c626cb407e52edc79cca0a4c783e6d7285",
+  "success_probability": 0.360595703125,
+  "wilson_95": [
+    0.3460275936831729,
+    0.3754250499201502
+  ],
+  "normalized_score": 0.5751488095238095,
+  "hellinger_vs_ideal": 0.5488460480431188,
+  "hellinger_vs_prediction": 0.882257309197678,
+  "theoretical_success": 0.5,
+  "chance_baseline": 0.171875,
+  "predicted_success": 0.4287109375,
+  "prediction_wilson_95": [
+    0.4136289063215498,
+    0.44392656116035967
+  ],
+  "predicted_vs_chance": "signal",
+  "m3": {
+    "method": "mthree (independent-qubit readout matrices from m3_cal jobs)",
+    "success_probability": 0.3768572558684905,
+    "normalized_score": 0.624707827408733,
+    "hellinger_vs_ideal": 0.5895637983722896
+  }
+}

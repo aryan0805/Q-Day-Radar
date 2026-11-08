@@ -1,0 +1,325 @@
+{
+  "optimization_level": 3,
+  "backend": "FakeKingston",
+  "seeds": [
+    1234,
+    1235,
+    1236,
+    1237,
+    1238
+  ],
+  "qiskit_version": "2.6.2",
+  "recorded_qiskit_version": "2.6.2",
+  "git_head": "86fba5ab8fea71540987f67ef2093e1747b2c8ce",
+  "git_status_quantum_scripts": "M quantum/run/budget.py\n M scripts/gate.py\n?? quantum/run/hardware.py\n?? quantum/run/noisy.py\n?? quantum/run/stats.py\n?? scripts/__init__.py\n?? scripts/analyze_hardware.py\n?? scripts/plan_hardware.py\n?? scripts/run_noisy.py\n?? scripts/submit_hardware.py\n?? scripts/transpile_compare.py",
+  "timestamp": "2026-11-08T02:08:55.446510+00:00",
+  "ai_pass_recorded": {
+    "mode": "local",
+    "available": false,
+    "reason": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3."
+  },
+  "ai_pass_run_by_reviewer": false,
+  "circuits": {
+    "shor15_textbook": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 181,
+          "1235": 173,
+          "1236": 172,
+          "1237": 173,
+          "1238": 184
+        },
+        "median": 173,
+        "min": 172,
+        "max": 184,
+        "depth_seed1234": 294,
+        "depth_median": 296
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 181,
+          "1235": 173,
+          "1236": 172,
+          "1237": 173,
+          "1238": 184
+        },
+        "median": 173,
+        "min": 172,
+        "max": 184,
+        "depth_seed1234": 294,
+        "depth_median": 296
+      },
+      "match": true,
+      "phase1_after_r1_median": 173,
+      "phase1_after_r1_per_seed": {
+        "1234": 181,
+        "1235": 173,
+        "1236": 172,
+        "1237": 173,
+        "1238": 184
+      },
+      "phase1_baseline_median": 180,
+      "equals_after_r1": true,
+      "equals_baseline": false,
+      "chosen_recorded": "opt3"
+    },
+    "shor15_beauregard": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 5446,
+          "1235": 5433,
+          "1236": 5368,
+          "1237": 5351,
+          "1238": 5348
+        },
+        "median": 5368,
+        "min": 5348,
+        "max": 5446,
+        "depth_seed1234": 11041,
+        "depth_median": 11063
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 5446,
+          "1235": 5433,
+          "1236": 5368,
+          "1237": 5351,
+          "1238": 5348
+        },
+        "median": 5368,
+        "min": 5348,
+        "max": 5446,
+        "depth_seed1234": 11041,
+        "depth_median": 11063
+      },
+      "match": true,
+      "phase1_after_r1_median": 5368,
+      "phase1_after_r1_per_seed": {
+        "1234": 5446,
+        "1235": 5433,
+        "1236": 5368,
+        "1237": 5351,
+        "1238": 5348
+      },
+      "phase1_baseline_median": 5368,
+      "equals_after_r1": true,
+      "equals_baseline": true,
+      "chosen_recorded": "opt3"
+    },
+    "shor21_beauregard": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 14575,
+          "1235": 14606,
+          "1236": 14631,
+          "1237": 14864,
+          "1238": 14585
+        },
+        "median": 14606,
+        "min": 14575,
+        "max": 14864,
+        "depth_seed1234": 28313,
+        "depth_median": 28051
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 14575,
+          "1235": 14606,
+          "1236": 14631,
+          "1237": 14864,
+          "1238": 14585
+        },
+        "median": 14606,
+        "min": 14575,
+        "max": 14864,
+        "depth_seed1234": 28313,
+        "depth_median": 28051
+      },
+      "match": true,
+      "phase1_after_r1_median": 14606,
+      "phase1_after_r1_per_seed": {
+        "1234": 14575,
+        "1235": 14606,
+        "1236": 14631,
+        "1237": 14864,
+        "1238": 14585
+      },
+      "phase1_baseline_median": 14606,
+      "equals_after_r1": true,
+      "equals_baseline": true,
+      "chosen_recorded": "opt3"
+    },
+    "grover_present_k2": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 249,
+          "1235": 249,
+          "1236": 249,
+          "1237": 255,
+          "1238": 262
+        },
+        "median": 249,
+        "min": 249,
+        "max": 262,
+        "depth_seed1234": 551,
+        "depth_median": 551
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 249,
+          "1235": 249,
+          "1236": 249,
+          "1237": 255,
+          "1238": 262
+        },
+        "median": 249,
+        "min": 249,
+        "max": 262,
+        "depth_seed1234": 551,
+        "depth_median": 551
+      },
+      "match": true,
+      "phase1_after_r1_median": 249,
+      "phase1_after_r1_per_seed": {
+        "1234": 249,
+        "1235": 249,
+        "1236": 249,
+        "1237": 255,
+        "1238": 262
+      },
+      "phase1_baseline_median": 402,
+      "equals_after_r1": true,
+      "equals_baseline": false,
+      "chosen_recorded": "opt3"
+    },
+    "grover_present_k3": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 629,
+          "1235": 625,
+          "1236": 623,
+          "1237": 638,
+          "1238": 625
+        },
+        "median": 625,
+        "min": 623,
+        "max": 638,
+        "depth_seed1234": 1447,
+        "depth_median": 1435
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 629,
+          "1235": 625,
+          "1236": 623,
+          "1237": 638,
+          "1238": 625
+        },
+        "median": 625,
+        "min": 623,
+        "max": 638,
+        "depth_seed1234": 1447,
+        "depth_median": 1435
+      },
+      "match": true,
+      "phase1_after_r1_median": 625,
+      "phase1_after_r1_per_seed": {
+        "1234": 629,
+        "1235": 625,
+        "1236": 623,
+        "1237": 638,
+        "1238": 625
+      },
+      "phase1_baseline_median": 988,
+      "equals_after_r1": true,
+      "equals_baseline": false,
+      "chosen_recorded": "opt3"
+    },
+    "grover_present_k4": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 1104,
+          "1235": 1101,
+          "1236": 1162,
+          "1237": 1126,
+          "1238": 1083
+        },
+        "median": 1104,
+        "min": 1083,
+        "max": 1162,
+        "depth_seed1234": 2294,
+        "depth_median": 2306
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 1104,
+          "1235": 1101,
+          "1236": 1162,
+          "1237": 1126,
+          "1238": 1083
+        },
+        "median": 1104,
+        "min": 1083,
+        "max": 1162,
+        "depth_seed1234": 2294,
+        "depth_median": 2306
+      },
+      "match": true,
+      "phase1_after_r1_median": 1104,
+      "phase1_after_r1_per_seed": {
+        "1234": 1104,
+        "1235": 1101,
+        "1236": 1162,
+        "1237": 1126,
+        "1238": 1083
+      },
+      "phase1_baseline_median": 1719,
+      "equals_after_r1": true,
+      "equals_baseline": false,
+      "chosen_recorded": "opt3"
+    },
+    "grover_present_k5": {
+      "recomputed": {
+        "per_seed": {
+          "1234": 2621,
+          "1235": 2697,
+          "1236": 2706,
+          "1237": 2651,
+          "1238": 2654
+        },
+        "median": 2654,
+        "min": 2621,
+        "max": 2706,
+        "depth_seed1234": 5430,
+        "depth_median": 5430
+      },
+      "recorded": {
+        "per_seed": {
+          "1234": 2621,
+          "1235": 2697,
+          "1236": 2706,
+          "1237": 2651,
+          "1238": 2654
+        },
+        "median": 2654,
+        "min": 2621,
+        "max": 2706,
+        "depth_seed1234": 5430,
+        "depth_median": 5430
+      },
+      "match": true,
+      "phase1_after_r1_median": 2654,
+      "phase1_after_r1_per_seed": {
+        "1234": 2621,
+        "1235": 2697,
+        "1236": 2706,
+        "1237": 2651,
+        "1238": 2654
+      },
+      "phase1_baseline_median": 2654,
+      "equals_after_r1": true,
+      "equals_baseline": true,
+      "chosen_recorded": "opt3"
+    }
+  }
+}

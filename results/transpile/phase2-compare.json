@@ -1,0 +1,250 @@
+{
+  "backend": "fake_kingston",
+  "seeds": [
+    1234,
+    1235,
+    1236,
+    1237,
+    1238
+  ],
+  "qiskit_version": "2.6.2",
+  "ai_pass": {
+    "mode": "local",
+    "available": false,
+    "reason": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3."
+  },
+  "timestamp": "2026-11-08T01:48:26.187744+00:00",
+  "circuits": {
+    "shor15_textbook": {
+      "opt3": {
+        "two_qubit_gates_median": 173,
+        "two_qubit_gates_min": 172,
+        "two_qubit_gates_max": 184,
+        "depth_median": 296,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 181,
+            "depth": 294
+          },
+          "1235": {
+            "two_qubit_gates": 173,
+            "depth": 302
+          },
+          "1236": {
+            "two_qubit_gates": 172,
+            "depth": 295
+          },
+          "1237": {
+            "two_qubit_gates": 173,
+            "depth": 296
+          },
+          "1238": {
+            "two_qubit_gates": 184,
+            "depth": 318
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "shor15_beauregard": {
+      "opt3": {
+        "two_qubit_gates_median": 5368,
+        "two_qubit_gates_min": 5348,
+        "two_qubit_gates_max": 5446,
+        "depth_median": 11063,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 5446,
+            "depth": 11041
+          },
+          "1235": {
+            "two_qubit_gates": 5433,
+            "depth": 11063
+          },
+          "1236": {
+            "two_qubit_gates": 5368,
+            "depth": 11170
+          },
+          "1237": {
+            "two_qubit_gates": 5351,
+            "depth": 11131
+          },
+          "1238": {
+            "two_qubit_gates": 5348,
+            "depth": 11019
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "shor21_beauregard": {
+      "opt3": {
+        "two_qubit_gates_median": 14606,
+        "two_qubit_gates_min": 14575,
+        "two_qubit_gates_max": 14864,
+        "depth_median": 28051,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 14575,
+            "depth": 28313
+          },
+          "1235": {
+            "two_qubit_gates": 14606,
+            "depth": 27967
+          },
+          "1236": {
+            "two_qubit_gates": 14631,
+            "depth": 28051
+          },
+          "1237": {
+            "two_qubit_gates": 14864,
+            "depth": 28076
+          },
+          "1238": {
+            "two_qubit_gates": 14585,
+            "depth": 28019
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "grover_present_k2": {
+      "opt3": {
+        "two_qubit_gates_median": 249,
+        "two_qubit_gates_min": 249,
+        "two_qubit_gates_max": 262,
+        "depth_median": 551,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 249,
+            "depth": 551
+          },
+          "1235": {
+            "two_qubit_gates": 249,
+            "depth": 551
+          },
+          "1236": {
+            "two_qubit_gates": 249,
+            "depth": 551
+          },
+          "1237": {
+            "two_qubit_gates": 255,
+            "depth": 573
+          },
+          "1238": {
+            "two_qubit_gates": 262,
+            "depth": 592
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "grover_present_k3": {
+      "opt3": {
+        "two_qubit_gates_median": 625,
+        "two_qubit_gates_min": 623,
+        "two_qubit_gates_max": 638,
+        "depth_median": 1435,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 629,
+            "depth": 1447
+          },
+          "1235": {
+            "two_qubit_gates": 625,
+            "depth": 1415
+          },
+          "1236": {
+            "two_qubit_gates": 623,
+            "depth": 1416
+          },
+          "1237": {
+            "two_qubit_gates": 638,
+            "depth": 1469
+          },
+          "1238": {
+            "two_qubit_gates": 625,
+            "depth": 1435
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "grover_present_k4": {
+      "opt3": {
+        "two_qubit_gates_median": 1104,
+        "two_qubit_gates_min": 1083,
+        "two_qubit_gates_max": 1162,
+        "depth_median": 2306,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 1104,
+            "depth": 2294
+          },
+          "1235": {
+            "two_qubit_gates": 1101,
+            "depth": 2339
+          },
+          "1236": {
+            "two_qubit_gates": 1162,
+            "depth": 2413
+          },
+          "1237": {
+            "two_qubit_gates": 1126,
+            "depth": 2248
+          },
+          "1238": {
+            "two_qubit_gates": 1083,
+            "depth": 2306
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    },
+    "grover_present_k5": {
+      "opt3": {
+        "two_qubit_gates_median": 2654,
+        "two_qubit_gates_min": 2621,
+        "two_qubit_gates_max": 2706,
+        "depth_median": 5430,
+        "per_seed": {
+          "1234": {
+            "two_qubit_gates": 2621,
+            "depth": 5430
+          },
+          "1235": {
+            "two_qubit_gates": 2697,
+            "depth": 5466
+          },
+          "1236": {
+            "two_qubit_gates": 2706,
+            "depth": 5402
+          },
+          "1237": {
+            "two_qubit_gates": 2651,
+            "depth": 5365
+          },
+          "1238": {
+            "two_qubit_gates": 2654,
+            "depth": 5585
+          }
+        }
+      },
+      "ai": null,
+      "ai_unavailable": "qiskit-ibm-transpiler not importable here (No module named 'qiskit_ibm_transpiler'). Probe 2026-11-08 with `uv run --with qiskit-ibm-transpiler`: 0.18.0 pulls qiskit-ibm-runtime down to 0.45.1 (no FakeKingston) and its import fails under qiskit 2.6.2 with 'No module named qiskit.synthesis.linear.linear_matrix_utils'. Kept opt 3.",
+      "chosen": "opt3"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "grover_present_k3",
+  "kind": "generic",
+  "noise_model": "fake_kingston",
+  "shots": 8192,
+  "seed_simulator": 1234,
+  "seed_transpiler": 1234,
+  "optimization_level": 3,
+  "success_probability": 0.399658203125,
+  "wilson_95": [
+    0.3891005132398035,
+    0.41030995507389706
+  ],
+  "theoretical_success": 0.9453124999999999,
+  "chance_baseline": 0.125,
+  "normalized_score": 0.3348214285714286,
+  "hellinger_vs_ideal": 0.6329416881032365,
+  "signal": true,
+  "timestamp": "2026-11-08T01:21:44.046275+00:00"
+}

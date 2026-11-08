@@ -1,0 +1,20 @@
+{
+  "name": "shor15_textbook",
+  "kind": "compiled",
+  "noise_model": "fake_kingston",
+  "shots": 8192,
+  "seed_simulator": 1234,
+  "seed_transpiler": 1234,
+  "optimization_level": 3,
+  "success_probability": 0.4393310546875,
+  "wilson_95": [
+    0.42861459908948246,
+    0.4501043823605287
+  ],
+  "theoretical_success": 0.5,
+  "chance_baseline": 0.171875,
+  "normalized_score": 0.8151041666666666,
+  "hellinger_vs_ideal": 0.7853563336736675,
+  "signal": true,
+  "timestamp": "2026-11-08T01:21:39.756030+00:00"
+}

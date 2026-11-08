@@ -1,0 +1,31 @@
+{
+  "index": 11,
+  "job_id": "dbo3tkoou4as73b5fhc0",
+  "name": "grover_present_k4",
+  "config": "raw",
+  "status": "DONE",
+  "shots": 4096,
+  "isa_sha256": "0fd2b235ab8cd52992c560cc8159895fe2e3e0010350a2bf9a35626392517bcf",
+  "success_probability": 0.0556640625,
+  "wilson_95": [
+    0.04905002619785618,
+    0.06311076427157968
+  ],
+  "normalized_score": -0.0076054664289958405,
+  "hellinger_vs_ideal": 0.17747394224756816,
+  "hellinger_vs_prediction": 0.9643129971367893,
+  "theoretical_success": 0.9613189697265625,
+  "chance_baseline": 0.0625,
+  "predicted_success": 0.1416015625,
+  "prediction_wilson_95": [
+    0.13126015978763403,
+    0.1526145876899109
+  ],
+  "predicted_vs_chance": "signal",
+  "m3": {
+    "method": "mthree (independent-qubit readout matrices from m3_cal jobs)",
+    "success_probability": 0.0564479020934083,
+    "normalized_score": -0.006733389158923579,
+    "hellinger_vs_ideal": 0.17887068414719923
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "index": 22,
+  "job_id": "dbo3tmc4148s7391tqv0",
+  "backend": "ibm_kingston",
+  "name": "grover_present_k2",
+  "config": "dd_twirl",
+  "isa_sha256": "b234d60affc781487babd00f6bb191b293cb34b658213596af7ef71474b4fb95",
+  "shots": 4096,
+  "counts": {
+    "00": 705,
+    "10": 1972,
+    "01": 712,
+    "11": 707
+  },
+  "usage_seconds": 3.0,
+  "created": "2026-11-08T09:20:26.245123+00:00",
+  "finished": "2026-11-08T09:28:46.961003+00:00",
+  "status": "DONE",
+  "error": null,
+  "usage_unknown": false
+}

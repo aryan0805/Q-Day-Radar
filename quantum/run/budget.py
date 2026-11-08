@@ -117,8 +117,13 @@ def record_job(
     label: str = "",
     path: Path = DEFAULT_PATH,
     now: datetime | None = None,
+    enforce: bool = True,
 ) -> dict:
     """Check the cap, then append the job to the ledger. Returns the new entry.
+
+    ``enforce=False`` skips the cap check and always appends: use it for a job that has
+    ALREADY run, because actual spend must reach the ledger even if it crosses the cap.
+    ``check_job`` before submission remains the guard.
 
     The whole check -> load -> append -> write sequence holds an exclusive ``flock`` on
     ``<path>.lock`` so overlapping writers cannot overspend (P001). POSIX only
@@ -130,7 +135,8 @@ def record_job(
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path.with_name(path.name + ".lock"), "a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        check_job(seconds, path, now)
+        if enforce:
+            check_job(seconds, path, now)
         data = load_budget(path)
         entry = {
             "job_id": job_id,

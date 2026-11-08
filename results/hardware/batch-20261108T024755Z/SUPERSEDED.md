@@ -1,0 +1,1 @@
+Superseded before approval: the human asked for shor15_beauregard (raw) to be pilot index 0, submitted first; the replacement plan is the newer batch under results/hardware/ (batch id sent to lead; see its plan.json, "first_pilot": "shor15_beauregard"). This batch was never approved or submitted.

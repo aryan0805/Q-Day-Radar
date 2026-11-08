@@ -1,0 +1,20 @@
+{
+  "name": "shor21_beauregard",
+  "kind": "generic",
+  "noise_model": "fake_kingston",
+  "shots": 8192,
+  "seed_simulator": 1234,
+  "seed_transpiler": 1234,
+  "optimization_level": 3,
+  "success_probability": 0.0767822265625,
+  "wilson_95": [
+    0.07121305027097069,
+    0.08274813421029445
+  ],
+  "theoretical_success": 0.33074868504884414,
+  "chance_baseline": 0.078125,
+  "normalized_score": -0.005315310942599774,
+  "hellinger_vs_ideal": 0.04746699455557921,
+  "signal": false,
+  "timestamp": "2026-11-08T02:46:53.551574+00:00"
+}

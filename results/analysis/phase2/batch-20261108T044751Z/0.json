@@ -1,0 +1,27 @@
+{
+  "index": 0,
+  "job_id": "dbo16os4148s7391pe3g",
+  "name": "shor15_beauregard",
+  "config": "raw",
+  "status": "DONE",
+  "shots": 4096,
+  "isa_sha256": "86f7612ba9489025489831bf2887ee9a87ae1deee6b2c1651cf23137c78791cd",
+  "success_probability": 0.175048828125,
+  "wilson_95": [
+    0.16371721167897543,
+    0.18698938838411197
+  ],
+  "normalized_score": 0.009672619047619048,
+  "hellinger_vs_ideal": 0.026009544686433912,
+  "hellinger_vs_prediction": 0.9066628928886429,
+  "theoretical_success": 0.5,
+  "chance_baseline": 0.171875,
+  "predicted_success": 0.175537109375,
+  "prediction_wilson_95": [
+    0.16419228751294787,
+    0.18748996003314014
+  ],
+  "predicted_vs_chance": "at chance",
+  "m3": null,
+  "m3_reason": "measured qubits not calibrated"
+}

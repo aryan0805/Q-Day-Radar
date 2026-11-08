@@ -1,0 +1,6 @@
+{
+  "reason": "submit_failed",
+  "index": 4,
+  "message": "'Failed to run program: \\'400 Client Error: Bad Request for url: https://quantum.cloud.ibm.com/api/v1/jobs. {\"errors\":[{\"code\":1217,\"message\":\"Session has been closed.\",\"solution\":\"Increase the session `max_time` if possible, or keep session active by reducing the time between jobs.  For details, see the [Session length](https://quantum.cloud.ibm.com/docs/guides/run-jobs-session#session-length) guide.\",\"more_info\":\"https://cloud.ibm.com/apidocs/quantum-computing#error-handling\"}],\"trace\":\"75758c1c-0d70-4207-8479-eda20dd75b3c\"}\\\\n\\''",
+  "code": 6
+}

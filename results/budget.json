@@ -2,5 +2,237 @@
   "version": 1,
   "cap_seconds": 540.0,
   "window_days": 28,
-  "entries": []
+  "entries": [
+    {
+      "job_id": "dbo16os4148s7391pe3g",
+      "timestamp": "2026-11-08T07:40:58.571789+00:00",
+      "seconds": 5.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:0:shor15_beauregard:raw"
+    },
+    {
+      "job_id": "dbo2f2oou4as73b5dgr0",
+      "timestamp": "2026-11-08T07:48:06.824743+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:1:shor15_textbook:raw"
+    },
+    {
+      "job_id": "dbo2ids4148s7391s0bg",
+      "timestamp": "2026-11-08T07:49:38.983541+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:2:shor15_textbook:dd"
+    },
+    {
+      "job_id": "dbo2j4oqtr0c73adtbng",
+      "timestamp": "2026-11-08T07:50:42.030118+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:3:shor15_textbook:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tjgou4as73b5fh6g",
+      "timestamp": "2026-11-08T09:27:48.237095+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:4:m3_cal_zeros:m3_cal"
+    },
+    {
+      "job_id": "dbo3tjgou4as73b5fh70",
+      "timestamp": "2026-11-08T09:27:48.600225+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:5:grover_present_k2:raw"
+    },
+    {
+      "job_id": "dbo3tjoou4as73b5fh80",
+      "timestamp": "2026-11-08T09:27:49.410730+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:6:grover_present_k2:dd"
+    },
+    {
+      "job_id": "dbo3tk0ou4as73b5fh9g",
+      "timestamp": "2026-11-08T09:27:49.718346+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:7:grover_present_k2:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tk8ou4as73b5fha0",
+      "timestamp": "2026-11-08T09:27:54.673380+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:8:grover_present_k3:raw"
+    },
+    {
+      "job_id": "dbo3tk8ou4as73b5fhag",
+      "timestamp": "2026-11-08T09:27:59.507321+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:9:grover_present_k3:dd"
+    },
+    {
+      "job_id": "dbo3tkoou4as73b5fhc0",
+      "timestamp": "2026-11-08T09:27:59.956433+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:11:grover_present_k4:raw"
+    },
+    {
+      "job_id": "dbo3tkgou4as73b5fhb0",
+      "timestamp": "2026-11-08T09:28:04.907276+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:10:grover_present_k3:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tkoqtr0c73adv500",
+      "timestamp": "2026-11-08T09:28:05.210064+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:12:grover_present_k4:dd"
+    },
+    {
+      "job_id": "dbo3tl0ou4as73b5fhdg",
+      "timestamp": "2026-11-08T09:28:43.785165+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:13:grover_present_k4:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tl0ou4as73b5fhe0",
+      "timestamp": "2026-11-08T09:28:44.228998+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:14:grover_present_k5:raw"
+    },
+    {
+      "job_id": "dbo3tldt7fqc73akgvd0",
+      "timestamp": "2026-11-08T09:28:44.527785+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:15:grover_present_k5:dd"
+    },
+    {
+      "job_id": "dbo3tlk4148s7391tqr0",
+      "timestamp": "2026-11-08T09:28:45.103715+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:16:grover_present_k5:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tlgqtr0c73adv52g",
+      "timestamp": "2026-11-08T09:28:45.461346+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:17:shor15_textbook:raw"
+    },
+    {
+      "job_id": "dbo3tls4148s7391tqs0",
+      "timestamp": "2026-11-08T09:28:45.715025+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:18:shor15_textbook:dd"
+    },
+    {
+      "job_id": "dbo3tls4148s7391tqt0",
+      "timestamp": "2026-11-08T09:28:45.961501+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:19:shor15_textbook:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tm0ou4as73b5fhfg",
+      "timestamp": "2026-11-08T09:28:46.293104+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:20:grover_present_k2:raw"
+    },
+    {
+      "job_id": "dbo3tm8qtr0c73adv53g",
+      "timestamp": "2026-11-08T09:28:46.568979+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:21:grover_present_k2:dd"
+    },
+    {
+      "job_id": "dbo3tmc4148s7391tqv0",
+      "timestamp": "2026-11-08T09:28:46.961392+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:22:grover_present_k2:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tmk4148s7391tr00",
+      "timestamp": "2026-11-08T09:28:47.229838+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:23:grover_present_k3:raw"
+    },
+    {
+      "job_id": "dbo3tmoou4as73b5fhh0",
+      "timestamp": "2026-11-08T09:28:47.573591+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:24:grover_present_k3:dd"
+    },
+    {
+      "job_id": "dbo3tndt7fqc73akgvgg",
+      "timestamp": "2026-11-08T09:28:47.962700+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:26:grover_present_k4:raw"
+    },
+    {
+      "job_id": "dbo3tn0qtr0c73adv560",
+      "timestamp": "2026-11-08T09:29:19.729790+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:25:grover_present_k3:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tndt7fqc73akgvi0",
+      "timestamp": "2026-11-08T09:29:20.139302+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:27:grover_present_k4:dd"
+    },
+    {
+      "job_id": "dbo3tnlt7fqc73akgvig",
+      "timestamp": "2026-11-08T09:29:20.548048+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:28:grover_present_k4:dd_twirl"
+    },
+    {
+      "job_id": "dbo3tntt7fqc73akgvjg",
+      "timestamp": "2026-11-08T09:29:20.813742+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:29:grover_present_k5:raw"
+    },
+    {
+      "job_id": "dbo3tntt7fqc73akgvk0",
+      "timestamp": "2026-11-08T09:29:21.180882+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:30:grover_present_k5:dd"
+    },
+    {
+      "job_id": "dbo3to0ou4as73b5fhjg",
+      "timestamp": "2026-11-08T09:29:21.531125+00:00",
+      "seconds": 4.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:31:grover_present_k5:dd_twirl"
+    },
+    {
+      "job_id": "dbo3to5t7fqc73akgvlg",
+      "timestamp": "2026-11-08T09:29:22.103404+00:00",
+      "seconds": 3.0,
+      "backend": "ibm_kingston",
+      "label": "batch-20261108T044751Z:32:m3_cal_ones:m3_cal"
+    }
+  ]
 }

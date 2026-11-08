@@ -1,0 +1,735 @@
+{
+  "batch_id": "batch-20261108T044751Z",
+  "rule": "a gain needs difference > both pooled Wilson half-widths and > the larger repeat spread of the two configs",
+  "mitigation_statement": "No mitigation gain resolved for the circuits with signal (shor15_textbook, grover k2, k3). At the chance floor, dd \u2212 raw is resolved for k4 (+0.023) and k5 (+0.008), and dd_twirl \u2212 raw for k4 (+0.013). With dd, k4 and k5 move from at or below chance (raw) to just above it (k4 dd Wilson lo 0.071 vs 0.0625; k5 dd lo 0.032 vs 0.0312). k4 dd_twirl stays at chance (lo 0.062). Exploratory: the rule was set after the data arrived, 10 comparisons, 2 repeats per config, no multiple-comparison correction. Raw repeats drifted beyond shot noise for k2 and shor15_textbook.",
+  "entries": {
+    "shor15_beauregard/raw": {
+      "name": "shor15_beauregard",
+      "config": "raw",
+      "shots_pooled": 4096,
+      "success_probability": 0.175048828125,
+      "wilson_95": [
+        0.16371721167897543,
+        0.18698938838411197
+      ],
+      "repeats": [
+        {
+          "index": 0,
+          "success": 0.175048828125,
+          "wilson_95": [
+            0.16371721167897543,
+            0.18698938838411197
+          ]
+        }
+      ],
+      "repeat_spread": 0.0,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.5,
+      "chance_baseline": 0.171875,
+      "predicted_success": 0.175537109375,
+      "predicted_vs_chance": "at chance",
+      "normalized_score": 0.009672619047619048,
+      "hellinger_vs_ideal_mean": 0.026009544686433912,
+      "hellinger_vs_prediction_mean": 0.9066628928886429,
+      "m3_success_probability_mean": null
+    },
+    "shor15_textbook/raw": {
+      "name": "shor15_textbook",
+      "config": "raw",
+      "shots_pooled": 8192,
+      "success_probability": 0.3575439453125,
+      "wilson_95": [
+        0.3472343149190771,
+        0.3679871163730015
+      ],
+      "repeats": [
+        {
+          "index": 1,
+          "success": 0.37646484375,
+          "wilson_95": [
+            0.3617495921303739,
+            0.3914115946704693
+          ]
+        },
+        {
+          "index": 17,
+          "success": 0.338623046875,
+          "wilson_95": [
+            0.32428750219527147,
+            0.3532610046730237
+          ]
+        }
+      ],
+      "repeat_spread": 0.037841796875,
+      "drift_beyond_shot_noise": true,
+      "theoretical_success": 0.5,
+      "chance_baseline": 0.171875,
+      "predicted_success": 0.4287109375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.5658482142857143,
+      "hellinger_vs_ideal_mean": 0.5723348914030446,
+      "hellinger_vs_prediction_mean": 0.8834457172310751,
+      "m3_success_probability_mean": 0.3739471746342396
+    },
+    "shor15_textbook/dd": {
+      "name": "shor15_textbook",
+      "config": "dd",
+      "shots_pooled": 8192,
+      "success_probability": 0.3682861328125,
+      "wilson_95": [
+        0.3579051924107093,
+        0.3787905439767395
+      ],
+      "repeats": [
+        {
+          "index": 2,
+          "success": 0.3759765625,
+          "wilson_95": [
+            0.36126558366044004,
+            0.39091995565740245
+          ]
+        },
+        {
+          "index": 18,
+          "success": 0.360595703125,
+          "wilson_95": [
+            0.3460275936831729,
+            0.3754250499201502
+          ]
+        }
+      ],
+      "repeat_spread": 0.015380859375,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.5,
+      "chance_baseline": 0.171875,
+      "predicted_success": 0.4287109375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.5985863095238095,
+      "hellinger_vs_ideal_mean": 0.561894416139495,
+      "hellinger_vs_prediction_mean": 0.8881986438625746,
+      "m3_success_probability_mean": 0.3852113141878012
+    },
+    "shor15_textbook/dd_twirl": {
+      "name": "shor15_textbook",
+      "config": "dd_twirl",
+      "shots_pooled": 8192,
+      "success_probability": 0.3692626953125,
+      "wilson_95": [
+        0.35887554959093276,
+        0.3797723963506406
+      ],
+      "repeats": [
+        {
+          "index": 3,
+          "success": 0.369384765625,
+          "wilson_95": [
+            0.3547330442031637,
+            0.3842812540941705
+          ]
+        },
+        {
+          "index": 19,
+          "success": 0.369140625,
+          "wilson_95": [
+            0.3544911548398699,
+            0.38403531971596394
+          ]
+        }
+      ],
+      "repeat_spread": 0.000244140625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.5,
+      "chance_baseline": 0.171875,
+      "predicted_success": 0.4287109375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.6015625,
+      "hellinger_vs_ideal_mean": 0.49969915220506067,
+      "hellinger_vs_prediction_mean": 0.8592308847234209,
+      "m3_success_probability_mean": 0.3858233412467171
+    },
+    "m3_cal_zeros/m3_cal": {
+      "name": "m3_cal_zeros",
+      "config": "m3_cal",
+      "shots_pooled": 4096,
+      "success_probability": 0.890625,
+      "wilson_95": [
+        0.8806982972702632,
+        0.8998196891302327
+      ],
+      "repeats": [
+        {
+          "index": 4,
+          "success": 0.890625,
+          "wilson_95": [
+            0.8806982972702632,
+            0.8998196891302327
+          ]
+        }
+      ],
+      "repeat_spread": 0.0,
+      "drift_beyond_shot_noise": false
+    },
+    "grover_present_k2/raw": {
+      "name": "grover_present_k2",
+      "config": "raw",
+      "shots_pooled": 8192,
+      "success_probability": 0.505126953125,
+      "wilson_95": [
+        0.49430028301299817,
+        0.5159488171461558
+      ],
+      "repeats": [
+        {
+          "index": 5,
+          "success": 0.465087890625,
+          "wilson_95": [
+            0.44985287894737136,
+            0.48038832601808434
+          ]
+        },
+        {
+          "index": 20,
+          "success": 0.545166015625,
+          "wilson_95": [
+            0.5298811655262301,
+            0.5603662266513272
+          ]
+        }
+      ],
+      "repeat_spread": 0.080078125,
+      "drift_beyond_shot_noise": true,
+      "theoretical_success": 1.0,
+      "chance_baseline": 0.25,
+      "predicted_success": 0.651123046875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.3401692708333333,
+      "hellinger_vs_ideal_mean": 0.505126953125,
+      "hellinger_vs_prediction_mean": 0.9754175565696901,
+      "m3_success_probability_mean": 0.5087261197350585
+    },
+    "grover_present_k2/dd": {
+      "name": "grover_present_k2",
+      "config": "dd",
+      "shots_pooled": 8192,
+      "success_probability": 0.4891357421875,
+      "wilson_95": [
+        0.4783185529245924,
+        0.49996311578577174
+      ],
+      "repeats": [
+        {
+          "index": 6,
+          "success": 0.48681640625,
+          "wilson_95": [
+            0.4715290318229734,
+            0.5021284861360099
+          ]
+        },
+        {
+          "index": 21,
+          "success": 0.491455078125,
+          "wilson_95": [
+            0.47616027426249047,
+            0.5067658947849988
+          ]
+        }
+      ],
+      "repeat_spread": 0.004638671875,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 1.0,
+      "chance_baseline": 0.25,
+      "predicted_success": 0.651123046875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.31884765625,
+      "hellinger_vs_ideal_mean": 0.4891357421875,
+      "hellinger_vs_prediction_mean": 0.9719136375614699,
+      "m3_success_probability_mean": 0.4923518190183183
+    },
+    "grover_present_k2/dd_twirl": {
+      "name": "grover_present_k2",
+      "config": "dd_twirl",
+      "shots_pooled": 8192,
+      "success_probability": 0.4822998046875,
+      "wilson_95": [
+        0.47149004674587214,
+        0.4931261550856201
+      ],
+      "repeats": [
+        {
+          "index": 7,
+          "success": 0.483154296875,
+          "wilson_95": [
+            0.4678737183548455,
+            0.49846644348163316
+          ]
+        },
+        {
+          "index": 22,
+          "success": 0.4814453125,
+          "wilson_95": [
+            0.46616818655732106,
+            0.4967572090886554
+          ]
+        }
+      ],
+      "repeat_spread": 0.001708984375,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 1.0,
+      "chance_baseline": 0.25,
+      "predicted_success": 0.651123046875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.3097330729166667,
+      "hellinger_vs_ideal_mean": 0.48229980468750006,
+      "hellinger_vs_prediction_mean": 0.9707423945750502,
+      "m3_success_probability_mean": 0.4855288416270861
+    },
+    "grover_present_k3/raw": {
+      "name": "grover_present_k3",
+      "config": "raw",
+      "shots_pooled": 8192,
+      "success_probability": 0.1468505859375,
+      "wilson_95": [
+        0.13935127167940856,
+        0.15468094831029436
+      ],
+      "repeats": [
+        {
+          "index": 8,
+          "success": 0.144287109375,
+          "wilson_95": [
+            0.1338594503583103,
+            0.15538135827573804
+          ]
+        },
+        {
+          "index": 23,
+          "success": 0.1494140625,
+          "wilson_95": [
+            0.13882523263936056,
+            0.16065987456619432
+          ]
+        }
+      ],
+      "repeat_spread": 0.005126953125,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9453124999999999,
+      "chance_baseline": 0.125,
+      "predicted_success": 0.34130859375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.026636904761904764,
+      "hellinger_vs_ideal_mean": 0.34554084643110994,
+      "hellinger_vs_prediction_mean": 0.9390820099909569,
+      "m3_success_probability_mean": 0.14550679431405736
+    },
+    "grover_present_k3/dd": {
+      "name": "grover_present_k3",
+      "config": "dd",
+      "shots_pooled": 8192,
+      "success_probability": 0.1407470703125,
+      "wilson_95": [
+        0.1333846727384383,
+        0.14844623753798608
+      ],
+      "repeats": [
+        {
+          "index": 9,
+          "success": 0.14111328125,
+          "wilson_95": [
+            0.13078770019599445,
+            0.15211139979854987
+          ]
+        },
+        {
+          "index": 24,
+          "success": 0.140380859375,
+          "wilson_95": [
+            0.13007909174615287,
+            0.15135653702389054
+          ]
+        }
+      ],
+      "repeat_spread": 0.000732421875,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9453124999999999,
+      "chance_baseline": 0.125,
+      "predicted_success": 0.34130859375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.019196428571428573,
+      "hellinger_vs_ideal_mean": 0.3380715539270005,
+      "hellinger_vs_prediction_mean": 0.94122219546053,
+      "m3_success_probability_mean": 0.1388377351620504
+    },
+    "grover_present_k3/dd_twirl": {
+      "name": "grover_present_k3",
+      "config": "dd_twirl",
+      "shots_pooled": 8192,
+      "success_probability": 0.1517333984375,
+      "wilson_95": [
+        0.144127833136533,
+        0.1596654346237928
+      ],
+      "repeats": [
+        {
+          "index": 10,
+          "success": 0.149658203125,
+          "wilson_95": [
+            0.13906181046839394,
+            0.16091112047866124
+          ]
+        },
+        {
+          "index": 25,
+          "success": 0.15380859375,
+          "wilson_95": [
+            0.14308515107521028,
+            0.16518078347735013
+          ]
+        }
+      ],
+      "repeat_spread": 0.004150390625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9453124999999999,
+      "chance_baseline": 0.125,
+      "predicted_success": 0.34130859375,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.032589285714285716,
+      "hellinger_vs_ideal_mean": 0.3529124753870122,
+      "hellinger_vs_prediction_mean": 0.9495102123450698,
+      "m3_success_probability_mean": 0.15024055318314272
+    },
+    "grover_present_k4/raw": {
+      "name": "grover_present_k4",
+      "config": "raw",
+      "shots_pooled": 8192,
+      "success_probability": 0.0537109375,
+      "wilson_95": [
+        0.049034796264301586,
+        0.05880543750077062
+      ],
+      "repeats": [
+        {
+          "index": 11,
+          "success": 0.0556640625,
+          "wilson_95": [
+            0.04905002619785618,
+            0.06311076427157968
+          ]
+        },
+        {
+          "index": 26,
+          "success": 0.0517578125,
+          "wilson_95": [
+            0.04538352438622397,
+            0.05897208621920693
+          ]
+        }
+      ],
+      "repeat_spread": 0.00390625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9613189697265625,
+      "chance_baseline": 0.0625,
+      "predicted_success": 0.1416015625,
+      "predicted_vs_chance": "signal",
+      "normalized_score": -0.009778456837280366,
+      "hellinger_vs_ideal_mean": 0.1741603198784898,
+      "hellinger_vs_prediction_mean": 0.9622519436608445,
+      "m3_success_probability_mean": 0.054396952786973554
+    },
+    "grover_present_k4/dd": {
+      "name": "grover_present_k4",
+      "config": "dd",
+      "shots_pooled": 8192,
+      "success_probability": 0.0767822265625,
+      "wilson_95": [
+        0.07121305027097069,
+        0.08274813421029445
+      ],
+      "repeats": [
+        {
+          "index": 12,
+          "success": 0.07666015625,
+          "wilson_95": [
+            0.06890330375762298,
+            0.08521032848083955
+          ]
+        },
+        {
+          "index": 27,
+          "success": 0.076904296875,
+          "wilson_95": [
+            0.06913536160894661,
+            0.08546609437101622
+          ]
+        }
+      ],
+      "repeat_spread": 0.000244140625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9613189697265625,
+      "chance_baseline": 0.0625,
+      "predicted_success": 0.1416015625,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.015889992360580595,
+      "hellinger_vs_ideal_mean": 0.21207639222796576,
+      "hellinger_vs_prediction_mean": 0.9869075334465631,
+      "m3_success_probability_mean": 0.07840808758644222
+    },
+    "grover_present_k4/dd_twirl": {
+      "name": "grover_present_k4",
+      "config": "dd_twirl",
+      "shots_pooled": 8192,
+      "success_probability": 0.0670166015625,
+      "wilson_95": [
+        0.06180222519784238,
+        0.07263686374217705
+      ],
+      "repeats": [
+        {
+          "index": 13,
+          "success": 0.065185546875,
+          "wilson_95": [
+            0.058025791883688366,
+            0.07316012450425957
+          ]
+        },
+        {
+          "index": 28,
+          "success": 0.06884765625,
+          "wilson_95": [
+            0.061490797021969155,
+            0.07701247548848346
+          ]
+        }
+      ],
+      "repeat_spread": 0.003662109375,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9613189697265625,
+      "chance_baseline": 0.0625,
+      "predicted_success": 0.1416015625,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.005025040319157966,
+      "hellinger_vs_ideal_mean": 0.19684177399340766,
+      "hellinger_vs_prediction_mean": 0.9823076321832628,
+      "m3_success_probability_mean": 0.06796453995922977
+    },
+    "grover_present_k5/raw": {
+      "name": "grover_present_k5",
+      "config": "raw",
+      "shots_pooled": 8192,
+      "success_probability": 0.0277099609375,
+      "wilson_95": [
+        0.024370850048568538,
+        0.03149180433793704
+      ],
+      "repeats": [
+        {
+          "index": 14,
+          "success": 0.02734375,
+          "wilson_95": [
+            0.022775026827795367,
+            0.03279820962760454
+          ]
+        },
+        {
+          "index": 29,
+          "success": 0.028076171875,
+          "wilson_95": [
+            0.02344256118222798,
+            0.03359414649767285
+          ]
+        }
+      ],
+      "repeat_spread": 0.000732421875,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9991823155432941,
+      "chance_baseline": 0.03125,
+      "predicted_success": 0.047607421875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": -0.0036573208742524516,
+      "hellinger_vs_ideal_mean": 0.037655927257921884,
+      "hellinger_vs_prediction_mean": 0.964512321023642,
+      "m3_success_probability_mean": 0.027196916890131595
+    },
+    "grover_present_k5/dd": {
+      "name": "grover_present_k5",
+      "config": "dd",
+      "shots_pooled": 8192,
+      "success_probability": 0.035400390625,
+      "wilson_95": [
+        0.03161159553609072,
+        0.03962470908914584
+      ],
+      "repeats": [
+        {
+          "index": 15,
+          "success": 0.034912109375,
+          "wilson_95": [
+            0.029712310009736072,
+            0.04098346243217344
+          ]
+        },
+        {
+          "index": 30,
+          "success": 0.035888671875,
+          "wilson_95": [
+            0.030613091018468288,
+            0.04203397638944247
+          ]
+        }
+      ],
+      "repeat_spread": 0.0009765625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9991823155432941,
+      "chance_baseline": 0.03125,
+      "predicted_success": 0.047607421875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": 0.0042878934387787365,
+      "hellinger_vs_ideal_mean": 0.04671111449857565,
+      "hellinger_vs_prediction_mean": 0.9952517712881797,
+      "m3_success_probability_mean": 0.035150570664745195
+    },
+    "grover_present_k5/dd_twirl": {
+      "name": "grover_present_k5",
+      "config": "dd_twirl",
+      "shots_pooled": 8192,
+      "success_probability": 0.0289306640625,
+      "wilson_95": [
+        0.025516008942723066,
+        0.032786907386438226
+      ],
+      "repeats": [
+        {
+          "index": 16,
+          "success": 0.029052734375,
+          "wilson_95": [
+            0.024334000759731984,
+            0.034654001886170085
+          ]
+        },
+        {
+          "index": 31,
+          "success": 0.02880859375,
+          "wilson_95": [
+            0.0241109952204326,
+            0.03438918368396916
+          ]
+        }
+      ],
+      "repeat_spread": 0.000244140625,
+      "drift_beyond_shot_noise": false,
+      "theoretical_success": 0.9991823155432941,
+      "chance_baseline": 0.03125,
+      "predicted_success": 0.047607421875,
+      "predicted_vs_chance": "signal",
+      "normalized_score": -0.0023961757451998822,
+      "hellinger_vs_ideal_mean": 0.03927364506983644,
+      "hellinger_vs_prediction_mean": 0.9938590112765986,
+      "m3_success_probability_mean": 0.028282843898494947
+    },
+    "m3_cal_ones/m3_cal": {
+      "name": "m3_cal_ones",
+      "config": "m3_cal",
+      "shots_pooled": 4096,
+      "success_probability": 0.808837890625,
+      "wilson_95": [
+        0.7965086496170335,
+        0.8205883833808585
+      ],
+      "repeats": [
+        {
+          "index": 32,
+          "success": 0.808837890625,
+          "wilson_95": [
+            0.7965086496170335,
+            0.8205883833808585
+          ]
+        }
+      ],
+      "repeat_spread": 0.0,
+      "drift_beyond_shot_noise": false
+    }
+  },
+  "comparisons": {
+    "shor15_textbook: dd - raw": {
+      "difference": 0.0107421875,
+      "wilson_half_width_max": 0.01044267578301511,
+      "repeat_spread_max": 0.037841796875,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "shor15_textbook: dd_twirl - raw": {
+      "difference": 0.01171875,
+      "wilson_half_width_max": 0.01044842337985391,
+      "repeat_spread_max": 0.037841796875,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k2: dd - raw": {
+      "difference": -0.0159912109375,
+      "wilson_half_width_max": 0.010824267066578824,
+      "repeat_spread_max": 0.080078125,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k2: dd_twirl - raw": {
+      "difference": -0.0228271484375,
+      "wilson_half_width_max": 0.010824267066578824,
+      "repeat_spread_max": 0.080078125,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k3: dd - raw": {
+      "difference": -0.006103515625,
+      "wilson_half_width_max": 0.007664838315442901,
+      "repeat_spread_max": 0.005126953125,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k3: dd_twirl - raw": {
+      "difference": 0.0048828125,
+      "wilson_half_width_max": 0.0077688007436299,
+      "repeat_spread_max": 0.005126953125,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": true,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k4: dd - raw": {
+      "difference": 0.0230712890625,
+      "wilson_half_width_max": 0.00576754196966188,
+      "repeat_spread_max": 0.00390625,
+      "gain_resolved": true,
+      "raw_wilson_lo_above_chance": false,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k4: dd_twirl - raw": {
+      "difference": 0.0133056640625,
+      "wilson_half_width_max": 0.005417319272167338,
+      "repeat_spread_max": 0.00390625,
+      "gain_resolved": true,
+      "raw_wilson_lo_above_chance": false,
+      "mitigated_wilson_lo_above_chance": false
+    },
+    "grover_present_k5: dd - raw": {
+      "difference": 0.0076904296875,
+      "wilson_half_width_max": 0.004006556776527559,
+      "repeat_spread_max": 0.0009765625,
+      "gain_resolved": true,
+      "raw_wilson_lo_above_chance": false,
+      "mitigated_wilson_lo_above_chance": true
+    },
+    "grover_present_k5: dd_twirl - raw": {
+      "difference": 0.001220703125,
+      "wilson_half_width_max": 0.00363544922185758,
+      "repeat_spread_max": 0.000732421875,
+      "gain_resolved": false,
+      "raw_wilson_lo_above_chance": false,
+      "mitigated_wilson_lo_above_chance": false
+    }
+  },
+  "comparisons_exploratory": true,
+  "n_comparisons": 10
+}

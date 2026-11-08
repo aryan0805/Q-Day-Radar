@@ -23,7 +23,7 @@ mitigation = ["mthree>=3.0"]
 estimate = ["qsharp[qiskit]>=1.14", "qualtran>=0.5"]
 
 [tool.uv]
-default-groups = ["dev"]
+default-groups = ["dev", "mitigation"]
 
 [build-system]
 requires = ["hatchling"]
