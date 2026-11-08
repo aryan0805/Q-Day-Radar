@@ -1596,6 +1596,87 @@ def p5_provenance_static() -> tuple[bool, str]:
     return not problems, "; ".join(problems[:5] + [detail])
 
 
+# --- readability (human tweak round 1, thresholds fixed before BUILD) ---
+
+P5_FK_MAX_GRADE = 9.0  # Flesch-Kincaid grade, textstat
+P5_MAX_WORDS_PER_SENTENCE = 20.0
+P5_MIN_PLAIN_WORDS = 50  # fewer and the score means nothing
+P5_PLAIN_TAGS = {"p", "li", "figcaption", "dd", "blockquote"}
+
+
+def _p5_plain_text(html: str) -> tuple[str, int]:
+    """Text of running-prose elements inside <main>, outside any data-layer="technical"
+    element; also returns how many technical layers the page has."""
+    from html.parser import HTMLParser
+
+    out: list[str] = []
+    n_tech = 0
+
+    class P(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.stack: list[tuple[str, dict]] = []
+
+        def handle_starttag(self, tag, attrs):
+            nonlocal n_tech
+            if tag in _P5_VOID:
+                return
+            a = dict(attrs)
+            if a.get("data-layer") == "technical":
+                n_tech += 1
+            self.stack.append((tag, a))
+
+        def handle_endtag(self, tag):
+            while self.stack:
+                t, a = self.stack.pop()
+                if t in P5_PLAIN_TAGS and not any(x[0] in P5_PLAIN_TAGS for x in self.stack):
+                    out.append("\n")
+                if t == tag:
+                    return
+
+        def handle_data(self, data):
+            tags = [t for t, _ in self.stack]
+            if "main" not in tags or any(t in _P5_SKIP_TAGS for t in tags):
+                return
+            if any(a.get("data-layer") == "technical" for _, a in self.stack):
+                return
+            if any(t in P5_PLAIN_TAGS for t in tags):
+                out.append(data)
+
+    P().feed(html)
+    return " ".join("".join(out).split("\n")).strip(), n_tech
+
+
+def p5_readability() -> tuple[bool, str]:
+    """Plain layer of each screen: Flesch-Kincaid grade <= 9 and <= 20 words per sentence
+    (textstat); each screen has >= 1 technical layer (the two-layer structure)."""
+    try:
+        import textstat
+    except ImportError:
+        return False, "textstat not installed (builder adds it to pyproject)"
+    problems, rows = [], []
+    for screen in P5_SCREENS:
+        f = P5_OUT / (screen.strip("/") + "/index.html").lstrip("/")
+        if not f.exists():
+            problems.append(f"{screen}: not built")
+            continue
+        text, n_tech = _p5_plain_text(f.read_text(errors="replace"))
+        words = textstat.lexicon_count(text)
+        sents = max(1, textstat.sentence_count(text))
+        grade = textstat.flesch_kincaid_grade(text) if text else float("nan")
+        wps = words / sents
+        rows.append(f"{screen} grade {grade:.1f}, {wps:.1f} w/s, {words} words, {n_tech} tech")
+        if words < P5_MIN_PLAIN_WORDS:
+            problems.append(f"{screen}: only {words} plain words")
+        elif grade > P5_FK_MAX_GRADE:
+            problems.append(f"{screen}: grade {grade:.1f} > {P5_FK_MAX_GRADE}")
+        if words and wps > P5_MAX_WORDS_PER_SENTENCE:
+            problems.append(f"{screen}: {wps:.1f} words/sentence > {P5_MAX_WORDS_PER_SENTENCE}")
+        if n_tech < 1:
+            problems.append(f"{screen}: no data-layer=\"technical\" detail")
+    return not problems, "; ".join(problems + rows)
+
+
 # --- git hygiene ---
 
 
@@ -1951,10 +2032,15 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("[5b] scenario tests pass (no xfail/skip)", p5_strict("scenario")),
         Py("[5b] keyboard tests pass (no xfail/skip)", p5_strict("keyboard")),
         Py("[5b] smoke tests pass (no xfail/skip)", p5_strict("smoke")),
+        Py("[5b] plain layer: FK grade <= 9, <= 20 words/sentence, technical layer per screen",
+           p5_readability),
+        Py("[5b] justify tests pass (no xfail/skip)", p5_strict("justify")),
+        Py("[5b] glossary tests pass (no xfail/skip)", p5_strict("glossary")),
         Py("[5c] home JS <= 200,000 B gzipped", p5_home_js_budget),
         Py("[5c] reducedmotion tests pass (no xfail/skip)", p5_strict("reducedmotion")),
         Py("[5c] longtask tests pass (no xfail/skip)", p5_strict("longtask")),
         Py("[5c] easteregg tests pass (no xfail/skip)", p5_strict("easteregg")),
+        Py("[5c] motionscale tests pass (no xfail/skip)", p5_strict("motionscale")),
         Py("[5d] Lighthouse mobile: perf >= 0.90, a11y = 1.00, LCP < 2 s, CLS < 0.05",
            p5_lighthouse),
         Py("[5d] web data files valid against their schemas, <= 5 MB", p4_web_schemas),
