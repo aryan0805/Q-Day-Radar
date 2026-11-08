@@ -32,9 +32,7 @@ def shor_theoretical_success(N: int, a: int, n_count: int) -> float:
     """P(one shot -> order_from_shot == true order), from the analytic QPE distribution."""
     r = classical_order(a, N)
     probs = qpe_probabilities(n_count, r)
-    return float(
-        sum(p for m, p in enumerate(probs) if order_from_shot(m, n_count, a, N) == r)
-    )
+    return float(sum(p for m, p in enumerate(probs) if order_from_shot(m, n_count, a, N) == r))
 
 
 def grover_theoretical_success(key_bits: int, n_consistent: int, iterations: int) -> float:

@@ -1,0 +1,36 @@
+{
+  "N": null,
+  "base_a": null,
+  "bloq": "ECAdd",
+  "case": "ecc256_ecadd",
+  "counts": {
+    "rotations": 0,
+    "t": 0,
+    "toffoli": 8825052
+  },
+  "label": "single point addition (measured by Qualtran, symbolic n at 256)",
+  "logical_qubits": 1280,
+  "method": "bloq",
+  "n_bits": null,
+  "n_field_bits": 256,
+  "projection": {
+    "label": "projection",
+    "literature_id": "roetteler2017_toffoli_p256",
+    "point_additions": 512,
+    "toffoli_equiv": 4518426624.0
+  },
+  "raw_cost_at_n256": {
+    "and_bloq": 6204376,
+    "cswap": 2619392,
+    "rotation": 0,
+    "t": 0,
+    "toffoli": 1284
+  },
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "toffoli_equiv": 8825052.0,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

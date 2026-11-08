@@ -1,0 +1,668 @@
+{
+  "cases": [
+    {
+      "case": "beauregard_N1027_a2__vs__modexp_N1027_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N1027_a2",
+      "qualtran": "modexp_N1027_a2",
+      "ratio_logical_qubits": 1.32,
+      "ratio_toffoli_equiv": 227.18568465357671
+    },
+    {
+      "case": "beauregard_N1027_a3__vs__modexp_N1027_a3",
+      "kind": "same_function",
+      "qdk": "beauregard_N1027_a3",
+      "qualtran": "modexp_N1027_a3",
+      "ratio_logical_qubits": 1.32,
+      "ratio_toffoli_equiv": 227.5932333285247
+    },
+    {
+      "case": "beauregard_N1027_a4__vs__modexp_N1027_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N1027_a4",
+      "qualtran": "modexp_N1027_a4",
+      "ratio_logical_qubits": 1.32,
+      "ratio_toffoli_equiv": 227.42651253469188
+    },
+    {
+      "case": "beauregard_N1027_a5__vs__modexp_N1027_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N1027_a5",
+      "qualtran": "modexp_N1027_a5",
+      "ratio_logical_qubits": 1.32,
+      "ratio_toffoli_equiv": 228.02309982237054
+    },
+    {
+      "case": "beauregard_N129_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N129_a2",
+      "qualtran": "beauregard_N129_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N129_a2__vs__modexp_N129_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N129_a2",
+      "qualtran": "modexp_N129_a2",
+      "ratio_logical_qubits": 1.263157894736842,
+      "ratio_toffoli_equiv": 139.2119990593445
+    },
+    {
+      "case": "beauregard_N129_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N129_a4",
+      "qualtran": "beauregard_N129_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N129_a4__vs__modexp_N129_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N129_a4",
+      "qualtran": "modexp_N129_a4",
+      "ratio_logical_qubits": 1.263157894736842,
+      "ratio_toffoli_equiv": 139.69605574587462
+    },
+    {
+      "case": "beauregard_N129_a5",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N129_a5",
+      "qualtran": "beauregard_N129_a5",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N129_a5__vs__modexp_N129_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N129_a5",
+      "qualtran": "modexp_N129_a5",
+      "ratio_logical_qubits": 1.263157894736842,
+      "ratio_toffoli_equiv": 140.97247426957088
+    },
+    {
+      "case": "beauregard_N129_a7",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N129_a7",
+      "qualtran": "beauregard_N129_a7",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N129_a7__vs__modexp_N129_a7",
+      "kind": "same_function",
+      "qdk": "beauregard_N129_a7",
+      "qualtran": "modexp_N129_a7",
+      "ratio_logical_qubits": 1.263157894736842,
+      "ratio_toffoli_equiv": 141.02077025236588
+    },
+    {
+      "case": "beauregard_N15_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N15_a2",
+      "qualtran": "beauregard_N15_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N15_a2__vs__modexp_N15_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N15_a2",
+      "qualtran": "modexp_N15_a2",
+      "ratio_logical_qubits": 1.0909090909090908,
+      "ratio_toffoli_equiv": 28.325008258451245
+    },
+    {
+      "case": "beauregard_N15_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N15_a4",
+      "qualtran": "beauregard_N15_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N15_a4__vs__modexp_N15_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N15_a4",
+      "qualtran": "modexp_N15_a4",
+      "ratio_logical_qubits": 1.0909090909090908,
+      "ratio_toffoli_equiv": 28.255106978696652
+    },
+    {
+      "case": "beauregard_N15_a7",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N15_a7",
+      "qualtran": "beauregard_N15_a7",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N15_a7__vs__modexp_N15_a7",
+      "kind": "same_function",
+      "qdk": "beauregard_N15_a7",
+      "qualtran": "modexp_N15_a7",
+      "ratio_logical_qubits": 1.0909090909090908,
+      "ratio_toffoli_equiv": 29.24796100637213
+    },
+    {
+      "case": "beauregard_N15_a8",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N15_a8",
+      "qualtran": "beauregard_N15_a8",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N15_a8__vs__modexp_N15_a8",
+      "kind": "same_function",
+      "qdk": "beauregard_N15_a8",
+      "qualtran": "modexp_N15_a8",
+      "ratio_logical_qubits": 1.0909090909090908,
+      "ratio_toffoli_equiv": 28.325008258451245
+    },
+    {
+      "case": "beauregard_N2049_a2__vs__modexp_N2049_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N2049_a2",
+      "qualtran": "modexp_N2049_a2",
+      "ratio_logical_qubits": 1.3333333333333333,
+      "ratio_toffoli_equiv": 254.6775772885451
+    },
+    {
+      "case": "beauregard_N2049_a4__vs__modexp_N2049_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N2049_a4",
+      "qualtran": "modexp_N2049_a4",
+      "ratio_logical_qubits": 1.3333333333333333,
+      "ratio_toffoli_equiv": 254.95072444188932
+    },
+    {
+      "case": "beauregard_N2049_a5__vs__modexp_N2049_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N2049_a5",
+      "qualtran": "modexp_N2049_a5",
+      "ratio_logical_qubits": 1.3333333333333333,
+      "ratio_toffoli_equiv": 257.03363490694716
+    },
+    {
+      "case": "beauregard_N2049_a7__vs__modexp_N2049_a7",
+      "kind": "same_function",
+      "qdk": "beauregard_N2049_a7",
+      "qualtran": "modexp_N2049_a7",
+      "ratio_logical_qubits": 1.3333333333333333,
+      "ratio_toffoli_equiv": 257.2355454387713
+    },
+    {
+      "case": "beauregard_N21_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N21_a2",
+      "qualtran": "beauregard_N21_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N21_a2__vs__modexp_N21_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N21_a2",
+      "qualtran": "modexp_N21_a2",
+      "ratio_logical_qubits": 1.1538461538461537,
+      "ratio_toffoli_equiv": 55.87115055128785
+    },
+    {
+      "case": "beauregard_N21_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N21_a4",
+      "qualtran": "beauregard_N21_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N21_a4__vs__modexp_N21_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N21_a4",
+      "qualtran": "modexp_N21_a4",
+      "ratio_logical_qubits": 1.1538461538461537,
+      "ratio_toffoli_equiv": 56.119310711002285
+    },
+    {
+      "case": "beauregard_N21_a5",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N21_a5",
+      "qualtran": "beauregard_N21_a5",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N21_a5__vs__modexp_N21_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N21_a5",
+      "qualtran": "modexp_N21_a5",
+      "ratio_logical_qubits": 1.1538461538461537,
+      "ratio_toffoli_equiv": 56.40743735902458
+    },
+    {
+      "case": "beauregard_N21_a8",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N21_a8",
+      "qualtran": "beauregard_N21_a8",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N21_a8__vs__modexp_N21_a8",
+      "kind": "same_function",
+      "qdk": "beauregard_N21_a8",
+      "qualtran": "modexp_N21_a8",
+      "ratio_logical_qubits": 1.1538461538461537,
+      "ratio_toffoli_equiv": 53.09145581781336
+    },
+    {
+      "case": "beauregard_N259_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N259_a2",
+      "qualtran": "beauregard_N259_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N259_a2__vs__modexp_N259_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N259_a2",
+      "qualtran": "modexp_N259_a2",
+      "ratio_logical_qubits": 1.2857142857142858,
+      "ratio_toffoli_equiv": 167.96246453861895
+    },
+    {
+      "case": "beauregard_N259_a3",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N259_a3",
+      "qualtran": "beauregard_N259_a3",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N259_a3__vs__modexp_N259_a3",
+      "kind": "same_function",
+      "qdk": "beauregard_N259_a3",
+      "qualtran": "modexp_N259_a3",
+      "ratio_logical_qubits": 1.2857142857142858,
+      "ratio_toffoli_equiv": 168.44226833138373
+    },
+    {
+      "case": "beauregard_N259_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N259_a4",
+      "qualtran": "beauregard_N259_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N259_a4__vs__modexp_N259_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N259_a4",
+      "qualtran": "modexp_N259_a4",
+      "ratio_logical_qubits": 1.2857142857142858,
+      "ratio_toffoli_equiv": 168.165635921917
+    },
+    {
+      "case": "beauregard_N259_a5",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N259_a5",
+      "qualtran": "beauregard_N259_a5",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N259_a5__vs__modexp_N259_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N259_a5",
+      "qualtran": "modexp_N259_a5",
+      "ratio_logical_qubits": 1.2857142857142858,
+      "ratio_toffoli_equiv": 170.2873513312824
+    },
+    {
+      "case": "beauregard_N33_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N33_a2",
+      "qualtran": "beauregard_N33_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N33_a2__vs__modexp_N33_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N33_a2",
+      "qualtran": "modexp_N33_a2",
+      "ratio_logical_qubits": 1.2,
+      "ratio_toffoli_equiv": 83.81626761559026
+    },
+    {
+      "case": "beauregard_N33_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N33_a4",
+      "qualtran": "beauregard_N33_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N33_a4__vs__modexp_N33_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N33_a4",
+      "qualtran": "modexp_N33_a4",
+      "ratio_logical_qubits": 1.2,
+      "ratio_toffoli_equiv": 84.0035552491176
+    },
+    {
+      "case": "beauregard_N33_a5",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N33_a5",
+      "qualtran": "beauregard_N33_a5",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N33_a5__vs__modexp_N33_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N33_a5",
+      "qualtran": "modexp_N33_a5",
+      "ratio_logical_qubits": 1.2,
+      "ratio_toffoli_equiv": 84.21922371673858
+    },
+    {
+      "case": "beauregard_N33_a7",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N33_a7",
+      "qualtran": "beauregard_N33_a7",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N33_a7__vs__modexp_N33_a7",
+      "kind": "same_function",
+      "qdk": "beauregard_N33_a7",
+      "qualtran": "modexp_N33_a7",
+      "ratio_logical_qubits": 1.2,
+      "ratio_toffoli_equiv": 84.26352194017731
+    },
+    {
+      "case": "beauregard_N4097_a2__vs__modexp_N4097_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N4097_a2",
+      "qualtran": "modexp_N4097_a2",
+      "ratio_logical_qubits": 1.3448275862068966,
+      "ratio_toffoli_equiv": 284.9420064929375
+    },
+    {
+      "case": "beauregard_N4097_a3__vs__modexp_N4097_a3",
+      "kind": "same_function",
+      "qdk": "beauregard_N4097_a3",
+      "qualtran": "modexp_N4097_a3",
+      "ratio_logical_qubits": 1.3448275862068966,
+      "ratio_toffoli_equiv": 287.0285523770826
+    },
+    {
+      "case": "beauregard_N4097_a4__vs__modexp_N4097_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N4097_a4",
+      "qualtran": "modexp_N4097_a4",
+      "ratio_logical_qubits": 1.3448275862068966,
+      "ratio_toffoli_equiv": 285.1749795427548
+    },
+    {
+      "case": "beauregard_N4097_a5__vs__modexp_N4097_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N4097_a5",
+      "qualtran": "modexp_N4097_a5",
+      "ratio_logical_qubits": 1.3448275862068966,
+      "ratio_toffoli_equiv": 286.4329235086839
+    },
+    {
+      "case": "beauregard_N515_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N515_a2",
+      "qualtran": "beauregard_N515_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N515_a2__vs__modexp_N515_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N515_a2",
+      "qualtran": "modexp_N515_a2",
+      "ratio_logical_qubits": 1.3043478260869565,
+      "ratio_toffoli_equiv": 197.58290961439872
+    },
+    {
+      "case": "beauregard_N515_a3",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N515_a3",
+      "qualtran": "beauregard_N515_a3",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N515_a3__vs__modexp_N515_a3",
+      "kind": "same_function",
+      "qdk": "beauregard_N515_a3",
+      "qualtran": "modexp_N515_a3",
+      "ratio_logical_qubits": 1.3043478260869565,
+      "ratio_toffoli_equiv": 199.17561900521838
+    },
+    {
+      "case": "beauregard_N515_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N515_a4",
+      "qualtran": "beauregard_N515_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N515_a4__vs__modexp_N515_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N515_a4",
+      "qualtran": "modexp_N515_a4",
+      "ratio_logical_qubits": 1.3043478260869565,
+      "ratio_toffoli_equiv": 197.95330948493802
+    },
+    {
+      "case": "beauregard_N515_a6",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N515_a6",
+      "qualtran": "beauregard_N515_a6",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N515_a6__vs__modexp_N515_a6",
+      "kind": "same_function",
+      "qdk": "beauregard_N515_a6",
+      "qualtran": "modexp_N515_a6",
+      "ratio_logical_qubits": 1.3043478260869565,
+      "ratio_toffoli_equiv": 198.62221045170395
+    },
+    {
+      "case": "beauregard_N65_a2",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N65_a2",
+      "qualtran": "beauregard_N65_a2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N65_a2__vs__modexp_N65_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N65_a2",
+      "qualtran": "modexp_N65_a2",
+      "ratio_logical_qubits": 1.2352941176470589,
+      "ratio_toffoli_equiv": 112.12993561552308
+    },
+    {
+      "case": "beauregard_N65_a3",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N65_a3",
+      "qualtran": "beauregard_N65_a3",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N65_a3__vs__modexp_N65_a3",
+      "kind": "same_function",
+      "qdk": "beauregard_N65_a3",
+      "qualtran": "modexp_N65_a3",
+      "ratio_logical_qubits": 1.2352941176470589,
+      "ratio_toffoli_equiv": 112.72043924860013
+    },
+    {
+      "case": "beauregard_N65_a4",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N65_a4",
+      "qualtran": "beauregard_N65_a4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N65_a4__vs__modexp_N65_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N65_a4",
+      "qualtran": "modexp_N65_a4",
+      "ratio_logical_qubits": 1.2352941176470589,
+      "ratio_toffoli_equiv": 112.55773256640157
+    },
+    {
+      "case": "beauregard_N65_a6",
+      "kind": "same_circuit",
+      "qdk": "beauregard_N65_a6",
+      "qualtran": "beauregard_N65_a6",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "beauregard_N65_a6__vs__modexp_N65_a6",
+      "kind": "same_function",
+      "qdk": "beauregard_N65_a6",
+      "qualtran": "modexp_N65_a6",
+      "ratio_logical_qubits": 1.2352941176470589,
+      "ratio_toffoli_equiv": 112.72212829087383
+    },
+    {
+      "case": "beauregard_N8193_a2__vs__modexp_N8193_a2",
+      "kind": "same_function",
+      "qdk": "beauregard_N8193_a2",
+      "qualtran": "modexp_N8193_a2",
+      "ratio_logical_qubits": 1.3548387096774193,
+      "ratio_toffoli_equiv": 313.340693162851
+    },
+    {
+      "case": "beauregard_N8193_a4__vs__modexp_N8193_a4",
+      "kind": "same_function",
+      "qdk": "beauregard_N8193_a4",
+      "qualtran": "modexp_N8193_a4",
+      "ratio_logical_qubits": 1.3548387096774193,
+      "ratio_toffoli_equiv": 313.54174564360295
+    },
+    {
+      "case": "beauregard_N8193_a5__vs__modexp_N8193_a5",
+      "kind": "same_function",
+      "qdk": "beauregard_N8193_a5",
+      "qualtran": "modexp_N8193_a5",
+      "ratio_logical_qubits": 1.3548387096774193,
+      "ratio_toffoli_equiv": 316.0966317630175
+    },
+    {
+      "case": "beauregard_N8193_a7__vs__modexp_N8193_a7",
+      "kind": "same_function",
+      "qdk": "beauregard_N8193_a7",
+      "qualtran": "modexp_N8193_a7",
+      "ratio_logical_qubits": 1.3548387096774193,
+      "ratio_toffoli_equiv": 316.011955638504
+    },
+    {
+      "case": "grover_present_k2",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k2",
+      "qualtran": "grover_present_k2",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k2_nopeel",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k2_nopeel",
+      "qualtran": "grover_present_k2_nopeel",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k3",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k3",
+      "qualtran": "grover_present_k3",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k3_nopeel",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k3_nopeel",
+      "qualtran": "grover_present_k3_nopeel",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k4",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k4",
+      "qualtran": "grover_present_k4",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k4_nopeel",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k4_nopeel",
+      "qualtran": "grover_present_k4_nopeel",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k5",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k5",
+      "qualtran": "grover_present_k5",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "grover_present_k5_nopeel",
+      "kind": "same_circuit",
+      "qdk": "grover_present_k5_nopeel",
+      "qualtran": "grover_present_k5_nopeel",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "shor15_beauregard",
+      "kind": "same_circuit",
+      "qdk": "shor15_beauregard",
+      "qualtran": "shor15_beauregard",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "shor15_textbook",
+      "kind": "same_circuit",
+      "qdk": "shor15_textbook",
+      "qualtran": "shor15_textbook",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    },
+    {
+      "case": "shor21_beauregard",
+      "kind": "same_circuit",
+      "qdk": "shor21_beauregard",
+      "qualtran": "shor21_beauregard",
+      "ratio_logical_qubits": 1.0,
+      "ratio_toffoli_equiv": 1.0
+    }
+  ]
+}

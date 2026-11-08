@@ -164,7 +164,12 @@ def _append_sbox(qc: QuantumCircuit, wires: list, const: list[int | None]) -> No
 
 
 def _pair_core(
-    key_bits: int, pt: int, ct: int, regs: list, kq: QuantumRegister, w: QuantumRegister,
+    key_bits: int,
+    pt: int,
+    ct: int,
+    regs: list,
+    kq: QuantumRegister,
+    w: QuantumRegister,
     peel_last_sbox: bool,
 ) -> QuantumCircuit:
     """Map w = K0 to the pair's 4 match bits (all 1 iff encrypt(pt, key) == ct)."""

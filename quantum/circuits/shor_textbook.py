@@ -57,8 +57,13 @@ def build_shor15_textbook() -> QuantumCircuit:
         _controlled_mult(qc, j, work_idx, 2**j)
     qc.append(QFTGate(N_COUNT).inverse(), count)
     qc.measure(count, phase)
-    qc.metadata = {"name": "shor15_textbook", "kind": "compiled", "N": N, "a": A,
-                   "n_count": N_COUNT,
-                   "compiled_reason": "hand-built multiply-by-7 mod 15; blocks for j>=2 dropped "
-                   "because 7**4 = 1 mod 15"}
+    qc.metadata = {
+        "name": "shor15_textbook",
+        "kind": "compiled",
+        "N": N,
+        "a": A,
+        "n_count": N_COUNT,
+        "compiled_reason": "hand-built multiply-by-7 mod 15; blocks for j>=2 dropped "
+        "because 7**4 = 1 mod 15",
+    }
     return qc

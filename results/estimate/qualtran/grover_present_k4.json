@@ -1,0 +1,25 @@
+{
+  "N": null,
+  "base_a": null,
+  "bloq": "cirq_optree_to_cbloq(QASM2)",
+  "case": "grover_present_k4",
+  "circuit_form": "non_dynamic",
+  "circuit_sha256": "b5a8b48c336a243ea7528deaf0a7ea82474b0ceaf1363c131c5b4b5e72fd6f63",
+  "classical_control_counted": "executed",
+  "counts": {
+    "rotations": 0,
+    "t": 384,
+    "toffoli": 36
+  },
+  "logical_qubits": 10,
+  "method": "same_circuit",
+  "n_bits": null,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "source_kind": "generic",
+  "toffoli_equiv": 132.0,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

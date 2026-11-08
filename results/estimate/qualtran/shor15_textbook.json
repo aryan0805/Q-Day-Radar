@@ -1,0 +1,25 @@
+{
+  "N": 15,
+  "base_a": 7,
+  "bloq": "cirq_optree_to_cbloq(QASM2)",
+  "case": "shor15_textbook",
+  "circuit_form": "non_dynamic",
+  "circuit_sha256": "1e6431728af86093eda461a8d80c084a9c0bfcbf18ddcc937a95f4df358480b9",
+  "classical_control_counted": "executed",
+  "counts": {
+    "rotations": 63,
+    "t": 21,
+    "toffoli": 5
+  },
+  "logical_qubits": 12,
+  "method": "same_circuit",
+  "n_bits": 4,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "source_kind": "compiled",
+  "toffoli_equiv": 1579.8610248342786,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

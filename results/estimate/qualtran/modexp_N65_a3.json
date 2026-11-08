@@ -1,0 +1,21 @@
+{
+  "N": 65,
+  "base_a": 3,
+  "bloq": "ModExp",
+  "case": "modexp_N65_a3",
+  "counts": {
+    "rotations": 0,
+    "t": 0,
+    "toffoli": 7350
+  },
+  "logical_qubits": 21,
+  "method": "bloq",
+  "n_bits": 7,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "toffoli_equiv": 7350.0,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

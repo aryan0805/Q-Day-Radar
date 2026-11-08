@@ -1,0 +1,35 @@
+# Three named physical scenarios. Every physical number comes from a literature.yaml id;
+# error_budget is a design choice (total failure probability of the whole computation).
+error_budget: 0.01
+scenarios:
+  optimistic:
+    error_rate_id: ge2019_physical_error_rate_optimistic
+    cycle_time_id: ge2019_cycle_time
+    qec_scheme: surface_code
+  median:
+    error_rate_id: ge2019_physical_error_rate
+    cycle_time_id: ge2019_cycle_time
+    qec_scheme: surface_code
+  pessimistic:
+    error_rate_id: ge2019_physical_error_rate
+    cycle_time_id: litinski2023_cycle_time_ion
+    qec_scheme: surface_code
+# Where each target's logical counts come from (literature ids; values read from literature.yaml).
+targets:
+  rsa2048:
+    label: literature
+    source: Gidney 2025
+    logical_qubits_id: g2025_logical_qubits_rsa2048
+    ccz_id: g2025_toffoli_rsa2048
+  ecc256:
+    label: literature
+    source: Roetteler et al. 2017
+    logical_qubits_id: roetteler2017_logical_qubits_p256
+    ccz_id: roetteler2017_toffoli_p256
+  aes128:
+    label: literature
+    source: Grassl et al. 2016
+    peel_last_sbox: false
+    grover_key_bits: 128  # Grassl Sec. 3.4: floor(pi/4 * 2^(k/2)) sequential iterations
+    logical_qubits_id: grassl2016_logical_qubits_aes128
+    t_id: grassl2016_t_gates_aes128

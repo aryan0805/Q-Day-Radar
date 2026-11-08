@@ -1,0 +1,348 @@
+{
+  "comparisons": [
+    {
+      "estimator": "qdk",
+      "explanation": "Beauregard Fourier-adder circuit, rotations priced at the shared eps (1e-10); Gidney-Ekera use windowed arithmetic and Toffoli-based adders. Extrapolated far beyond the fitted range (n = 4..14); model chosen by holdout: poly_n4.",
+      "label": "extrapolated",
+      "literature_id": "ge2019_toffoli_rsa2048",
+      "literature_value": 2700000000.0,
+      "method": "extrapolated: poly_n4 fit of the Beauregard family at n=2048",
+      "ours": 1.1174296383447072e+16,
+      "quantity": "toffoli_equiv",
+      "ratio": 4138628.290165582,
+      "target": "rsa2048"
+    },
+    {
+      "estimator": "qdk",
+      "explanation": "Same extrapolation with rotations priced at eps = error_budget / rotation_count(2048) (the shared eps would exceed the budget at this size). Its rotation_t_cost is in the field extrapolated_budget_eps.",
+      "extrapolated_budget_eps": {
+        "eps": 2.2336594561826966e-17,
+        "error_budget": 0.01,
+        "model": "poly_n4 on rotation_count and on (ccz + ccix + t/4) separately",
+        "n_bits": 2048,
+        "non_rotation_toffoli_equiv": 12909552512685.572,
+        "rotation_count": 447695819177821.7,
+        "rotation_t_cost": 165.94010509154077,
+        "value": 1.8585582373365476e+16
+      },
+      "label": "extrapolated",
+      "literature_id": "ge2019_toffoli_rsa2048",
+      "literature_value": 2700000000.0,
+      "method": "extrapolated: poly_n4 on rotation_count and non-rotation part, budget eps",
+      "ours": 1.8585582373365476e+16,
+      "quantity": "toffoli_equiv",
+      "ratio": 6883549.027172399,
+      "target": "rsa2048"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "Qualtran ModExp is schoolbook (no windowing or coset representation), so it costs more Toffolis than the optimised constructions in the literature. Cross-check: the selected poly_n4 fit of the ModExp family gives 1.718e+11 at n=2048, the directly measured bloq gives 1.718e+11.",
+      "label": "measured",
+      "literature_id": "ge2019_toffoli_rsa2048",
+      "literature_value": 2700000000.0,
+      "method": "measured: ModExp bloq at a 2048-bit N",
+      "ours": 171840634880.0,
+      "quantity": "toffoli_equiv",
+      "ratio": 63.64467958518519,
+      "target": "rsa2048"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "Same, against Gidney 2025 (approximate modular exponentiation).",
+      "label": "measured",
+      "literature_id": "g2025_toffoli_rsa2048",
+      "literature_value": 6500000000.0,
+      "method": "measured: ModExp bloq at a 2048-bit N",
+      "ours": 171840634880.0,
+      "quantity": "toffoli_equiv",
+      "ratio": 26.437020750769232,
+      "target": "rsa2048"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "Literature value is an upper bound (<1600). Qualtran ModExp holds three n-bit registers.",
+      "label": "measured",
+      "literature_id": "g2025_logical_qubits_rsa2048",
+      "literature_value": 1600.0,
+      "method": "measured: ModExp bloq at a 2048-bit N",
+      "ours": 6144,
+      "quantity": "logical_qubits",
+      "ratio": 3.84,
+      "target": "rsa2048"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "One measured Qualtran ECAdd at n=256 times 2n additions; Roetteler counts the whole algorithm with its own point-addition circuit.",
+      "label": "projection",
+      "literature_id": "roetteler2017_toffoli_p256",
+      "literature_value": 126000000000.0,
+      "method": "projection: measured ECAdd at n=256 times 2n point additions",
+      "ours": 4518426624.0,
+      "quantity": "toffoli_equiv",
+      "ratio": 0.035860528761904764,
+      "target": "ecc256"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "Litinski's 109 million Toffolis use windowed point additions and a different circuit.",
+      "label": "projection",
+      "literature_id": "litinski2023_toffoli_per_key",
+      "literature_value": 109000000.0,
+      "method": "projection: measured ECAdd at n=256 times 2n point additions",
+      "ours": 4518426624.0,
+      "quantity": "toffoli_equiv",
+      "ratio": 41.453455266055045,
+      "target": "ecc256"
+    },
+    {
+      "estimator": "qualtran",
+      "explanation": "Single-addition register width against the whole algorithm.",
+      "label": "measured",
+      "literature_id": "roetteler2017_logical_qubits_p256",
+      "literature_value": 2330.0,
+      "method": "measured: ECAdd bloq, symbolic n evaluated at 256",
+      "ours": 1280,
+      "quantity": "logical_qubits",
+      "ratio": 0.5493562231759657,
+      "target": "ecc256"
+    },
+    {
+      "code_distance": 29,
+      "estimator": "physical",
+      "explanation": "Gidney-Ekera 2019 report 20 million qubits using CCZ factories and lookup/runway layouts (Table 2); the Toffoli+T/2 count is used here as CCZ count. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 2700000000,
+        "measurementCount": 2700000000,
+        "numQubits": 6189,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "ge2019_physical_qubits_rsa2048",
+      "literature_unit_note": "qubits",
+      "literature_value": 20000000.0,
+      "method": "measured: QDK physical model fed ge2019's logical counts",
+      "ours": 21696364,
+      "quantity": "physical_qubits",
+      "ratio": 1.0848182,
+      "target": "rsa2048"
+    },
+    {
+      "code_distance": 29,
+      "estimator": "physical",
+      "explanation": "Gidney-Ekera 2019 report 20 million qubits using CCZ factories and lookup/runway layouts (Table 2); the Toffoli+T/2 count is used here as CCZ count. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 2700000000,
+        "measurementCount": 2700000000,
+        "numQubits": 6189,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "ge2019_runtime_rsa2048",
+      "literature_unit_note": "days x 86400 = seconds",
+      "literature_value": 26784.0,
+      "method": "measured: QDK physical model fed ge2019's logical counts",
+      "ours": 313200.0,
+      "quantity": "runtime_seconds",
+      "ratio": 11.693548387096774,
+      "target": "rsa2048"
+    },
+    {
+      "code_distance": 29,
+      "estimator": "physical",
+      "explanation": "Gidney 2025 stores idle logical qubits in yoked surface codes (cold storage, denser than 2*d^2 per qubit) and uses magic state cultivation with fewer factories (abstract; Section 3.2); QDK has neither. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 6500000000,
+        "measurementCount": 6500000000,
+        "numQubits": 1600,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "g2025_physical_qubits_rsa2048",
+      "literature_unit_note": "qubits",
+      "literature_value": 897864.0,
+      "method": "measured: QDK physical model fed g2025's logical counts",
+      "ours": 6346950,
+      "quantity": "physical_qubits",
+      "ratio": 7.068943626206196,
+      "target": "rsa2048"
+    },
+    {
+      "code_distance": 29,
+      "estimator": "physical",
+      "explanation": "Gidney 2025 stores idle logical qubits in yoked surface codes (cold storage, denser than 2*d^2 per qubit) and uses magic state cultivation with fewer factories (abstract; Section 3.2); QDK has neither. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 6500000000,
+        "measurementCount": 6500000000,
+        "numQubits": 1600,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "g2025_runtime_rsa2048",
+      "literature_unit_note": "days x 86400 = seconds",
+      "literature_value": 428544.0,
+      "method": "measured: QDK physical model fed g2025's logical counts",
+      "ours": 754000.0,
+      "quantity": "runtime_seconds",
+      "ratio": 1.7594459378733571,
+      "target": "rsa2048"
+    },
+    {
+      "code_distance": 27,
+      "estimator": "physical",
+      "explanation": "Litinski 2023 states the error rate as 10% of the surface-code threshold; with a 1% threshold that is the 1e-3 used here (threshold not in literature.yaml). Cycle 1 us as in its superconducting case (litinski2023_runtime_superconducting). Its architecture (6000 logical qubits, parallel modules, non-local connections, d = 28 patches) is not what QDK models. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 109000000,
+        "measurementCount": 109000000,
+        "numQubits": 6000,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "litinski2023_physical_qubits",
+      "literature_unit_note": "qubits",
+      "literature_value": 9400000.0,
+      "method": "measured: QDK physical model fed litinski2023's logical counts",
+      "ours": 18218058,
+      "quantity": "physical_qubits",
+      "ratio": 1.9380912765957448,
+      "target": "ecc256"
+    },
+    {
+      "code_distance": 27,
+      "estimator": "physical",
+      "explanation": "Litinski 2023 states the error rate as 10% of the surface-code threshold; with a 1% threshold that is the 1e-3 used here (threshold not in literature.yaml). Cycle 1 us as in its superconducting case (litinski2023_runtime_superconducting). Its architecture (6000 logical qubits, parallel modules, non-local connections, d = 28 patches) is not what QDK models. QDK built-in surface_code scheme: every algorithmic logical qubit is a 2*d^2 patch (its layout also adds logical qubits), CCZ = 4 T states, T factories from QDK's default distillation units, error budget set by us (0.01), not by the paper.",
+      "input_hardware": {
+        "cycle_time_seconds": 1e-06,
+        "error_budget": 0.01,
+        "physical_error_rate": 0.001,
+        "qec_scheme": "surface_code"
+      },
+      "input_logical_counts": {
+        "ccixCount": 0,
+        "cczCount": 109000000,
+        "measurementCount": 109000000,
+        "numQubits": 6000,
+        "rotationCount": 0,
+        "rotationDepth": 0,
+        "tCount": 0
+      },
+      "label": "measured",
+      "literature_id": "litinski2023_runtime_superconducting",
+      "literature_unit_note": "hours x 3600 = seconds",
+      "literature_value": 13680.0,
+      "method": "measured: QDK physical model fed litinski2023's logical counts",
+      "ours": 11772.0,
+      "quantity": "runtime_seconds",
+      "ratio": 0.8605263157894737,
+      "target": "ecc256"
+    },
+    {
+      "estimator": "qdk",
+      "explanation": "unreliable (r2=0.765; signed residuals k=2: +0.07, k=3: -0.04, k=4: -0.22, k=5: +0.16). Toy 4-round SPN with a k-bit key, 4 data points (k = 2..5), costed with peel_last_sbox=False; not an AES estimate and no error bar. The qubit count is a straight-line fit of the toy circuits' qubits against k, evaluated at k = 128, so it is not an integer (a fit value, not a circuit).",
+      "fit_r2": 0.7646326045913315,
+      "fit_residuals": [
+        {
+          "k": 2,
+          "rel": 0.06819080525089818
+        },
+        {
+          "k": 3,
+          "rel": -0.03912806615413707
+        },
+        {
+          "k": 4,
+          "rel": -0.22403214937119742
+        },
+        {
+          "k": 5,
+          "rel": 0.15625520122045614
+        }
+      ],
+      "label": "projection",
+      "literature_id": "grassl2016_logical_qubits_aes128",
+      "literature_value": 2953.0,
+      "method": "projection: toy-SPN k=2..5 (peel_last_sbox=False) fit evaluated at k=128",
+      "ours": 171.59999999999988,
+      "peel_last_sbox": false,
+      "quantity": "logical_qubits",
+      "ratio": 0.058110396207246826,
+      "target": "aes128"
+    },
+    {
+      "estimator": "qdk",
+      "explanation": "unreliable (r2=0.765; signed residuals k=2: +0.07, k=3: -0.04, k=4: -0.22, k=5: +0.16). Toy 4-round SPN with a k-bit key, 4 data points (k = 2..5), costed with peel_last_sbox=False; not an AES estimate and no error bar. Per-iteration toffoli_equiv fitted as a power law in k, times floor(pi/4*2^64) iterations, times 4 to give T-equivalents (Grassl's column is T gates).",
+      "fit_r2": 0.7646326045913315,
+      "fit_residuals": [
+        {
+          "k": 2,
+          "rel": 0.06819080525089818
+        },
+        {
+          "k": 3,
+          "rel": -0.03912806615413707
+        },
+        {
+          "k": 4,
+          "rel": -0.22403214937119742
+        },
+        {
+          "k": 5,
+          "rel": 0.15625520122045614
+        }
+      ],
+      "label": "projection",
+      "literature_id": "grassl2016_t_gates_aes128",
+      "literature_value": 9.24e+25,
+      "method": "projection: toy-SPN k=2..5 (peel_last_sbox=False) fit evaluated at k=128",
+      "ours": 5.9741519284348775e+22,
+      "peel_last_sbox": false,
+      "quantity": "t_equiv_total",
+      "ratio": 0.0006465532390081037,
+      "target": "aes128"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "N": 259,
+  "base_a": 5,
+  "bloq": "cirq_optree_to_cbloq(QASM2)",
+  "case": "beauregard_N259_a5",
+  "circuit_form": "non_dynamic",
+  "circuit_sha256": "ad6e84905ffc8cd8d66f10c1b77e3232a8b9efe59e617307afe722c402c6c8ae",
+  "classical_control_counted": "executed",
+  "counts": {
+    "rotations": 104866,
+    "t": 28294,
+    "toffoli": 969
+  },
+  "logical_qubits": 21,
+  "method": "same_circuit",
+  "n_bits": 9,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "source_kind": "generic",
+  "toffoli_equiv": 2620722.336988436,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

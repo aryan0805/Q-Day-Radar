@@ -1,0 +1,21 @@
+{
+  "N": 4097,
+  "base_a": 4,
+  "bloq": "ModExp",
+  "case": "modexp_N4097_a4",
+  "counts": {
+    "rotations": 0,
+    "t": 0,
+    "toffoli": 45630
+  },
+  "logical_qubits": 39,
+  "method": "bloq",
+  "n_bits": 13,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "toffoli_equiv": 45630.0,
+  "tool": {
+    "name": "qualtran",
+    "version": "0.7.0"
+  }
+}

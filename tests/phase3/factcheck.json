@@ -1,0 +1,184 @@
+{
+ "ge2019_physical_qubits_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Table 2, row '(ours) 2019 (parallel)', Physical qubits (millions); title",
+  "note": "Source 20 million physical qubits; yaml 20,000,000. Row: 0.1% gate error, 1 us cycle, 10 us reaction, planar, 28 CCZ, reaction limited carry runways.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_runtime_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Table 2, row '(ours) 2019 (parallel)', Expected runtime (days)",
+  "note": "Source 0.31 days (title rounds to '8 hours'); yaml 0.31 days.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_toffoli_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Table 1, row '(ours) 2019', column group Toffoli+T/2 Count (billions), n = 2048",
+  "note": "Row reads 0.4, 2.7, 9.9 for n = 1024, 2048, 3072; yaml 2.7e9. This is the Toffoli+T/2 column, not a pure Toffoli count (asymptotic 0.3n^3 + 0.0005n^3 lg n gives about 2.6e9 at n = 2048). The neighbouring group (0.5, 5.9, 21) is Min Volume in megaqubitdays.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_logical_qubits_formula": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Abstract; Table 1 row '(ours) 2019', Abstract Qubits",
+  "note": "Source '3n + 0.002n lg n logical qubits' (abstract circuit model, before distillation/routing/error-correction overhead); yaml matches.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_physical_error_rate": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Abstract; Table 2 row '(ours) 2019 (parallel)'",
+  "note": "Abstract 'characteristic physical gate error rate of 10^-3'; table 0.1%; yaml 0.001.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_physical_error_rate_optimistic": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Figure 1 legend",
+  "note": "Legend 'RSA via Ekera-Hastad - 0.01% gate error instead of 0.1%'; 0.01% = 1e-4 matches yaml. Figure gives curves only, no numeric table.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_cycle_time": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Abstract; Table 2 row '(ours) 2019 (parallel)', Cycle time",
+  "note": "Source 1 microsecond; yaml 1e-6 s.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "ge2019_reaction_time": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1905.09749",
+  "locator": "Abstract; Table 2 row '(ours) 2019 (parallel)', Reaction time",
+  "note": "Source 10 microseconds; yaml 1e-5 s.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "g2025_physical_qubits_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2: 'The total number of physical qubits is 897864.'",
+  "note": "Source 897864; yaml 897864. Assumptions: 0.1% uniform gate error, 1 us cycle, 10 us reaction, square grid (abstract).",
+  "method": "fact-checker read the arXiv HTML; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "g2025_runtime_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2: 'actual time estimate per factoring: 4.96 days'",
+  "note": "Re-verified after builder's fix: yaml locator now Section 3.2 and says the abstract only gives 'less than a week'. Source sentence re-read in the PDF text: 'time estimate per factoring: 4.96 days'. Value 4.96 days matches.",
+  "method": "reviewer re-read the PDF text (pdftotext) after the yaml fix"
+ },
+ "g2025_logical_qubits_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2: 'fewer than 1600 logical qubits (including idle hot patches)'; '1280 + 131 + 7*18 = 1537 < 1600'",
+  "note": "Source matches yaml (upper bound 1600, detail 1537). Caution: Table 5 row n = 2048 lists Qubits = 1399, a different count the paper does not reconcile; never mix 1399 and 1537.",
+  "method": "fact-checker read the arXiv HTML; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "g2025_toffoli_rsa2048": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.1, Table 5, row n = 2048, column Toffolis; caption",
+  "note": "Source 6.5e+09; caption: 'The Toffolis column is expected Toffolis per factoring (not per shot)'; s = 8, E(shots) = 9.2. Yaml matches.",
+  "method": "fact-checker read the arXiv HTML; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "g2025_code_distance": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2505.15917",
+  "locator": "Section 3.2: 'a distance of 25 is sufficient for normal surface code patches'",
+  "note": "Source distance 25; hot patches 2*(25+1)^2 = 1352 physical qubits each. Yaml matches.",
+  "method": "fact-checker read the arXiv HTML; reviewer re-read the PDF text (pdftotext) for the same numbers"
+ },
+ "roetteler2017_logical_qubits_p256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1706.06752",
+  "locator": "Table 2 (p.21), row 256, #Qubits; Introduction 'Results'",
+  "note": "Source 2330 logical qubits ('at most' 9n + 2*ceil(log2 n) + 10 for the simulated circuit); yaml 2330. PDF is v3 (latest); v1 and v2 not read.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "roetteler2017_toffoli_p256": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1706.06752",
+  "locator": "Table 2 (p.21), row 256, #Toffoli gates; Introduction 'Results'",
+  "note": "Source 1.26 x 10^11 Toffoli gates (Toffoli depth 1.16 x 10^11), full Shor ECDLP; yaml 1.26e11.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_toffoli_per_key": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 (p.10): 'we need 6000 logical qubits and 109 million Toffoli gates per key'",
+  "note": "Source 109 million; yaml 109000000. Baseline architecture, one instance. arXiv v1 is the only version.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_logical_qubits": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 (p.10), same sentence",
+  "note": "Source 6000 logical qubits (2 x the overestimate of 3000 memory qubits); yaml 6000.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_physical_qubits": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 'Circuit-based quantum computers' (p.10); Fig. 1",
+  "note": "Source 'both require 9.4 million physical qubits' (d = 28, 2d^2 per logical qubit, 10% of threshold); yaml 9400000.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_runtime_superconducting": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 (p.10)",
+  "note": "Source '1 us code cycle ... one key every 484 . 28 seconds, or 3.8 hours'; yaml 3.8 hours. (The yaml writes the product with '*', the paper with a centred dot.)",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_cycle_time_ion": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 (p.10)",
+  "note": "Source '1 ms code cycle, trapped ions generate one key every 160 days'; yaml 0.001 s.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "litinski2023_threshold_fraction": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/2306.08585",
+  "locator": "Section 2.1 'Determining the code distance' (p.10); Section 3 Conclusion",
+  "note": "Source 'logical error rate p_L = 10^(-d/2) at 10% threshold' and 'physical error rate ... 10% of the surface code threshold'; the paper gives no absolute physical error rate. Yaml 0.1 of threshold.",
+  "method": "fact-checker read the PDF pages as images; reviewer re-read the PDF text (pdftotext) for the key numbers"
+ },
+ "grassl2016_logical_qubits_aes128": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1512.04965",
+  "locator": "Table 5, row k = 128, #qubits; Section 3.4 'The space requirements are 3 s_128 + 1 qubits'; Table 2 total 984",
+  "note": "Re-verified after builder's fix: assumptions now 'r = 3 AES instances in parallel (qubits = 3*984 + 1)'. PDF text: Table 5 row 128 ends '2,953'; Section 3.4 gives 3 s_128 + 1; Table 2 Total row ends 984; 'we assume that r = 3 (AES-128)'. 3*984 + 1 = 2953.",
+  "method": "reviewer re-read the PDF text (pdftotext) after the yaml fix"
+ },
+ "grassl2016_t_gates_aes128": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1512.04965",
+  "locator": "Table 5, row k = 128, '#gates: T' column; Section 3.4 equation",
+  "note": "Re-verified after builder's fix: units now \"T gates (Table 5 '#gates', T column)\", r = 3 pairs stated. PDF text: Table 5 row 128 reads '1.19 . 2^86  1.55 . 2^86  1.06 . 2^80  1.16 . 2^81  2,953' (T, Clifford, T-depth, overall depth, qubits); Section 3.4: floor(pi/4 2^64) iterations, '264 . 6 t_128 + 13,204 = 9.24 . 10^25 = 1.19 . 2^86'.",
+  "method": "reviewer re-read the PDF text (pdftotext) after the yaml fix"
+ },
+ "grassl2016_depth_aes128": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1512.04965",
+  "locator": "Table 5 (p.11), row k = 128, depth / overall",
+  "note": "Source 1.16 * 2^81 overall depth (T-depth is the neighbouring 1.06 * 2^80 column); an approximation per Section 3.4; yaml matches.",
+  "method": "fact-checker read the PDF; reviewer re-read the Table 5 row in the PDF text (1.16 . 2^81 in the overall-depth column)"
+ },
+ "jaques2020_maxdepth_range": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/pdf/1910.01700v1",
+  "locator": "Section 2.2 'Depth constraints for cryptanalysis' (p.5-6) and footnote 6",
+  "note": "Source: NIST 'reasonable values are between 2^40 and 2^96' for MAXDEPTH; yaml matches. The primary source of this number is the NIST call for proposals, which Jaques et al. cite; read in arXiv v1 only.",
+  "method": "fact-checker read the PDF; reviewer re-read Section 2.2 in the PDF text ('reasonable values are between 2^40 and 2^96')"
+ },
+ "ross_selinger2014_t_per_rotation": {
+  "status": "verified",
+  "checked_url": "https://arxiv.org/abs/1403.2975",
+  "locator": "Abstract",
+  "note": "Abstract: 'T-count 3log_2(1/epsilon) + O(log(log(1/epsilon)))' in the typical case; yaml leading coefficient 3. Dropping the additive O(log log) term makes 3*log2(1/eps) a slight underestimate; the PDF body constants were not read.",
+  "method": "fact-checker read the abs page; reviewer re-read the abstract in the PDF text (T-count 3 log2(1/eps) + O(log log 1/eps))"
+ }
+}

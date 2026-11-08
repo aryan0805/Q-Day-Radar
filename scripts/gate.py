@@ -46,6 +46,7 @@ Check = Cmd | Py
 
 # ---------- reusable check functions ----------
 
+
 def qiskit_major_is_2() -> tuple[bool, str]:
     import qiskit
 
@@ -88,9 +89,10 @@ def full_suite() -> tuple[bool, str]:
     """Run the non-hardware suite once, with a JUnit report the keyword checks reuse."""
     xml = Path(tempfile.gettempdir()) / f"qday-gate-{os.getpid()}.xml"
     r = subprocess.run(
-        [PY, "-m", "pytest", "-m", "not hardware", "-p", "no:cacheprovider",
-         f"--junitxml={xml}"],
-        cwd=ROOT, capture_output=True, text=True,
+        [PY, "-m", "pytest", "-m", "not hardware", "-p", "no:cacheprovider", f"--junitxml={xml}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
     )
     cases = []
     if xml.exists():
@@ -122,8 +124,11 @@ def pytest_selects(
         if "cases" not in _SUITE:
             full_suite()
         prefix = path.strip("/").replace("/", ".") + "." if path else ""
-        hits = [s for cls, name, s in _SUITE["cases"]
-                if cls.startswith(prefix) and expr.lower() in f"{cls}.{name}".lower()]
+        hits = [
+            s
+            for cls, name, s in _SUITE["cases"]
+            if cls.startswith(prefix) and expr.lower() in f"{cls}.{name}".lower()
+        ]
         n = {k: hits.count(k) for k in ("passed", "failed", "skipped", "xfailed")}
         ok = n["failed"] == 0 and n["passed"] >= minimum
         if strict and (n["skipped"] or n["xfailed"]):
@@ -143,9 +148,19 @@ P1_REQUIRED = {
     **{f"grover_present_k{k}": "generic" for k in range(2, 6)},
 }
 P1_METRIC_KEYS = {
-    "name", "kind", "n_qubits", "depth", "two_qubit_gates", "transpile",
-    "success_probability", "theoretical_success", "shots", "seed_simulator",
-    "qiskit_version", "timestamp", "chance_baseline",
+    "name",
+    "kind",
+    "n_qubits",
+    "depth",
+    "two_qubit_gates",
+    "transpile",
+    "success_probability",
+    "theoretical_success",
+    "shots",
+    "seed_simulator",
+    "qiskit_version",
+    "timestamp",
+    "chance_baseline",
 }
 P1_TOLERANCE = 0.02
 P1_MIN_SHOTS = 8192
@@ -235,9 +250,18 @@ def glob_nonempty(pattern: str) -> Callable[[], tuple[bool, str]]:
 # ---------- phase 2: noisy sim + hardware ----------
 
 P2_NOISY_KEYS = {
-    "name", "kind", "noise_model", "shots", "seed_simulator", "success_probability",
-    "wilson_95", "theoretical_success", "chance_baseline", "normalized_score",
-    "hellinger_vs_ideal", "signal",
+    "name",
+    "kind",
+    "noise_model",
+    "shots",
+    "seed_simulator",
+    "success_probability",
+    "wilson_95",
+    "theoretical_success",
+    "chance_baseline",
+    "normalized_score",
+    "hellinger_vs_ideal",
+    "signal",
 }
 P2_PLAN_CAP_SECONDS = 300.0
 P2_REDUCED_MIN_SHOTS = 1024
@@ -336,8 +360,9 @@ def _p2_resume_problems(batch: Path, digest: str) -> list[str]:
 
 
 def p2_plan_within_cap() -> tuple[bool, str]:
-    total = sum(json.loads((b / "plan.json").read_text())["total_estimated_seconds"]
-                for b in _p2_batches())
+    total = sum(
+        json.loads((b / "plan.json").read_text())["total_estimated_seconds"] for b in _p2_batches()
+    )
     return total <= P2_PLAN_CAP_SECONDS, f"planned {total:.1f} s of {P2_PLAN_CAP_SECONDS:.0f} s"
 
 
@@ -405,6 +430,300 @@ def p2_strict(expr: str) -> Callable[[], tuple[bool, str]]:
     return pytest_selects(expr, path="tests/phase2", strict=True)
 
 
+# ---------- phase 3: resource estimation ----------
+
+P3_EST = ROOT / "results" / "estimate"
+P3_LIT = ROOT / "quantum" / "estimate" / "literature.yaml"
+P3_FACTCHECK = ROOT / "tests" / "phase3" / "factcheck.json"
+P3_TARGETS = ("rsa2048", "ecc256", "aes128")
+P3_SCENARIOS = ("optimistic", "median", "pessimistic")
+P3_MAX_RATIO = 3.0
+P3_MIN_SIZES = 5
+P3_MIN_BASES = 3
+P3_MIN_SHARED = 4
+P3_MAX_FILE_BYTES = 5_000_000  # stored circuits are gzipped (human decision, gate 3)
+P3_POOR_FIT = 0.05  # |signed residual| or holdout rel_error above this needs a caveat
+P3_LABELS = ("measured", "extrapolated", "projection", "literature")
+P3_PHYSICAL_TARGETS = ("rsa2048", "ecc256")  # the literature gives physical figures for these
+
+
+def _load(path: Path) -> dict:
+    return json.loads(path.read_text())
+
+
+def _p3_cases(tool: str) -> dict[str, dict]:
+    d = P3_EST / tool
+    return {p.stem: _load(p) for p in sorted(d.glob("*.json"))} if d.exists() else {}
+
+
+def _p3_literature() -> list[dict]:
+    import yaml  # pyyaml joins the default deps in P3 task 1
+
+    data = yaml.safe_load(P3_LIT.read_text())
+    return data if isinstance(data, list) else data.get("entries", [])
+
+
+def _order(a: int, n: int) -> int:
+    from math import gcd
+
+    if gcd(a, n) != 1:
+        raise ValueError(f"base {a} is not coprime to N={n}")
+    x, r = a % n, 1
+    while x != 1:
+        x, r = (x * a) % n, r + 1
+    return r
+
+
+def p3_env() -> tuple[bool, str]:
+    import importlib.metadata as md
+
+    path = P3_EST / "env.json"
+    if not path.exists():
+        return False, "results/estimate/env.json missing"
+    env = _load(path)
+    problems = []
+    for pkg in ("qsharp", "qualtran"):
+        try:
+            __import__(pkg)
+            have = md.version(pkg)
+        except Exception as exc:  # noqa: BLE001
+            problems.append(f"{pkg} does not import: {exc}")
+            continue
+        if env.get(pkg) != have:
+            problems.append(f"{pkg} installed {have}, env.json says {env.get(pkg)}")
+    ok_msg = f"qsharp {env.get('qsharp')}, qualtran {env.get('qualtran')}"
+    return not problems, "; ".join(problems) or ok_msg
+
+
+def p3_literature_checked() -> tuple[bool, str]:
+    try:
+        entries = _p3_literature()
+    except Exception as exc:  # noqa: BLE001
+        return False, f"literature.yaml: {exc}"
+    if not entries:
+        return False, "literature.yaml has no entries"
+    fc = _load(P3_FACTCHECK) if P3_FACTCHECK.exists() else {}
+    problems = []
+    for e in entries:
+        eid = e.get("id")
+        if not str(e.get("source_url", "")).startswith("https://"):
+            problems.append(f"{eid}: no https source_url")
+        if not e.get("locator"):
+            problems.append(f"{eid}: no locator")
+        if fc.get(eid, {}).get("status") != "verified":
+            problems.append(f"{eid}: fact-check {fc.get(eid, {}).get('status', 'missing')}")
+    targets = {e.get("target") for e in entries}
+    missing = [t for t in P3_TARGETS if t not in targets]
+    if missing:
+        problems.append(f"no literature for {missing}")
+    return not problems, "; ".join(problems[:6]) or f"{len(entries)} entries, all verified"
+
+
+def _p3_toffoli_equiv(c: dict, tool: str) -> float:
+    k = c["rotation_t_cost"]
+    if tool == "qdk":
+        lc = c["logical_counts"]
+        return lc["ccz_count"] + lc["ccix_count"] + lc["t_count"] / 4 + lc["rotation_count"] * k / 4
+    ct = c["counts"]
+    return ct["toffoli"] + ct["t"] / 4 + ct["rotations"] * k / 4
+
+
+def p3_toffoli_equiv_consistent() -> tuple[bool, str]:
+    problems, eps, tcost, n = [], set(), set(), 0
+    for tool in ("qdk", "qualtran"):
+        for case, c in _p3_cases(tool).items():
+            n += 1
+            try:
+                want = _p3_toffoli_equiv(c, tool)
+                eps.add(c["rotation_eps"])
+                tcost.add(c["rotation_t_cost"])
+            except (KeyError, TypeError) as exc:
+                problems.append(f"{tool}/{case}: missing {exc}")
+                continue
+            if abs(c.get("toffoli_equiv", -1) - want) > 1e-6 * max(1.0, want):
+                problems.append(f"{tool}/{case}: toffoli_equiv {c.get('toffoli_equiv')} != {want}")
+    if len(eps) > 1 or len(tcost) > 1:
+        problems.append(f"rotation_eps {sorted(eps)} / rotation_t_cost {sorted(tcost)} differ")
+    if n == 0:
+        problems.append("no estimate files")
+    return not problems, "; ".join(problems[:6]) or f"{n} files consistent"
+
+
+def p3_qdk_complete() -> tuple[bool, str]:
+    qdk = _p3_cases("qdk")
+    problems = [f"no QDK file for {name}" for name in P1_REQUIRED if name not in qdk]
+    sizes: dict[int, set[int]] = {}
+    for case, c in qdk.items():
+        if case.startswith(("shor", "beauregard")) and c.get("base_a") is None:
+            problems.append(f"{case}: no base_a")
+        if case.startswith("beauregard_N"):
+            sizes.setdefault(c["N"], set()).add(c["base_a"])
+    if len(sizes) < P3_MIN_SIZES:
+        problems.append(f"scaling family has {len(sizes)} sizes, need {P3_MIN_SIZES}")
+    for N, bases in sorted(sizes.items()):
+        if len(bases) < P3_MIN_BASES:
+            problems.append(f"N={N}: {len(bases)} bases, need {P3_MIN_BASES}")
+        if all(_order(a, N) == 2 for a in bases):
+            problems.append(f"N={N}: only order-2 bases")
+    return not problems, "; ".join(problems[:6]) or (
+        f"7 registry + {sum(map(len, sizes.values()))} scaling cases over N={sorted(sizes)}"
+    )
+
+
+def p3_crosscheck() -> tuple[bool, str]:
+    path = P3_EST / "crosscheck.json"
+    if not path.exists():
+        return False, "crosscheck.json missing"
+    qdk, qt = _p3_cases("qdk"), _p3_cases("qualtran")
+    decisions = (ROOT / "docs" / "DECISIONS.md").read_text()
+    problems, kinds, over = [], {"same_circuit": 0, "same_function": 0}, []
+    for row in _load(path).get("cases", []):
+        a, b = qdk.get(row.get("qdk")), qt.get(row.get("qualtran"))
+        if a is None or b is None:
+            problems.append(f"{row.get('case')}: per-case file missing")
+            continue
+        kinds[row.get("kind")] = kinds.get(row.get("kind"), 0) + 1
+        if row.get("kind") == "same_circuit" and (
+            not a.get("circuit_sha256") or a.get("circuit_sha256") != b.get("circuit_sha256")
+        ):
+            problems.append(f"{row.get('case')}: tools costed different circuits (circuit_sha256)")
+        pairs = {
+            "ratio_logical_qubits": (a["logical_counts"]["num_qubits"], b["logical_qubits"]),
+            "ratio_toffoli_equiv": (a["toffoli_equiv"], b["toffoli_equiv"]),
+        }
+        for key, (x, y) in pairs.items():
+            ratio = max(x, y) / min(x, y) if min(x, y) > 0 else float("inf")
+            if abs(row.get(key, -1) - ratio) > 1e-6 * ratio:
+                problems.append(f"{row['case']}: {key} {row.get(key)} != recomputed {ratio:.4g}")
+            if ratio > P3_MAX_RATIO and row["case"] not in decisions:
+                over.append(f"{row['case']} {key}={ratio:.3g}")
+    for k in ("same_circuit", "same_function"):
+        if kinds[k] < P3_MIN_SHARED:
+            problems.append(f"{kinds[k]} {k} cases, need {P3_MIN_SHARED}")
+    if over:
+        problems.append("over 3x, not explained in DECISIONS.md: " + ", ".join(over[:4]))
+    return not problems, "; ".join(problems[:6]) or (
+        f"{kinds['same_circuit']} same_circuit, {kinds['same_function']} same_function; "
+        "every ratio recomputed, every >3x gap explained"
+    )
+
+
+def p3_scaling() -> tuple[bool, str]:
+    path = P3_EST / "scaling.json"
+    if not path.exists():
+        return False, "scaling.json missing"
+    fits = _load(path).get("fits", [])
+    problems, per_tool = [], {"qdk": 0, "qualtran": 0}
+    for f in fits:
+        tag = f"{f.get('estimator')}/{f.get('quantity')}"
+        pts, res = f.get("points", []), f.get("residuals", [])
+        if len(pts) < P3_MIN_SIZES:
+            problems.append(f"{tag}: {len(pts)} points")
+        if sorted(p["n_bits"] for p in pts) != sorted(r["n_bits"] for r in res):
+            problems.append(f"{tag}: residuals don't cover every point")
+        for p in pts:
+            if p.get("N") and p.get("bases") and all(_order(a, p["N"]) == 2 for a in p["bases"]):
+                problems.append(f"{tag}: N={p['N']} fitted from order-2 bases only")
+        if not f.get("holdout") or f["holdout"].get("rel_error") is None:
+            problems.append(f"{tag}: no holdout")
+        if (f.get("extrapolated") or {}).get("n_bits") != 2048:
+            problems.append(f"{tag}: no n=2048 extrapolation")
+        if f.get("estimator") in per_tool:
+            per_tool[f["estimator"]] += 1
+    problems += [f"{t}: {n} fits, need 2" for t, n in per_tool.items() if n < 2]
+    selected: dict[tuple, int] = {}
+    for f in fits:
+        key = (f.get("estimator"), f.get("quantity"))
+        selected[key] = selected.get(key, 0) + bool(f.get("selected"))
+        ext = f.get("extrapolated") or {}
+        worst = max((abs(r.get("rel", 0)) for r in f.get("residuals", [])), default=0)
+        hold = (f.get("holdout") or {}).get("rel_error") or 0
+        poor = f.get("curved") or worst > P3_POOR_FIT or hold > P3_POOR_FIT
+        if poor and not (f.get("caveat") and ext.get("low") and ext.get("high")):
+            problems.append(
+                f"{key} {f.get('model')}: residual {worst:.3f} / holdout {hold:.3f} "
+                "needs a caveat and low/high range"
+            )
+    problems += [f"{k}: {n} selected fits, need exactly 1" for k, n in selected.items() if n != 1]
+    return not problems, "; ".join(problems[:6]) or f"{len(fits)} fits, residuals and holdout each"
+
+
+def p3_calibration() -> tuple[bool, str]:
+    path = P3_EST / "calibration.json"
+    if not path.exists():
+        return False, "calibration.json missing"
+    ids = {e.get("id") for e in _p3_literature()}
+    rows = _load(path).get("comparisons", [])
+    problems = [
+        f"{r.get('target')}: unknown literature_id {r.get('literature_id')}"
+        for r in rows
+        if r.get("literature_id") not in ids
+    ]
+    problems += [f"{r.get('target')}: no ratio" for r in rows if not r.get("ratio")]
+    covered = {r.get("target") for r in rows}
+    problems += [f"no calibration for {t}" for t in P3_TARGETS if t not in covered]
+    problems += [
+        f"{r.get('target')}/{r.get('quantity')}: label {r.get('label')!r}"
+        for r in rows
+        if r.get("label") not in P3_LABELS
+    ]
+    for t in P3_PHYSICAL_TARGETS:
+        got = {r.get("quantity") for r in rows if r.get("target") == t}
+        problems += [
+            f"{t}: no physical-model calibration row for {q}"
+            for q in ("physical_qubits", "runtime_seconds")
+            if q not in got
+        ]
+    ok_msg = f"{len(rows)} comparisons over {sorted(covered)}"
+    return not problems, "; ".join(problems[:6]) or ok_msg
+
+
+def p3_scenarios() -> tuple[bool, str]:
+    path = P3_EST / "scenarios.json"
+    if not path.exists():
+        return False, "scenarios.json missing"
+    s = _load(path)
+    ids = {e.get("id") for e in _p3_literature()}
+    problems = []
+    for name in P3_SCENARIOS:
+        sc = s.get("scenarios", {}).get(name)
+        if not sc:
+            problems.append(f"scenario {name} missing")
+            continue
+        bad = [i for i in sc.get("source_ids", []) if i not in ids] or (
+            [] if sc.get("source_ids") else ["(none)"]
+        )
+        if bad:
+            problems.append(f"{name}: source_ids not in literature {bad}")
+    for t in P3_TARGETS:
+        tgt = s.get("targets", {}).get(t)
+        if not tgt or not tgt.get("logical_source"):
+            problems.append(f"target {t} missing or has no logical_source")
+            continue
+        for name in P3_SCENARIOS:
+            r = tgt.get("by_scenario", {}).get(name, {})
+            for key in ("logical_qubits", "physical_qubits", "runtime_seconds", "code_distance"):
+                if not (isinstance(r.get(key), (int, float)) and r[key] > 0):
+                    problems.append(f"{t}/{name}: {key} = {r.get(key)}")
+    if s.get("targets", {}).get("aes128", {}).get("peel_last_sbox") is not False:
+        problems.append("aes128.peel_last_sbox is not false")
+    return not problems, "; ".join(problems[:6]) or "3 scenarios x 3 targets, all positive"
+
+
+def p3_no_large_files() -> tuple[bool, str]:
+    big = [
+        f"{p.relative_to(ROOT)} {p.stat().st_size / 1e6:.1f} MB"
+        for p in P3_EST.rglob("*")
+        if p.is_file() and p.stat().st_size > P3_MAX_FILE_BYTES
+    ]
+    limit = f"every file under results/estimate <= {P3_MAX_FILE_BYTES / 1e6:.0f} MB"
+    return not big, "; ".join(big[:4]) or limit
+
+
+def p3_strict(expr: str) -> Callable[[], tuple[bool, str]]:
+    return pytest_selects(expr, path="tests/phase3", strict=True)
+
+
 # ---------- checks ----------
 
 REGRESSION: list[Check] = [
@@ -419,8 +738,10 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("results/budget.json exists", file_exists("results/budget.json")),
         Py("results/budget.json is valid JSON", json_valid("results/budget.json")),
         Py("budget guard is tested and passes", pytest_selects("budget")),
-        Py(".env is git-ignored", lambda: (
-            ".env" in (ROOT / ".gitignore").read_text().split(), ".gitignore checked")),
+        Py(
+            ".env is git-ignored",
+            lambda: (".env" in (ROOT / ".gitignore").read_text().split(), ".gitignore checked"),
+        ),
     ],
     # Lead: at /phase-start N, turn every command-checkable exit criterion
     # in docs/PLAN.md into a check here before BUILD starts.
@@ -445,14 +766,44 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("every job matches a pre-registered prediction", p2_jobs_match_plan),
         Py("ledger <= 540 s and records every job", p2_ledger),
         Py("Hellinger fidelity for every job", p2_analysis_complete),
-        Cmd("raw hardware files unchanged",
-            ["git", "diff", "--quiet", "HEAD", "--", "results/hardware"]),
+        Cmd(
+            "raw hardware files unchanged",
+            ["git", "diff", "--quiet", "HEAD", "--", "results/hardware"],
+        ),
         Py("approval tests pass (no xfail/skip)", p2_strict("approval")),
         Py("immutable tests pass (no xfail/skip)", p2_strict("immutable")),
         Py("budget tests pass (no xfail/skip)", pytest_selects("budget", strict=True)),
         Py("phase 2 honesty audit written", file_exists("tests/phase2/AUDIT.md")),
     ],
-    3: [Py("phase 3 tests exist", has_tests(3))],
+    3: [
+        Py("phase 3 tests exist", has_tests(3)),
+        Py("qsharp and qualtran import, versions recorded", p3_env),
+        Py("every literature number has a URL and is fact-checked", p3_literature_checked),
+        Py("QDK: 7 registry circuits + scaling family over >= 3 bases", p3_qdk_complete),
+        Py("toffoli_equiv matches its raw counts, one eps", p3_toffoli_equiv_consistent),
+        Py("QDK vs Qualtran within 3x or gap explained", p3_crosscheck),
+        Py("scaling fits with residuals, holdout, n=2048", p3_scaling),
+        Py("calibrated against literature (RSA, ECC, AES)", p3_calibration),
+        Py("physical scenarios complete", p3_scenarios),
+        Cmd("estimates reproduce", [PY, "scripts/estimate_all.py", "--verify"]),
+        Py("no result file over 5 MB (circuits gzipped)", p3_no_large_files),
+        Cmd(
+            "no QPU used since phase 2",
+            [
+                "git",
+                "diff",
+                "--quiet",
+                "phase-2-done",
+                "--",
+                "results/budget.json",
+                "results/hardware",
+            ],
+        ),
+        Py("estimate tests pass (no xfail/skip)", p3_strict("estimate")),
+        Py("scaling tests pass (no xfail/skip)", p3_strict("scaling")),
+        Py("crosscheck tests pass (no xfail/skip)", p3_strict("crosscheck")),
+        Py("phase 3 honesty audit written", file_exists("tests/phase3/AUDIT.md")),
+    ],
     4: [Py("phase 4 tests exist", has_tests(4))],
     5: [],
     6: [],
@@ -510,7 +861,7 @@ def main() -> int:
         lines.append(f"| {label} | {'pass' if ok else 'FAIL'} | {secs:.1f} | {safe} |")
     retro = "## Retro\n(lead fills in at /phase-close)\n"
     if out.exists() and "## Retro" in (prev := out.read_text()):
-        retro = prev[prev.index("## Retro"):]  # keep a retro already written
+        retro = prev[prev.index("## Retro") :]  # keep a retro already written
     lines += ["", retro]
     out.write_text("\n".join(lines))
     print(f"report: {out.relative_to(ROOT)}")

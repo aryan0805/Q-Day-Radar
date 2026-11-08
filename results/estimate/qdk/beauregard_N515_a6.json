@@ -1,0 +1,26 @@
+{
+  "N": 515,
+  "base_a": 6,
+  "case": "beauregard_N515_a6",
+  "circuit_form": "non_dynamic",
+  "circuit_sha256": "bca28cd5172eb8247ae88358a40635f115d90dd64f6cf4a3bac86cfdb8577de6",
+  "classical_control_counted": "executed",
+  "kind": "generic",
+  "logical_counts": {
+    "ccix_count": 0,
+    "ccz_count": 1254,
+    "measurement_count": 20,
+    "num_qubits": 23,
+    "rotation_count": 166971,
+    "t_count": 39280
+  },
+  "n_bits": 10,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "source_kind": "generic",
+  "toffoli_equiv": 4171066.419485783,
+  "tool": {
+    "name": "qsharp",
+    "version": "1.31.0"
+  }
+}

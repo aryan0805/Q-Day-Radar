@@ -1,0 +1,237 @@
+# Literature values for Phase 3. The ONLY typed numbers in the estimate pipeline.
+# Each value is copied from the cited source; `locator` says where. Strings keep the paper's own form
+# (formulas, "1.19*2^86"). Every id must be `verified` in tests/phase3/factcheck.json.
+- id: ge2019_physical_qubits_rsa2048
+  target: rsa2048
+  quantity: physical_qubits
+  value: 20000000
+  units: qubits
+  assumptions: "Gidney-Ekera 2019, parallel construction; 0.1% gate error, 1 us cycle, 10 us reaction, planar connectivity"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Table 2, row '(ours) 2019 (parallel)', Physical qubits (millions) = 20; title"
+  retrieved: 2026-11-08
+- id: ge2019_runtime_rsa2048
+  target: rsa2048
+  quantity: expected_runtime
+  value: 0.31
+  units: days
+  assumptions: "Same row as ge2019_physical_qubits_rsa2048; abstract/title state about 8 hours"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Table 2, row '(ours) 2019 (parallel)', Expected runtime (days)"
+  retrieved: 2026-11-08
+- id: ge2019_toffoli_rsa2048
+  target: rsa2048
+  quantity: toffoli_plus_half_t_count
+  value: 2.7e+9
+  units: gates
+  assumptions: "n = 2048; Toffoli+T/2 count; asymptotic form 0.3n^3 + 0.0005n^3 lg n"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Table 1, row '(ours) 2019', Toffoli+T/2 Count (billions), n = 2048 column"
+  retrieved: 2026-11-08
+- id: ge2019_logical_qubits_formula
+  target: rsa2048
+  quantity: logical_qubits_formula
+  value: "3n + 0.002 n lg n"
+  units: logical qubits (n = modulus bits)
+  assumptions: "Abstract qubit count of the construction, before surface-code overhead"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Table 1, row '(ours) 2019', Abstract Qubits; abstract"
+  retrieved: 2026-11-08
+- id: ge2019_physical_error_rate
+  target: other
+  quantity: physical_gate_error_rate
+  value: 0.001
+  units: per gate
+  assumptions: "Characteristic physical gate error rate for the Gidney-Ekera surface-code estimate"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Abstract; Table 2 row '(ours) 2019 (parallel)', Physical gate error rate 0.1%"
+  retrieved: 2026-11-08
+- id: ge2019_physical_error_rate_optimistic
+  target: other
+  quantity: physical_gate_error_rate
+  value: 0.0001
+  units: per gate
+  assumptions: "Sensitivity curve '0.01% gate error instead of 0.1%' for RSA via Ekera-Hastad"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Figure 1 legend: 'RSA via Ekera-Hastad - 0.01% gate error instead of 0.1%'"
+  retrieved: 2026-11-08
+- id: ge2019_cycle_time
+  target: other
+  quantity: surface_code_cycle_time
+  value: 1.0e-6
+  units: seconds
+  assumptions: "Surface code cycle time assumed by Gidney-Ekera 2019"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Abstract ('a surface code cycle time of 1 microsecond'); Table 2 row '(ours) 2019 (parallel)'"
+  retrieved: 2026-11-08
+- id: ge2019_reaction_time
+  target: other
+  quantity: reaction_time
+  value: 1.0e-5
+  units: seconds
+  assumptions: "Control-system reaction time assumed by Gidney-Ekera 2019"
+  source_url: https://arxiv.org/abs/1905.09749
+  locator: "Abstract ('a reaction time of 10 microseconds'); Table 2 row '(ours) 2019 (parallel)'"
+  retrieved: 2026-11-08
+- id: g2025_physical_qubits_rsa2048
+  target: rsa2048
+  quantity: physical_qubits
+  value: 897864
+  units: qubits
+  assumptions: "Gidney 2025, n = 2048; 0.1% uniform gate error, 1 us cycle, 10 us reaction; paper reports it as 'one million'"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'The total number of physical qubits is 897864.'"
+  retrieved: 2026-11-08
+- id: g2025_runtime_rsa2048
+  target: rsa2048
+  quantity: expected_runtime
+  value: 4.96
+  units: days
+  assumptions: "Gidney 2025, n = 2048, expected over shots; paper rounds to 'less than a week'"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'actual time estimate per factoring: 4.96 days' (the abstract only says 'less than a week')"
+  retrieved: 2026-11-08
+- id: g2025_logical_qubits_rsa2048
+  target: rsa2048
+  quantity: logical_qubits_upper_bound
+  value: 1600
+  units: logical qubits (including idle hot patches)
+  assumptions: "Gidney 2025, n = 2048; detailed total 1280 + 131 + 7*18 = 1537 < 1600"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'fewer than 1600 logical qubits (including idle hot patches)'"
+  retrieved: 2026-11-08
+- id: g2025_toffoli_rsa2048
+  target: rsa2048
+  quantity: toffoli_count
+  value: 6.5e+9
+  units: Toffolis per factoring (expected, not per shot)
+  assumptions: "Gidney 2025, n = 2048 row, s = 8"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Table 5, row n = 2048, Toffolis column"
+  retrieved: 2026-11-08
+- id: g2025_code_distance
+  target: rsa2048
+  quantity: code_distance
+  value: 25
+  units: surface-code distance (normal patches)
+  assumptions: "Gidney 2025, n = 2048; hot patches use 2*(25+1)^2 = 1352 physical qubits per logical qubit"
+  source_url: https://arxiv.org/abs/2505.15917
+  locator: "Section 3.2: 'a distance of 25 is sufficient for normal surface code patches'"
+  retrieved: 2026-11-08
+- id: roetteler2017_logical_qubits_p256
+  target: ecc256
+  quantity: logical_qubits
+  value: 2330
+  units: logical qubits
+  assumptions: "Roetteler et al. 2017, NIST P-256, full Shor ECDLP; at most 9n + 2*ceil(log2 n) + 10 qubits"
+  source_url: https://arxiv.org/abs/1706.06752
+  locator: "Table 2, row ceil(log2 p) = 256, #Qubits; Section 1 'Results'"
+  retrieved: 2026-11-08
+- id: roetteler2017_toffoli_p256
+  target: ecc256
+  quantity: toffoli_count
+  value: 1.26e+11
+  units: Toffoli gates
+  assumptions: "Roetteler et al. 2017, NIST P-256, full Shor ECDLP"
+  source_url: https://arxiv.org/abs/1706.06752
+  locator: "Table 2, row ceil(log2 p) = 256, #Toffoli gates; Section 1 'Results'"
+  retrieved: 2026-11-08
+- id: litinski2023_toffoli_per_key
+  target: ecc256
+  quantity: toffoli_count
+  value: 109000000
+  units: Toffoli gates per key
+  assumptions: "Litinski 2023, baseline (circuit-based) device, 256-bit curve, single instance"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 2.1: '6000 logical qubits and 109 million Toffoli gates per key'"
+  retrieved: 2026-11-08
+- id: litinski2023_logical_qubits
+  target: ecc256
+  quantity: logical_qubits
+  value: 6000
+  units: logical qubits
+  assumptions: "Litinski 2023, baseline device (includes the paper's overestimate of 3000 logical memory qubits per instance)"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 2.1: '6000 logical qubits and 109 million Toffoli gates per key'"
+  retrieved: 2026-11-08
+- id: litinski2023_physical_qubits
+  target: ecc256
+  quantity: physical_qubits
+  value: 9400000
+  units: qubits
+  assumptions: "Litinski 2023, baseline circuit-based device, code distance 28, 10% of surface-code threshold"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 2.1: 'both require 9.4 million physical qubits'"
+  retrieved: 2026-11-08
+- id: litinski2023_runtime_superconducting
+  target: ecc256
+  quantity: time_per_key
+  value: 3.8
+  units: hours
+  assumptions: "Litinski 2023, baseline device, superconducting qubits with 1 us code cycle"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 2.1: 'one key every 484*28 seconds, or 3.8 hours'"
+  retrieved: 2026-11-08
+- id: litinski2023_cycle_time_ion
+  target: other
+  quantity: surface_code_cycle_time
+  value: 1.0e-3
+  units: seconds
+  assumptions: "Litinski 2023, trapped-ion qubits, 1 ms code cycle (time per key 160 days, baseline device)"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 2.1: 'With a 1 ms code cycle, trapped ions generate one key every 160 days'"
+  retrieved: 2026-11-08
+- id: litinski2023_threshold_fraction
+  target: other
+  quantity: physical_error_rate_over_threshold
+  value: 0.1
+  units: fraction of surface-code threshold
+  assumptions: "Litinski 2023 states the error rate only as 10% of threshold, logical error p_L = 10^(-d/2)"
+  source_url: https://arxiv.org/abs/2306.08585
+  locator: "Section 3 (Conclusion) and Section 2.1: 'logical error rate of pL=10^-d/2 at 10% threshold'"
+  retrieved: 2026-11-08
+- id: grassl2016_logical_qubits_aes128
+  target: aes128
+  quantity: logical_qubits
+  value: 2953
+  units: logical qubits
+  assumptions: "Grassl et al. 2016, Grover key search on AES-128 with r = 3 AES instances in parallel (qubits = 3*984 + 1)"
+  source_url: https://arxiv.org/abs/1512.04965
+  locator: "Table 5, row k = 128, #qubits"
+  retrieved: 2026-11-08
+- id: grassl2016_t_gates_aes128
+  target: aes128
+  quantity: t_gate_count_full_search
+  value: 9.24e+25
+  units: T gates (Table 5 '#gates', T column)
+  assumptions: "Grassl et al. 2016, full Grover search, floor(pi/4 * 2^64) iterations, r = 3 plaintext/ciphertext pairs; printed as 1.19*2^86 in Table 5"
+  source_url: https://arxiv.org/abs/1512.04965
+  locator: "Section 3.4 equation: floor(pi/4 * 2^64)*(6 t_128 + 13,204) = 9.24*10^25 = 1.19*2^86; Table 5, row k = 128, '#gates: T' column"
+  retrieved: 2026-11-08
+- id: grassl2016_depth_aes128
+  target: aes128
+  quantity: circuit_depth_full_search
+  value: "1.16*2^81"
+  units: depth (units as printed)
+  assumptions: "Grassl et al. 2016, full Grover search"
+  source_url: https://arxiv.org/abs/1512.04965
+  locator: "Table 5, row k = 128, overall depth column"
+  retrieved: 2026-11-08
+- id: jaques2020_maxdepth_range
+  target: other
+  quantity: maxdepth_reasonable_range
+  value: "2^40 to 2^96"
+  units: quantum gates in depth
+  assumptions: "NIST MAXDEPTH parameter as discussed by Jaques et al."
+  source_url: https://arxiv.org/abs/1910.01700
+  locator: "Section 2.2: reasonable values 'are between 2^40 and 2^96'"
+  retrieved: 2026-11-08
+- id: ross_selinger2014_t_per_rotation
+  target: other
+  quantity: rotation_t_count_coefficient
+  value: 3
+  units: T gates per log2(1/epsilon), typical case, plus O(log log (1/epsilon))
+  assumptions: "Ancilla-free Clifford+T approximation of a z-rotation to precision epsilon; used as rotation_t_cost(eps) = 3*log2(1/eps)"
+  source_url: https://arxiv.org/abs/1403.2975
+  locator: "Abstract: 'T-count 3log_2(1/epsilon) + O(log(log(1/epsilon)))'"
+  retrieved: 2026-11-08

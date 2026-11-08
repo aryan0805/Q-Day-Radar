@@ -1,0 +1,191 @@
+{
+  "scenarios": {
+    "median": {
+      "error_budget": 0.01,
+      "physical_error_rate": 0.001,
+      "qec_scheme": {
+        "cycle_time_seconds": 1e-06,
+        "name": "surface_code"
+      },
+      "qubit_params": {
+        "gate_error_rate": 0.001,
+        "instruction_set": "GateBased",
+        "measurement_error_rate": 0.001
+      },
+      "source_ids": [
+        "ge2019_physical_error_rate",
+        "ge2019_cycle_time"
+      ]
+    },
+    "optimistic": {
+      "error_budget": 0.01,
+      "physical_error_rate": 0.0001,
+      "qec_scheme": {
+        "cycle_time_seconds": 1e-06,
+        "name": "surface_code"
+      },
+      "qubit_params": {
+        "gate_error_rate": 0.0001,
+        "instruction_set": "GateBased",
+        "measurement_error_rate": 0.0001
+      },
+      "source_ids": [
+        "ge2019_physical_error_rate_optimistic",
+        "ge2019_cycle_time"
+      ]
+    },
+    "pessimistic": {
+      "error_budget": 0.01,
+      "physical_error_rate": 0.001,
+      "qec_scheme": {
+        "cycle_time_seconds": 0.001,
+        "name": "surface_code"
+      },
+      "qubit_params": {
+        "gate_error_rate": 0.001,
+        "instruction_set": "GateBased",
+        "measurement_error_rate": 0.001
+      },
+      "source_ids": [
+        "ge2019_physical_error_rate",
+        "litinski2023_cycle_time_ion"
+      ]
+    }
+  },
+  "targets": {
+    "aes128": {
+      "by_scenario": {
+        "median": {
+          "code_distance": 61,
+          "logical_qubits": 6061,
+          "physical_qubits": 52455962,
+          "repetitions": 14488038916154245120,
+          "runtime_seconds": 5.636400219269626e+21
+        },
+        "optimistic": {
+          "code_distance": 31,
+          "logical_qubits": 6061,
+          "physical_qubits": 12375002,
+          "repetitions": 14488038916154245120,
+          "runtime_seconds": 2.8644001114321044e+21
+        },
+        "pessimistic": {
+          "code_distance": 61,
+          "logical_qubits": 6061,
+          "physical_qubits": 52455962,
+          "repetitions": 14488038916154245120,
+          "runtime_seconds": 5.636400219269625e+24
+        }
+      },
+      "label": "literature",
+      "logical_source": {
+        "label": "literature",
+        "literature_ids": [
+          "grassl2016_logical_qubits_aes128",
+          "grassl2016_t_gates_aes128"
+        ],
+        "logical_counts": {
+          "ccixCount": 0,
+          "cczCount": 0,
+          "measurementCount": 0,
+          "numQubits": 2953,
+          "rotationCount": 0,
+          "rotationDepth": 0,
+          "tCount": 6377675
+        },
+        "measurement_count_assumption": "none",
+        "repetitions": 14488038916154245120,
+        "source": "Grassl et al. 2016"
+      },
+      "peel_last_sbox": false
+    },
+    "ecc256": {
+      "by_scenario": {
+        "median": {
+          "code_distance": 33,
+          "logical_qubits": 4798,
+          "physical_qubits": 11166084,
+          "repetitions": 1,
+          "runtime_seconds": 16632000.0
+        },
+        "optimistic": {
+          "code_distance": 17,
+          "logical_qubits": 4798,
+          "physical_qubits": 2981244,
+          "repetitions": 1,
+          "runtime_seconds": 8568000.0
+        },
+        "pessimistic": {
+          "code_distance": 33,
+          "logical_qubits": 4798,
+          "physical_qubits": 11166084,
+          "repetitions": 1,
+          "runtime_seconds": 16632000000.0
+        }
+      },
+      "logical_source": {
+        "label": "literature",
+        "literature_ids": [
+          "roetteler2017_logical_qubits_p256",
+          "roetteler2017_toffoli_p256"
+        ],
+        "logical_counts": {
+          "ccixCount": 0,
+          "cczCount": 126000000000,
+          "measurementCount": 126000000000,
+          "numQubits": 2330,
+          "rotationCount": 0,
+          "rotationDepth": 0,
+          "tCount": 0
+        },
+        "measurement_count_assumption": "set equal to CCZ count (not in the source)",
+        "repetitions": 1,
+        "source": "Roetteler et al. 2017"
+      }
+    },
+    "rsa2048": {
+      "by_scenario": {
+        "median": {
+          "code_distance": 29,
+          "logical_qubits": 3315,
+          "physical_qubits": 6346950,
+          "repetitions": 1,
+          "runtime_seconds": 754000.0
+        },
+        "optimistic": {
+          "code_distance": 15,
+          "logical_qubits": 3315,
+          "physical_qubits": 1715750,
+          "repetitions": 1,
+          "runtime_seconds": 390000.0
+        },
+        "pessimistic": {
+          "code_distance": 29,
+          "logical_qubits": 3315,
+          "physical_qubits": 6346950,
+          "repetitions": 1,
+          "runtime_seconds": 754000000.0
+        }
+      },
+      "logical_source": {
+        "label": "literature",
+        "literature_ids": [
+          "g2025_logical_qubits_rsa2048",
+          "g2025_toffoli_rsa2048"
+        ],
+        "logical_counts": {
+          "ccixCount": 0,
+          "cczCount": 6500000000,
+          "measurementCount": 6500000000,
+          "numQubits": 1600,
+          "rotationCount": 0,
+          "rotationDepth": 0,
+          "tCount": 0
+        },
+        "measurement_count_assumption": "set equal to CCZ count (not in the source)",
+        "repetitions": 1,
+        "source": "Gidney 2025"
+      }
+    }
+  }
+}

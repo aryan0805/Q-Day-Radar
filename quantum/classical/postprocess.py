@@ -88,6 +88,4 @@ def grover_key_ok(key: int, key_bits: int, pairs: list[tuple[int, int]]) -> bool
     """True if ``key`` is consistent with every (plaintext, ciphertext) pair."""
     from quantum.classical.toy_spn import encrypt
 
-    return 0 <= key < 2**key_bits and all(
-        encrypt(pt, key, key_bits) == ct for pt, ct in pairs
-    )
+    return 0 <= key < 2**key_bits and all(encrypt(pt, key, key_bits) == ct for pt, ct in pairs)

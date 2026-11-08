@@ -1,0 +1,1211 @@
+[
+ {
+  "case": "beauregard_N129_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 19251,
+   "rotations": 60571,
+   "ccx": 720,
+   "toffoli_equiv": 1514626.549765668,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 19251,
+   "rotations": 60571,
+   "ccx": 720,
+   "toffoli_equiv": 1514626.549765668,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 19251,
+   "rotations": 60571,
+   "ccx": 720,
+   "toffoli_equiv": 1514626.549765668,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N129_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 19389,
+   "rotations": 60781,
+   "ccx": 720,
+   "toffoli_equiv": 1519893.0865151158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 19389,
+   "rotations": 60781,
+   "ccx": 720,
+   "toffoli_equiv": 1519893.0865151158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 19389,
+   "rotations": 60781,
+   "ccx": 720,
+   "toffoli_equiv": 1519893.0865151158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N129_a5",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 19230,
+   "rotations": 61340,
+   "ccx": 720,
+   "toffoli_equiv": 1533780.520052931,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 19230,
+   "rotations": 61340,
+   "ccx": 720,
+   "toffoli_equiv": 1533780.520052931,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 19230,
+   "rotations": 61340,
+   "ccx": 720,
+   "toffoli_equiv": 1533780.520052931,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N129_a7",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 19538,
+   "rotations": 61358,
+   "ccx": 720,
+   "toffoli_equiv": 1534305.9803457407,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 19538,
+   "rotations": 61358,
+   "ccx": 720,
+   "toffoli_equiv": 1534305.9803457407,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 19538,
+   "rotations": 61358,
+   "ccx": 720,
+   "toffoli_equiv": 1534305.9803457407,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N15_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N15_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1466,
+   "rotations": 1615,
+   "ccx": 84,
+   "toffoli_equiv": 40687.35404932318,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1466,
+   "rotations": 1615,
+   "ccx": 84,
+   "toffoli_equiv": 40687.35404932318,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1466,
+   "rotations": 1615,
+   "ccx": 84,
+   "toffoli_equiv": 40687.35404932318,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N15_a7",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N15_a8",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "toffoli_equiv": 40788.011892169794,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N21_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N21_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 3860,
+   "rotations": 6148,
+   "ccx": 189,
+   "toffoli_equiv": 154328.10445525628,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 3860,
+   "rotations": 6148,
+   "ccx": 189,
+   "toffoli_equiv": 154328.10445525628,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 3860,
+   "rotations": 6148,
+   "ccx": 189,
+   "toffoli_equiv": 154328.10445525628,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N21_a5",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 3940,
+   "rotations": 6179,
+   "ccx": 189,
+   "toffoli_equiv": 155120.4527373176,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 3940,
+   "rotations": 6179,
+   "ccx": 189,
+   "toffoli_equiv": 155120.4527373176,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 3940,
+   "rotations": 6179,
+   "ccx": 189,
+   "toffoli_equiv": 155120.4527373176,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N21_a8",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 3640,
+   "rotations": 5816,
+   "ccx": 189,
+   "toffoli_equiv": 146001.50349898674,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 3640,
+   "rotations": 5816,
+   "ccx": 189,
+   "toffoli_equiv": 146001.50349898674,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 3640,
+   "rotations": 5816,
+   "ccx": 189,
+   "toffoli_equiv": 146001.50349898674,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N259_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 27884,
+   "rotations": 103434,
+   "ccx": 969,
+   "toffoli_equiv": 2584942.3292493457,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 27884,
+   "rotations": 103434,
+   "ccx": 969,
+   "toffoli_equiv": 2584942.3292493457,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 27884,
+   "rotations": 103434,
+   "ccx": 969,
+   "toffoli_equiv": 2584942.3292493457,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N259_a3",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 27922,
+   "rotations": 103730,
+   "ccx": 969,
+   "toffoli_equiv": 2592326.5096199955,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 27922,
+   "rotations": 103730,
+   "ccx": 969,
+   "toffoli_equiv": 2592326.5096199955,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 27922,
+   "rotations": 103730,
+   "ccx": 969,
+   "toffoli_equiv": 2592326.5096199955,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N259_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 27934,
+   "rotations": 103559,
+   "ccx": 969,
+   "toffoli_equiv": 2588069.1368383025,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 27934,
+   "rotations": 103559,
+   "ccx": 969,
+   "toffoli_equiv": 2588069.1368383025,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 27934,
+   "rotations": 103559,
+   "ccx": 969,
+   "toffoli_equiv": 2588069.1368383025,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N259_a5",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 28294,
+   "rotations": 104866,
+   "ccx": 969,
+   "toffoli_equiv": 2620722.336988436,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 28294,
+   "rotations": 104866,
+   "ccx": 969,
+   "toffoli_equiv": 2620722.336988436,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 28294,
+   "rotations": 104866,
+   "ccx": 969,
+   "toffoli_equiv": 2620722.336988436,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N33_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 7577,
+   "rotations": 15655,
+   "ccx": 330,
+   "toffoli_equiv": 392260.1324409624,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 7577,
+   "rotations": 15655,
+   "ccx": 330,
+   "toffoli_equiv": 392260.1324409624,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 7577,
+   "rotations": 15655,
+   "ccx": 330,
+   "toffoli_equiv": 392260.1324409624,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N33_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 7595,
+   "rotations": 15690,
+   "ccx": 330,
+   "toffoli_equiv": 393136.63856587035,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 7595,
+   "rotations": 15690,
+   "ccx": 330,
+   "toffoli_equiv": 393136.63856587035,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 7595,
+   "rotations": 15690,
+   "ccx": 330,
+   "toffoli_equiv": 393136.63856587035,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N33_a5",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 7646,
+   "rotations": 15730,
+   "ccx": 330,
+   "toffoli_equiv": 394145.9669943366,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 7646,
+   "rotations": 15730,
+   "ccx": 330,
+   "toffoli_equiv": 394145.9669943366,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 7646,
+   "rotations": 15730,
+   "ccx": 330,
+   "toffoli_equiv": 394145.9669943366,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N33_a7",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 7678,
+   "rotations": 15738,
+   "ccx": 330,
+   "toffoli_equiv": 394353.2826800298,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 7678,
+   "rotations": 15738,
+   "ccx": 330,
+   "toffoli_equiv": 394353.2826800298,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 7678,
+   "rotations": 15738,
+   "ccx": 330,
+   "toffoli_equiv": 394353.2826800298,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N515_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 39279,
+   "rotations": 166095,
+   "ccx": 1254,
+   "toffoli_equiv": 4149241.101902373,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 39279,
+   "rotations": 166095,
+   "ccx": 1254,
+   "toffoli_equiv": 4149241.101902373,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 39279,
+   "rotations": 166095,
+   "ccx": 1254,
+   "toffoli_equiv": 4149241.101902373,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N515_a3",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 40422,
+   "rotations": 167426,
+   "ccx": 1254,
+   "toffoli_equiv": 4182687.9991095862,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 40422,
+   "rotations": 167426,
+   "ccx": 1254,
+   "toffoli_equiv": 4182687.9991095862,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 40422,
+   "rotations": 167426,
+   "ccx": 1254,
+   "toffoli_equiv": 4182687.9991095862,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N515_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 39399,
+   "rotations": 166406,
+   "ccx": 1254,
+   "toffoli_equiv": 4157019.499183698,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 39399,
+   "rotations": 166406,
+   "ccx": 1254,
+   "toffoli_equiv": 4157019.499183698,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 39399,
+   "rotations": 166406,
+   "ccx": 1254,
+   "toffoli_equiv": 4157019.499183698,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N515_a6",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 39280,
+   "rotations": 166971,
+   "ccx": 1254,
+   "toffoli_equiv": 4171066.419485783,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 39280,
+   "rotations": 166971,
+   "ccx": 1254,
+   "toffoli_equiv": 4171066.419485783,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 39280,
+   "rotations": 166971,
+   "ccx": 1254,
+   "toffoli_equiv": 4171066.419485783,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N65_a2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 12959,
+   "rotations": 32929,
+   "ccx": 507,
+   "toffoli_equiv": 824155.0267740947,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 12959,
+   "rotations": 32929,
+   "ccx": 507,
+   "toffoli_equiv": 824155.0267740947,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 12959,
+   "rotations": 32929,
+   "ccx": 507,
+   "toffoli_equiv": 824155.0267740947,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N65_a3",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 13079,
+   "rotations": 33102,
+   "ccx": 507,
+   "toffoli_equiv": 828495.228477211,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 13079,
+   "rotations": 33102,
+   "ccx": 507,
+   "toffoli_equiv": 828495.228477211,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 13079,
+   "rotations": 33102,
+   "ccx": 507,
+   "toffoli_equiv": 828495.228477211,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N65_a4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 13079,
+   "rotations": 33054,
+   "ccx": 507,
+   "toffoli_equiv": 827299.3343630516,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 13079,
+   "rotations": 33054,
+   "ccx": 507,
+   "toffoli_equiv": 827299.3343630516,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 13079,
+   "rotations": 33054,
+   "ccx": 507,
+   "toffoli_equiv": 827299.3343630516,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "beauregard_N65_a6",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 13029,
+   "rotations": 33103,
+   "ccx": 507,
+   "toffoli_equiv": 828507.6429379226,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 13029,
+   "rotations": 33103,
+   "ccx": 507,
+   "toffoli_equiv": 828507.6429379226,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 13029,
+   "rotations": 33103,
+   "ccx": 507,
+   "toffoli_equiv": 828507.6429379226,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k2",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 88,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 30.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 88,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 30.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 88,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 30.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k2_nopeel",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 184,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 54.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 184,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 54.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 184,
+   "rotations": 0,
+   "ccx": 8,
+   "toffoli_equiv": 54.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k3",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 256,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 82.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 256,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 82.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 256,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 82.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k3_nopeel",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 448,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 130.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 448,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 130.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 448,
+   "rotations": 0,
+   "ccx": 18,
+   "toffoli_equiv": 130.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k4",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 384,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 132.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 384,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 132.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 384,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 132.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k4_nopeel",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 672,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 204.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 672,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 204.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 672,
+   "rotations": 0,
+   "ccx": 36,
+   "toffoli_equiv": 204.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k5",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 896,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 304.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 896,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 304.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 896,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 304.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "grover_present_k5_nopeel",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1536,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 464.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1536,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 464.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1536,
+   "rotations": 0,
+   "ccx": 80,
+   "toffoli_equiv": 464.0,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "shor15_beauregard",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "toffoli_equiv": 42117.063849175865,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "shor15_textbook",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 21,
+   "rotations": 63,
+   "ccx": 5,
+   "toffoli_equiv": 1579.8610248342786,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 21,
+   "rotations": 63,
+   "ccx": 5,
+   "toffoli_equiv": 1579.8610248342786,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 21,
+   "rotations": 63,
+   "ccx": 5,
+   "toffoli_equiv": 1579.8610248342786,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ },
+ {
+  "case": "shor21_beauregard",
+  "rotation_t_cost": 99.65784284662087,
+  "reference": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qdk": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  },
+  "qualtran": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "toffoli_equiv": 153645.66401604158,
+   "deviation_vs_reference": 0.0,
+   "d_t": 0,
+   "d_rotations": 0
+  }
+ }
+]

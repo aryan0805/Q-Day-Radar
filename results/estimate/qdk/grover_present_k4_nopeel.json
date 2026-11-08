@@ -1,0 +1,27 @@
+{
+  "N": null,
+  "base_a": null,
+  "case": "grover_present_k4_nopeel",
+  "circuit_form": "non_dynamic",
+  "circuit_sha256": "ef69c9724c932bb509ffbe397a91f8324cc4fb7408b77eed95ee9eb213d38181",
+  "classical_control_counted": "executed",
+  "kind": "generic",
+  "logical_counts": {
+    "ccix_count": 0,
+    "ccz_count": 36,
+    "measurement_count": 4,
+    "num_qubits": 10,
+    "rotation_count": 0,
+    "t_count": 672
+  },
+  "n_bits": null,
+  "peel_last_sbox": false,
+  "rotation_eps": 1e-10,
+  "rotation_t_cost": 99.65784284662087,
+  "source_kind": "generic",
+  "toffoli_equiv": 204.0,
+  "tool": {
+    "name": "qsharp",
+    "version": "1.31.0"
+  }
+}

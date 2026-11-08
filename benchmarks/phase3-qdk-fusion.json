@@ -1,0 +1,938 @@
+[
+ {
+  "case": "beauregard_N129_a2",
+  "reference": {
+   "t": 19251,
+   "rotations": 60571,
+   "ccx": 720,
+   "measurements": 16,
+   "clifford": 102683
+  },
+  "qdk_default": {
+   "t": 18184,
+   "rotations": 62575,
+   "ccx": 720,
+   "toffoli_equiv": 1564288.379031825
+  },
+  "d_t": -1067,
+  "d_rotations": 2004,
+  "deviation_vs_reference": 0.032380237726555974,
+  "deviation_runs_min": 0.032380237726555974,
+  "deviation_runs_max": 0.03278816766670326,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 1514626.549765668,
+  "reference_toffoli_equiv": 1514626.549765668
+ },
+ {
+  "case": "beauregard_N129_a4",
+  "reference": {
+   "t": 19389,
+   "rotations": 60781,
+   "ccx": 720,
+   "measurements": 16,
+   "clifford": 103029
+  },
+  "qdk_default": {
+   "t": 18326,
+   "rotations": 62844,
+   "ccx": 720,
+   "toffoli_equiv": 1571025.8689632604
+  },
+  "d_t": -1063,
+  "d_rotations": 2063,
+  "deviation_vs_reference": 0.03364235478258826,
+  "deviation_runs_min": 0.033563683259821876,
+  "deviation_runs_max": 0.03364235478258826,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 1519893.0865151158,
+  "reference_toffoli_equiv": 1519893.0865151158
+ },
+ {
+  "case": "beauregard_N129_a5",
+  "reference": {
+   "t": 19230,
+   "rotations": 61340,
+   "ccx": 720,
+   "measurements": 16,
+   "clifford": 102712
+  },
+  "qdk_default": {
+   "t": 18317,
+   "rotations": 63440,
+   "ccx": 720,
+   "toffoli_equiv": 1585872.6375474068
+  },
+  "d_t": -913,
+  "d_rotations": 2100,
+  "deviation_vs_reference": 0.03396321495377845,
+  "deviation_runs_min": 0.033933335240987655,
+  "deviation_runs_max": 0.03396321495377845,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 1533780.520052931,
+  "reference_toffoli_equiv": 1533780.520052931
+ },
+ {
+  "case": "beauregard_N129_a7",
+  "reference": {
+   "t": 19538,
+   "rotations": 61358,
+   "ccx": 720,
+   "measurements": 16,
+   "clifford": 103379
+  },
+  "qdk_default": {
+   "t": 18375,
+   "rotations": 63016,
+   "ccx": 720,
+   "toffoli_equiv": 1575323.406205665
+  },
+  "d_t": -1163,
+  "d_rotations": 1658,
+  "deviation_vs_reference": 0.026733537107560212,
+  "deviation_runs_min": 0.026733537107560212,
+  "deviation_runs_max": 0.026733537107560212,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 1534305.9803457407,
+  "reference_toffoli_equiv": 1534305.9803457407
+ },
+ {
+  "case": "beauregard_N15_a2",
+  "reference": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "measurements": 8,
+   "clifford": 5200
+  },
+  "qdk_default": {
+   "t": 1102,
+   "rotations": 1705,
+   "ccx": 84,
+   "toffoli_equiv": 42838.65551337214
+  },
+  "d_t": -368,
+  "d_rotations": 86,
+  "deviation_vs_reference": 0.05026951611720913,
+  "deviation_runs_min": 0.049664817345009625,
+  "deviation_runs_max": 0.050874214889408825,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 40788.011892169794,
+  "reference_toffoli_equiv": 40788.011892169794
+ },
+ {
+  "case": "beauregard_N15_a4",
+  "reference": {
+   "t": 1466,
+   "rotations": 1615,
+   "ccx": 84,
+   "measurements": 8,
+   "clifford": 5198
+  },
+  "qdk_default": {
+   "t": 1081,
+   "rotations": 1681,
+   "ccx": 84,
+   "toffoli_equiv": 42235.45845629242
+  },
+  "d_t": -385,
+  "d_rotations": 66,
+  "deviation_vs_reference": 0.03804878550452203,
+  "deviation_runs_min": 0.03804878550452203,
+  "deviation_runs_max": 0.03804878550452203,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 40687.35404932318,
+  "reference_toffoli_equiv": 40687.35404932318
+ },
+ {
+  "case": "beauregard_N15_a7",
+  "reference": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "measurements": 8,
+   "clifford": 5483
+  },
+  "qdk_default": {
+   "t": 1223,
+   "rotations": 1781,
+   "ccx": 84,
+   "toffoli_equiv": 44762.40452745794
+  },
+  "d_t": -381,
+  "d_rotations": 110,
+  "deviation_vs_reference": 0.0628092377891114,
+  "deviation_runs_min": 0.0628092377891114,
+  "deviation_runs_max": 0.0651576408781971,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 42117.063849175865,
+  "reference_toffoli_equiv": 42117.063849175865
+ },
+ {
+  "case": "beauregard_N15_a8",
+  "reference": {
+   "t": 1470,
+   "rotations": 1619,
+   "ccx": 84,
+   "measurements": 8,
+   "clifford": 5200
+  },
+  "qdk_default": {
+   "t": 1103,
+   "rotations": 1709,
+   "ccx": 84,
+   "toffoli_equiv": 42938.563356218765
+  },
+  "d_t": -367,
+  "d_rotations": 90,
+  "deviation_vs_reference": 0.05272508671749748,
+  "deviation_runs_min": 0.05272508671749748,
+  "deviation_runs_max": 0.05515001105821073,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 40788.011892169794,
+  "reference_toffoli_equiv": 40788.011892169794
+ },
+ {
+  "case": "beauregard_N21_a2",
+  "reference": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "measurements": 10,
+   "clifford": 14879
+  },
+  "qdk_default": {
+   "t": 3375,
+   "rotations": 6614,
+   "ccx": 189,
+   "toffoli_equiv": 165816.9931468876
+  },
+  "d_t": -446,
+  "d_rotations": 493,
+  "deviation_vs_reference": 0.07921687350432,
+  "deviation_runs_min": 0.07921687350432,
+  "deviation_runs_max": 0.07921687350432,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 153645.66401604158,
+  "reference_toffoli_equiv": 153645.66401604158
+ },
+ {
+  "case": "beauregard_N21_a4",
+  "reference": {
+   "t": 3860,
+   "rotations": 6148,
+   "ccx": 189,
+   "measurements": 10,
+   "clifford": 14971
+  },
+  "qdk_default": {
+   "t": 3414,
+   "rotations": 6645,
+   "ccx": 189,
+   "toffoli_equiv": 166599.09142894892
+  },
+  "d_t": -446,
+  "d_rotations": 497,
+  "deviation_vs_reference": 0.07951232872979601,
+  "deviation_runs_min": 0.07951232872979601,
+  "deviation_runs_max": 0.0799982634362429,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 154328.10445525628,
+  "reference_toffoli_equiv": 154328.10445525628
+ },
+ {
+  "case": "beauregard_N21_a5",
+  "reference": {
+   "t": 3940,
+   "rotations": 6179,
+   "ccx": 189,
+   "measurements": 10,
+   "clifford": 15124
+  },
+  "qdk_default": {
+   "t": 3489,
+   "rotations": 6682,
+   "ccx": 189,
+   "toffoli_equiv": 167539.67647528017
+  },
+  "d_t": -451,
+  "d_rotations": 503,
+  "deviation_vs_reference": 0.0800618069300855,
+  "deviation_runs_min": 0.0800618069300855,
+  "deviation_runs_max": 0.0800618069300855,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 155120.4527373176,
+  "reference_toffoli_equiv": 155120.4527373176
+ },
+ {
+  "case": "beauregard_N21_a8",
+  "reference": {
+   "t": 3640,
+   "rotations": 5816,
+   "ccx": 189,
+   "measurements": 10,
+   "clifford": 14410
+  },
+  "qdk_default": {
+   "t": 3000,
+   "rotations": 5879,
+   "ccx": 189,
+   "toffoli_equiv": 147411.11452382102
+  },
+  "d_t": -640,
+  "d_rotations": 63,
+  "deviation_vs_reference": 0.009654770608879768,
+  "deviation_runs_min": 0.009654770608879768,
+  "deviation_runs_max": 0.009654770608879768,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 146001.50349898674,
+  "reference_toffoli_equiv": 146001.50349898674
+ },
+ {
+  "case": "beauregard_N259_a2",
+  "reference": {
+   "t": 27884,
+   "rotations": 103434,
+   "ccx": 969,
+   "measurements": 18,
+   "clifford": 163487
+  },
+  "qdk_default": {
+   "t": 26708,
+   "rotations": 106266,
+   "ccx": 969,
+   "toffoli_equiv": 2655206.0819847533
+  },
+  "d_t": -1176,
+  "d_rotations": 2832,
+  "deviation_vs_reference": 0.02718194210383479,
+  "deviation_runs_min": 0.027172400513512805,
+  "deviation_runs_max": 0.02724873323608866,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 2584942.3292493457,
+  "reference_toffoli_equiv": 2584942.3292493457
+ },
+ {
+  "case": "beauregard_N259_a3",
+  "reference": {
+   "t": 27922,
+   "rotations": 103730,
+   "ccx": 969,
+   "measurements": 18,
+   "clifford": 163626
+  },
+  "qdk_default": {
+   "t": 26785,
+   "rotations": 106660,
+   "ccx": 969,
+   "toffoli_equiv": 2665041.6295051454
+  },
+  "d_t": -1137,
+  "d_rotations": 2930,
+  "deviation_vs_reference": 0.028050139369137205,
+  "deviation_runs_min": 0.027973638324628642,
+  "deviation_runs_max": 0.02806936106873345,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 2592326.5096199955,
+  "reference_toffoli_equiv": 2592326.5096199955
+ },
+ {
+  "case": "beauregard_N259_a4",
+  "reference": {
+   "t": 27934,
+   "rotations": 103559,
+   "ccx": 969,
+   "measurements": 18,
+   "clifford": 163593
+  },
+  "qdk_default": {
+   "t": 26764,
+   "rotations": 106462,
+   "ccx": 969,
+   "toffoli_equiv": 2660103.316284238
+  },
+  "d_t": -1170,
+  "d_rotations": 2903,
+  "deviation_vs_reference": 0.02783317432313091,
+  "deviation_runs_min": 0.027737777100698687,
+  "deviation_runs_max": 0.02785252423952629,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 2588069.1368383025,
+  "reference_toffoli_equiv": 2588069.1368383025
+ },
+ {
+  "case": "beauregard_N259_a5",
+  "reference": {
+   "t": 28294,
+   "rotations": 104866,
+   "ccx": 969,
+   "measurements": 18,
+   "clifford": 165235
+  },
+  "qdk_default": {
+   "t": 27222,
+   "rotations": 107781,
+   "ccx": 969,
+   "toffoli_equiv": 2693079.989962911
+  },
+  "d_t": -1072,
+  "d_rotations": 2915,
+  "deviation_vs_reference": 0.027609812742552278,
+  "deviation_runs_min": 0.027609812742552278,
+  "deviation_runs_max": 0.027796989845334217,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 2620722.336988436,
+  "reference_toffoli_equiv": 2620722.336988436
+ },
+ {
+  "case": "beauregard_N33_a2",
+  "reference": {
+   "t": 7577,
+   "rotations": 15655,
+   "ccx": 330,
+   "measurements": 12,
+   "clifford": 32468
+  },
+  "qdk_default": {
+   "t": 6949,
+   "rotations": 16557,
+   "ccx": 330,
+   "toffoli_equiv": 414575.9760028754
+  },
+  "d_t": -628,
+  "d_rotations": 902,
+  "deviation_vs_reference": 0.056890419689213954,
+  "deviation_runs_min": 0.056443264318388746,
+  "deviation_runs_max": 0.05757506501923268,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 392260.1324409624,
+  "reference_toffoli_equiv": 392260.1324409624
+ },
+ {
+  "case": "beauregard_N33_a4",
+  "reference": {
+   "t": 7595,
+   "rotations": 15690,
+   "ccx": 330,
+   "measurements": 12,
+   "clifford": 32520
+  },
+  "qdk_default": {
+   "t": 6958,
+   "rotations": 16623,
+   "ccx": 330,
+   "toffoli_equiv": 416222.58040984464
+  },
+  "d_t": -637,
+  "d_rotations": 933,
+  "deviation_vs_reference": 0.05872243789891951,
+  "deviation_runs_min": 0.05852786589867557,
+  "deviation_runs_max": 0.05872243789891951,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 393136.63856587035,
+  "reference_toffoli_equiv": 393136.63856587035
+ },
+ {
+  "case": "beauregard_N33_a5",
+  "reference": {
+   "t": 7646,
+   "rotations": 15730,
+   "ccx": 330,
+   "measurements": 12,
+   "clifford": 32607
+  },
+  "qdk_default": {
+   "t": 7009,
+   "rotations": 16676,
+   "ccx": 330,
+   "toffoli_equiv": 417555.7968275624
+  },
+  "d_t": -637,
+  "d_rotations": 946,
+  "deviation_vs_reference": 0.05939380786195431,
+  "deviation_runs_min": 0.05857142728116765,
+  "deviation_runs_max": 0.05939380786195431,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 394145.9669943366,
+  "reference_toffoli_equiv": 394145.9669943366
+ },
+ {
+  "case": "beauregard_N33_a7",
+  "reference": {
+   "t": 7678,
+   "rotations": 15738,
+   "ccx": 330,
+   "measurements": 12,
+   "clifford": 32671
+  },
+  "qdk_default": {
+   "t": 7035,
+   "rotations": 16665,
+   "ccx": 330,
+   "toffoli_equiv": 417288.2377597342
+  },
+  "d_t": -643,
+  "d_rotations": 927,
+  "deviation_vs_reference": 0.05815839777936719,
+  "deviation_runs_min": 0.05783933791836336,
+  "deviation_runs_max": 0.05815839777936719,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 394353.2826800298,
+  "reference_toffoli_equiv": 394353.2826800298
+ },
+ {
+  "case": "beauregard_N515_a2",
+  "reference": {
+   "t": 39279,
+   "rotations": 166095,
+   "ccx": 1254,
+   "measurements": 20,
+   "clifford": 249891
+  },
+  "qdk_default": {
+   "t": 37912,
+   "rotations": 169979,
+   "ccx": 1254,
+   "toffoli_equiv": 4245667.117306442
+  },
+  "d_t": -1367,
+  "d_rotations": 3884,
+  "deviation_vs_reference": 0.023239434160588737,
+  "deviation_runs_min": 0.02322117940501434,
+  "deviation_runs_max": 0.023316830961922996,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 4149241.101902373,
+  "reference_toffoli_equiv": 4149241.101902373
+ },
+ {
+  "case": "beauregard_N515_a3",
+  "reference": {
+   "t": 40422,
+   "rotations": 167426,
+   "ccx": 1254,
+   "measurements": 20,
+   "clifford": 252661
+  },
+  "qdk_default": {
+   "t": 38912,
+   "rotations": 171429,
+   "ccx": 1254,
+   "toffoli_equiv": 4282043.085338342
+  },
+  "d_t": -1510,
+  "d_rotations": 4003,
+  "deviation_vs_reference": 0.023718443614633728,
+  "deviation_runs_min": 0.0236711497008311,
+  "deviation_runs_max": 0.023753884164897442,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 4182687.9991095862,
+  "reference_toffoli_equiv": 4182687.9991095862
+ },
+ {
+  "case": "beauregard_N515_a4",
+  "reference": {
+   "t": 39399,
+   "rotations": 166406,
+   "ccx": 1254,
+   "measurements": 20,
+   "clifford": 250192
+  },
+  "qdk_default": {
+   "t": 38048,
+   "rotations": 170381,
+   "ccx": 1254,
+   "toffoli_equiv": 4255716.730512528
+  },
+  "d_t": -1351,
+  "d_rotations": 3975,
+  "deviation_vs_reference": 0.023748119490160313,
+  "deviation_runs_min": 0.023736313213708414,
+  "deviation_runs_max": 0.02378395929420721,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 4157019.499183698,
+  "reference_toffoli_equiv": 4157019.499183698
+ },
+ {
+  "case": "beauregard_N515_a6",
+  "reference": {
+   "t": 39280,
+   "rotations": 166971,
+   "ccx": 1254,
+   "measurements": 20,
+   "clifford": 250258
+  },
+  "qdk_default": {
+   "t": 38030,
+   "rotations": 170979,
+   "ccx": 1254,
+   "toffoli_equiv": 4270611.078018097
+  },
+  "d_t": -1250,
+  "d_rotations": 4008,
+  "deviation_vs_reference": 0.023924829552758122,
+  "deviation_runs_min": 0.023865517477083487,
+  "deviation_runs_max": 0.023942569232421274,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 4171066.419485783,
+  "reference_toffoli_equiv": 4171066.419485783
+ },
+ {
+  "case": "beauregard_N65_a2",
+  "reference": {
+   "t": 12959,
+   "rotations": 32929,
+   "ccx": 507,
+   "measurements": 14,
+   "clifford": 61157
+  },
+  "qdk_default": {
+   "t": 12083,
+   "rotations": 34307,
+   "ccx": 507,
+   "toffoli_equiv": 858268.1536347555
+  },
+  "d_t": -876,
+  "d_rotations": 1378,
+  "deviation_vs_reference": 0.04139163840835426,
+  "deviation_runs_min": 0.04139163840835426,
+  "deviation_runs_max": 0.04141974532993953,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 824155.0267740947,
+  "reference_toffoli_equiv": 824155.0267740947
+ },
+ {
+  "case": "beauregard_N65_a3",
+  "reference": {
+   "t": 13079,
+   "rotations": 33102,
+   "ccx": 507,
+   "measurements": 14,
+   "clifford": 61429
+  },
+  "qdk_default": {
+   "t": 12209,
+   "rotations": 34506,
+   "ccx": 507,
+   "toffoli_equiv": 863257.6313163749
+  },
+  "d_t": -870,
+  "d_rotations": 1404,
+  "deviation_vs_reference": 0.04195848285458181,
+  "deviation_runs_min": 0.04190045123319075,
+  "deviation_runs_max": 0.04195848285458181,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 828495.228477211,
+  "reference_toffoli_equiv": 828495.228477211
+ },
+ {
+  "case": "beauregard_N65_a4",
+  "reference": {
+   "t": 13079,
+   "rotations": 33054,
+   "ccx": 507,
+   "measurements": 14,
+   "clifford": 61436
+  },
+  "qdk_default": {
+   "t": 12204,
+   "rotations": 34473,
+   "ccx": 507,
+   "toffoli_equiv": 862434.2041128903
+  },
+  "d_t": -875,
+  "d_rotations": 1419,
+  "deviation_vs_reference": 0.042469355758504884,
+  "deviation_runs_min": 0.042137784032970464,
+  "deviation_runs_max": 0.042469355758504884,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 827299.3343630516,
+  "reference_toffoli_equiv": 827299.3343630516
+ },
+ {
+  "case": "beauregard_N65_a6",
+  "reference": {
+   "t": 13029,
+   "rotations": 33103,
+   "ccx": 507,
+   "measurements": 14,
+   "clifford": 61328
+  },
+  "qdk_default": {
+   "t": 12180,
+   "rotations": 34549,
+   "ccx": 507,
+   "toffoli_equiv": 864321.703126976
+  },
+  "d_t": -849,
+  "d_rotations": 1446,
+  "deviation_vs_reference": 0.04322719348979723,
+  "deviation_runs_min": 0.042686510133852225,
+  "deviation_runs_max": 0.04322719348979723,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 828507.6429379226,
+  "reference_toffoli_equiv": 828507.6429379226
+ },
+ {
+  "case": "grover_present_k2",
+  "reference": {
+   "t": 88,
+   "rotations": 0,
+   "ccx": 8,
+   "measurements": 2,
+   "clifford": 249
+  },
+  "qdk_default": {
+   "t": 84,
+   "rotations": 4,
+   "ccx": 8,
+   "toffoli_equiv": 128.65784284662087
+  },
+  "d_t": -4,
+  "d_rotations": 4,
+  "deviation_vs_reference": 3.288594761554029,
+  "deviation_runs_min": 0.8138153570551739,
+  "deviation_runs_max": 3.288594761554029,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 30.0,
+  "reference_toffoli_equiv": 30.0
+ },
+ {
+  "case": "grover_present_k2_nopeel",
+  "reference": {
+   "t": 184,
+   "rotations": 0,
+   "ccx": 8,
+   "measurements": 2,
+   "clifford": 461
+  },
+  "qdk_default": {
+   "t": 178,
+   "rotations": 19,
+   "ccx": 8,
+   "toffoli_equiv": 525.8747535214491
+  },
+  "d_t": -6,
+  "d_rotations": 19,
+  "deviation_vs_reference": 8.738421361508315,
+  "deviation_runs_min": 5.965518319472552,
+  "deviation_runs_max": 8.761569509656464,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 54.0,
+  "reference_toffoli_equiv": 54.0
+ },
+ {
+  "case": "grover_present_k3",
+  "reference": {
+   "t": 256,
+   "rotations": 0,
+   "ccx": 18,
+   "measurements": 3,
+   "clifford": 631
+  },
+  "qdk_default": {
+   "t": 236,
+   "rotations": 35,
+   "ccx": 18,
+   "toffoli_equiv": 949.0061249079325
+  },
+  "d_t": -20,
+  "d_rotations": 35,
+  "deviation_vs_reference": 10.573245425706494,
+  "deviation_runs_min": 5.985234319915906,
+  "deviation_runs_max": 12.359669380217852,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 82.0,
+  "reference_toffoli_equiv": 82.0
+ },
+ {
+  "case": "grover_present_k3_nopeel",
+  "reference": {
+   "t": 448,
+   "rotations": 0,
+   "ccx": 18,
+   "measurements": 3,
+   "clifford": 1055
+  },
+  "qdk_default": {
+   "t": 408,
+   "rotations": 61,
+   "ccx": 18,
+   "toffoli_equiv": 1639.7821034109681
+  },
+  "d_t": -40,
+  "d_rotations": 61,
+  "deviation_vs_reference": 10.663152306559171,
+  "deviation_runs_min": 8.378740548560227,
+  "deviation_runs_max": 11.859204339404796,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 130.0,
+  "reference_toffoli_equiv": 130.0
+ },
+ {
+  "case": "grover_present_k4",
+  "reference": {
+   "t": 384,
+   "rotations": 0,
+   "ccx": 36,
+   "measurements": 4,
+   "clifford": 1000
+  },
+  "qdk_default": {
+   "t": 335,
+   "rotations": 60,
+   "ccx": 36,
+   "toffoli_equiv": 1614.617642699313
+  },
+  "d_t": -49,
+  "d_rotations": 60,
+  "deviation_vs_reference": 10.12977938204077,
+  "deviation_runs_min": 6.698262012269605,
+  "deviation_runs_max": 12.35874550734276,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 132.0,
+  "reference_toffoli_equiv": 132.0
+ },
+ {
+  "case": "grover_present_k4_nopeel",
+  "reference": {
+   "t": 672,
+   "rotations": 0,
+   "ccx": 36,
+   "measurements": 4,
+   "clifford": 1630
+  },
+  "qdk_default": {
+   "t": 614,
+   "rotations": 87,
+   "ccx": 36,
+   "toffoli_equiv": 2357.0580819140037
+  },
+  "d_t": -58,
+  "d_rotations": 87,
+  "deviation_vs_reference": 10.212326959701167,
+  "deviation_runs_min": 8.006639249849236,
+  "deviation_runs_max": 12.62796036280462,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 204.0,
+  "reference_toffoli_equiv": 204.0
+ },
+ {
+  "case": "grover_present_k5",
+  "reference": {
+   "t": 896,
+   "rotations": 0,
+   "ccx": 80,
+   "measurements": 5,
+   "clifford": 2261
+  },
+  "qdk_default": {
+   "t": 781,
+   "rotations": 102,
+   "ccx": 80,
+   "toffoli_equiv": 2816.524992588832
+  },
+  "d_t": -115,
+  "d_rotations": 102,
+  "deviation_vs_reference": 9.079505262188764,
+  "deviation_runs_min": 8.26488484404221,
+  "deviation_runs_max": 10.144103911042441,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 304.0,
+  "reference_toffoli_equiv": 304.0
+ },
+ {
+  "case": "grover_present_k5_nopeel",
+  "reference": {
+   "t": 1536,
+   "rotations": 0,
+   "ccx": 80,
+   "measurements": 5,
+   "clifford": 3677
+  },
+  "qdk_default": {
+   "t": 1410,
+   "rotations": 218,
+   "ccx": 80,
+   "toffoli_equiv": 5863.852435140837
+  },
+  "d_t": -126,
+  "d_rotations": 218,
+  "deviation_vs_reference": 10.136848136238127,
+  "deviation_runs_min": 9.443662814575374,
+  "deviation_runs_max": 11.637613006769046,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 464.0,
+  "reference_toffoli_equiv": 464.0
+ },
+ {
+  "case": "shor15_beauregard",
+  "reference": {
+   "t": 1604,
+   "rotations": 1671,
+   "ccx": 84,
+   "measurements": 8,
+   "clifford": 5483
+  },
+  "qdk_default": {
+   "t": 1223,
+   "rotations": 1781,
+   "ccx": 84,
+   "toffoli_equiv": 44762.40452745794
+  },
+  "d_t": -381,
+  "d_rotations": 110,
+  "deviation_vs_reference": 0.0628092377891114,
+  "deviation_runs_min": 0.0628092377891114,
+  "deviation_runs_max": 0.0651576408781971,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 42117.063849175865,
+  "reference_toffoli_equiv": 42117.063849175865
+ },
+ {
+  "case": "shor15_textbook",
+  "reference": {
+   "t": 21,
+   "rotations": 63,
+   "ccx": 5,
+   "measurements": 8,
+   "clifford": 113
+  },
+  "qdk_default": {
+   "t": 1,
+   "rotations": 69,
+   "ccx": 5,
+   "toffoli_equiv": 1724.34778910421
+  },
+  "d_t": -20,
+  "d_rotations": 6,
+  "deviation_vs_reference": 0.09145536347735873,
+  "deviation_runs_min": 0.06007353897256654,
+  "deviation_runs_max": 0.09145536347735873,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 1579.8610248342786,
+  "reference_toffoli_equiv": 1579.8610248342786
+ },
+ {
+  "case": "shor21_beauregard",
+  "reference": {
+   "t": 3821,
+   "rotations": 6121,
+   "ccx": 189,
+   "measurements": 10,
+   "clifford": 14879
+  },
+  "qdk_default": {
+   "t": 3375,
+   "rotations": 6614,
+   "ccx": 189,
+   "toffoli_equiv": 165816.9931468876
+  },
+  "d_t": -446,
+  "d_rotations": 493,
+  "deviation_vs_reference": 0.07921687350432,
+  "deviation_runs_min": 0.07921687350432,
+  "deviation_runs_max": 0.07921687350432,
+  "runs": 5,
+  "our_wrapper_toffoli_equiv": 153645.66401604158,
+  "reference_toffoli_equiv": 153645.66401604158
+ }
+]
