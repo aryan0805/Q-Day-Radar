@@ -61,7 +61,7 @@ writeFileSync(
   join(out, "humans.txt"),
   [
     "/* TEAM */",
-    "Project: Q-Day Radar, Qiskit Fall Fest 2026, Advanced Track",
+    "Project: Q-Day Radar, a personal project that started at Qiskit Fall Fest 2026",
     "Human: Aryan",
     "Sessions: three Claude Code sessions (lead, builder, reviewer) worked in parallel",
     "",

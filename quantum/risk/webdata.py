@@ -466,9 +466,7 @@ def order_plain(inv: dict, mo: dict) -> dict[str, str]:
         if not names:
             out[sc] = "No quantum attack finishes within the one-year limit in this scenario."
         elif len(names) == 1:
-            out[sc] = (
-                f"{names[0].capitalize()} would be broken first. Nothing else gets a break date."
-            )
+            out[sc] = f"{_cap(names[0])} would be broken first. Nothing else gets a break date."
         else:
             out[sc] = f"{_cap(names[0])} would be broken first, then {names[1]}."
     return out

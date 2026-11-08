@@ -132,7 +132,7 @@
   "order_plain": {
     "median": "Elliptic-curve (ECC) keys would be broken first, then RSA keys.",
     "optimistic": "Elliptic-curve (ECC) keys would be broken first, then RSA keys.",
-    "pessimistic": "Elliptic-curve (ecc) keys would be broken first. Nothing else gets a break date."
+    "pessimistic": "Elliptic-curve (ECC) keys would be broken first. Nothing else gets a break date."
   },
   "scenario_notes": {
     "median": "At least one Shor attack fits inside the runtime cap.",
