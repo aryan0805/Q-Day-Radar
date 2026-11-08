@@ -51,7 +51,7 @@ mkdirSync(join(out, ".well-known"), { recursive: true });
 writeFileSync(
   join(out, ".well-known", "security.txt"),
   [
-    "Contact: https://github.com/aryan0805/Q-Day/security/advisories/new",
+    "Contact: mailto:aryan.shiva0805@gmail.com",
     `Expires: ${expires}`,
     "Preferred-Languages: en",
     "",
