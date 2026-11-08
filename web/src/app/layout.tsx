@@ -8,6 +8,7 @@ import "@fontsource/ibm-plex-mono/latin-500.css";
 import "../styles/globals.css";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { TweakLoader } from "../components/TweakLoader";
 
 export const metadata: Metadata = {
   title: { default: "Q-Day Radar", template: "%s · Q-Day Radar" },
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <SiteFooter />
+        <TweakLoader />
       </body>
     </html>
   );

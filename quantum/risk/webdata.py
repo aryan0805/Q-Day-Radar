@@ -282,6 +282,7 @@ def order_notes(timeline: dict, est: dict, mo: dict) -> dict[str, str]:
     src = est["targets"]["ecc256"]["logical_source"]
     ids = ", ".join(src["literature_ids"])
     bound = src.get("bound")
+    history = ", ".join(h["source"] for h in src["history"]) or "none"
     notes = {}
     for sc, body in timeline["scenarios"].items():
         computed = _family_order(body["targets"])
@@ -305,8 +306,7 @@ def order_notes(timeline: dict, est: dict, mo: dict) -> dict[str, str]:
         notes[sc] = (
             f"The computed family order ({' > '.join(at_risk)}) {relation}. {fed_text}the "
             f"ECC-256 logical counts come from {ids}{bound_text}, so the order rests on that "
-            "source. With the earlier Roetteler and Litinski logical counts the model alone "
-            "put RSA first."
+            f"source. Earlier ECC-256 logical counts on record: {history}."
         )
     return notes
 

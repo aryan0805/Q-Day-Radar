@@ -28,6 +28,9 @@
   --dur-ui: 180ms;
   --dur-reveal: 520ms;
   --glow: 1;
+  /* Background lattice (task 3): the tweak panel scales these */
+  --bg-density: 1;
+  --bg-speed: 1;
 
   /* Layout */
   --measure: 68ch;
