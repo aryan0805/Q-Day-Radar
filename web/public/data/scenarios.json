@@ -129,6 +129,11 @@
     "optimistic": "The computed family order (ECC > RSA) equals the order from the base cost model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source.",
     "pessimistic": "The computed family order (ECC) equals the order from the base cost model alone, so the paper feeds move the CRQC years but not the order. Physical qubits come from a paper for ecc256, rsa2048; the ECC-256 logical counts come from google2026_logical_qubits_ecc256, google2026_toffoli_ecc256 (upper bound), so the order rests on that source."
   },
+  "order_plain": {
+    "median": "Elliptic-curve (ECC) keys would be broken first, then RSA keys.",
+    "optimistic": "Elliptic-curve (ECC) keys would be broken first, then RSA keys.",
+    "pessimistic": "Elliptic-curve (ecc) keys would be broken first. Nothing else gets a break date."
+  },
   "scenario_notes": {
     "median": "At least one Shor attack fits inside the runtime cap.",
     "optimistic": "At least one Shor attack fits inside the runtime cap.",

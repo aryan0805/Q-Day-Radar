@@ -54,6 +54,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.25,
+        "config": "raw",
+        "success_probability": 0.505126953125,
+        "verdict": "clearly better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.25,
         "seed_simulator": 1234,
@@ -133,6 +139,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.125,
+        "config": "dd_twirl",
+        "success_probability": 0.1517333984375,
+        "verdict": "clearly better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.125,
         "seed_simulator": 1234,
@@ -212,6 +224,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.0625,
+        "config": "dd",
+        "success_probability": 0.0767822265625,
+        "verdict": "clearly better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.0625,
         "seed_simulator": 1234,
@@ -291,6 +309,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.03125,
+        "config": "dd",
+        "success_probability": 0.035400390625,
+        "verdict": "clearly better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.03125,
         "seed_simulator": 1234,
@@ -336,6 +360,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.171875,
+        "config": "raw",
+        "success_probability": 0.175048828125,
+        "verdict": "no better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.171875,
         "seed_simulator": 1234,
@@ -415,6 +445,12 @@
           ]
         }
       ],
+      "hardware_best": {
+        "chance_baseline": 0.171875,
+        "config": "dd_twirl",
+        "success_probability": 0.3692626953125,
+        "verdict": "clearly better than random guessing"
+      },
       "ideal": {
         "chance_baseline": 0.171875,
         "seed_simulator": 1234,
@@ -442,6 +478,7 @@
     },
     {
       "hardware": [],
+      "hardware_best": null,
       "ideal": {
         "chance_baseline": 0.078125,
         "seed_simulator": 1234,

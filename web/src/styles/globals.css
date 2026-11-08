@@ -188,8 +188,11 @@ li a {
 
 /* ---- Traced figures and their provenance tooltip ---- */
 .fig-wrap {
-  position: relative;
   display: inline-block;
+}
+.gloss {
+  border-bottom: 1px dotted var(--q);
+  cursor: help;
 }
 .fig {
   border-bottom: 1px dotted var(--text-2);
@@ -203,10 +206,9 @@ li a {
   color: var(--text-2);
 }
 .fig-tip {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 6px);
-  z-index: 40;
+  position: fixed;
+  z-index: 90;
+  pointer-events: none;
   width: max-content;
   max-width: min(22rem, 80vw);
   padding: 0.6rem 0.75rem;
@@ -380,10 +382,7 @@ select {
 .drawer {
   outline: none;
 }
-.drawer .fig-tip {
-  left: auto;
-  right: 0;
-}
+
 
 /* ---- Lab bars ---- */
 .lab-grid {

@@ -47,6 +47,7 @@ FORBIDDEN_VALUE_PATTERNS = (
 ALLOWED: dict[str, frozenset[str]] = {
     "inventory": frozenset(
         {
+            "soonest_years_from_now",
             "summary",
             "assets_total",
             "with_finite_margin",
@@ -89,6 +90,7 @@ ALLOWED: dict[str, frozenset[str]] = {
     ),
     "scenarios": frozenset(
         {
+            "order_plain",
             "gaps",
             "over_device",
             "over_record",
@@ -216,6 +218,8 @@ ALLOWED: dict[str, frozenset[str]] = {
     ),
     "lab": frozenset(
         {
+            "hardware_best",
+            "verdict",
             "device",
             "n_qubits",
             "source",

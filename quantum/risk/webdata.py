@@ -93,6 +93,7 @@ class ScenariosFile(_M):
     scenario_notes: dict[str, str]
     order_notes: dict[str, str]
     model_only: dict[str, Any]
+    order_plain: dict[str, str]
     gaps: dict[str, Any]
     scenarios: dict[str, Any]
     targets: dict[str, Any]
@@ -129,6 +130,7 @@ class LabCircuit(_M):
     ideal: dict[str, Any]
     noisy: dict[str, Any]
     hardware: list[HardwareEntry]
+    hardware_best: dict[str, Any] | None
 
 
 class LabFile(_M):
@@ -195,6 +197,19 @@ def gaps(timeline: dict, dev: dict) -> dict:
     return out
 
 
+def _best_hardware(hw: list[dict]) -> dict | None:
+    if not hw:
+        return None
+    best = max(hw, key=lambda h: h["success_probability"])
+    lo, hi = best["wilson_95"]
+    return {
+        "config": best["config"],
+        "success_probability": best["success_probability"],
+        "chance_baseline": best["chance_baseline"],
+        "verdict": _verdict(lo, hi, best["chance_baseline"]),
+    }
+
+
 def build_lab() -> dict:
     summary = _json(HW_SUMMARY)
     circuits = []
@@ -236,6 +251,7 @@ def build_lab() -> dict:
                     )
                 },
                 "hardware": hw,
+                "hardware_best": _best_hardware(hw),
             }
         )
     return {
@@ -387,7 +403,44 @@ def summary(inv: dict) -> dict:
             "exposed": sum(m is not None and m < 0 for m in margins),
             "classically_deprecated": sum(a["classically_deprecated"] for a in inv["assets"]),
             "soonest_crqc_year": min(years) if years else None,
+            "soonest_years_from_now": min(years) - inv["as_of_year"] if years else None,
         }
+    return out
+
+
+def _cap(text: str) -> str:
+    return text[:1].upper() + text[1:]
+
+
+PLAIN_FAMILY = {
+    "RSA": "RSA keys",
+    "ECC": "elliptic-curve (ECC) keys",
+    "AES": "AES keys",
+    "SHA": "hash functions",
+    "ML-KEM": "ML-KEM keys",
+    "ML-DSA": "ML-DSA signatures",
+    "SLH-DSA": "SLH-DSA signatures",
+}
+
+
+def order_plain(inv: dict, mo: dict) -> dict[str, str]:
+    """One plain sentence per scenario: which attack arrives first (words only, from the order)."""
+    out: dict[str, str] = {}
+    for sc, order in inv["family_order"].items():
+        dated = {
+            a["family"]
+            for a in inv["assets"]
+            if a["by_scenario"][sc]["crqc_basis"] == inventory.CRQC_LABEL
+        }
+        names = [PLAIN_FAMILY[f] for f in order if f in dated]
+        if not names:
+            out[sc] = "No quantum attack finishes within the one-year limit in this scenario."
+        elif len(names) == 1:
+            out[sc] = (
+                f"{names[0].capitalize()} would be broken first. Nothing else gets a break date."
+            )
+        else:
+            out[sc] = f"{_cap(names[0])} would be broken first, then {names[1]}."
     return out
 
 
@@ -415,17 +468,28 @@ def _inventory_file(timeline: dict) -> dict:
     return {**inv, "deadlines": deadlines(), "summary": summary(inv)}
 
 
+def _verdict(lo: float, hi: float, chance: float) -> str:
+    """Plain verdict from the 95% interval against random guessing."""
+    if lo > chance:
+        return "clearly better than random guessing"
+    if hi < chance:
+        return "worse than random guessing"
+    return "no better than random guessing"
+
+
 def build_all() -> dict[str, dict]:
     timeline = inventory.load_timeline()
     est = _json(EST / "scenarios.json")
     mo = model_only(timeline, est)
+    inv = _inventory_file(timeline)
     data = {
-        "inventory": _inventory_file(timeline),
+        "inventory": inv,
         "scenarios": {
             "crqc_label": inventory.CRQC_LABEL,
             "scenario_notes": scenario_notes(timeline),
             "order_notes": order_notes(timeline, est, mo),
             "model_only": mo,
+            "order_plain": order_plain(inv, mo),
             "gaps": gaps(timeline, device()),
             "scenarios": est["scenarios"],
             "targets": est["targets"],

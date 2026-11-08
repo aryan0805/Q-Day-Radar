@@ -124,6 +124,18 @@
           "title": "Hardware",
           "type": "array"
         },
+        "hardware_best": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hardware Best"
+        },
         "ideal": {
           "additionalProperties": true,
           "title": "Ideal",
@@ -148,7 +160,8 @@
         "kind",
         "ideal",
         "noisy",
-        "hardware"
+        "hardware",
+        "hardware_best"
       ],
       "title": "LabCircuit",
       "type": "object"

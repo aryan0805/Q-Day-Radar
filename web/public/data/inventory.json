@@ -1876,6 +1876,7 @@
       "classically_deprecated": 2,
       "exposed": 13,
       "soonest_crqc_year": 2037.164342914991,
+      "soonest_years_from_now": 11.164342914991039,
       "with_finite_margin": 23
     },
     "optimistic": {
@@ -1883,6 +1884,7 @@
       "classically_deprecated": 2,
       "exposed": 14,
       "soonest_crqc_year": 2034.6780009772792,
+      "soonest_years_from_now": 8.678000977279225,
       "with_finite_margin": 23
     },
     "pessimistic": {
@@ -1890,6 +1892,7 @@
       "classically_deprecated": 2,
       "exposed": 5,
       "soonest_crqc_year": 2041.6475313171863,
+      "soonest_years_from_now": 15.647531317186349,
       "with_finite_margin": 13
     }
   }
