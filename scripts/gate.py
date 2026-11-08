@@ -1149,6 +1149,7 @@ P5_LH_MAX_CLS = 0.05
 P5_LH_RUNS = 3  # median of 3 per screen, Lighthouse mobile defaults
 P5_HOME_JS_GZ_MAX = 200_000  # bytes, gzip -9, scripts index.html loads before any interaction
 P5_TWEAK_SENTINEL = "QDAY_TWEAK_PANEL"
+P5_TWEAK_UI_STRINGS = ["Copy tokens"]  # visible panel text; survives minification if shipped
 P5_BYPASS_ENV = "VERCEL_AUTOMATION_BYPASS_SECRET"  # in the root .env only, never in web/
 P5_SKIP_DIRS = {"node_modules", ".next", "out"}
 P5_SECRET_PATTERNS = [
@@ -1244,6 +1245,9 @@ def p5_canary_scan() -> tuple[bool, str]:
             hits += [f"{p.relative_to(ROOT)}: /{r.pattern}/" for r in pats if r.search(text)]
     if not values:
         hits.append("no .env values loaded, so the canary half of the scan did not run")
+    n_out = sum(1 for _ in _p5_walk(P5_OUT))
+    if not n_out or not any(P5_OUT.glob("*.html")):
+        hits.append(f"out/ has {n_out} files and no top-level html, so the scan proves nothing")
     return not hits, "; ".join(hits[:5]) or f"{n} files, {len(values)} canaries, 0 hits"
 
 
@@ -1312,15 +1316,29 @@ def p5_tweak_panel_absent() -> tuple[bool, str]:
     """The dev tweak panel exists in source (sentinel) and is absent from the production build."""
     if not P5_OUT.exists() or not P5_SRC.exists():
         return False, "web/src or web/out missing"
-    in_src = any(P5_TWEAK_SENTINEL in p.read_text(errors="replace") for p in _p5_walk(P5_SRC))
-    leaked = [
-        str(p.relative_to(P5_OUT))
-        for p in _p5_walk(P5_OUT)
-        if P5_TWEAK_SENTINEL.encode() in p.read_bytes()
-    ]
+    import re
+
+    # The sentinel must be a runtime string (quoted, outside comments): the production build
+    # strips comments, so a comment sentinel would be absent from out/ even if the panel shipped.
+    lit = re.compile(rf"[\"'`]{P5_TWEAK_SENTINEL}[\"'`]")
+    in_src = False
+    for p in _p5_walk(P5_SRC):
+        if p.suffix in {".ts", ".tsx", ".js", ".jsx"}:
+            code = re.sub(r"/\*.*?\*/", "", p.read_text(errors="replace"), flags=re.S)
+            code = re.sub(r"//[^\n]*", "", code)
+            in_src = in_src or bool(lit.search(code))
     if not in_src:
-        return False, f"sentinel {P5_TWEAK_SENTINEL} not in web/src, so absence proves nothing"
-    return not leaked, "; ".join(leaked[:5]) or "sentinel in src, absent from out/"
+        why = "is not a runtime string in web/src, so its absence proves nothing"
+        return False, f"{P5_TWEAK_SENTINEL} {why}"
+    markers = [P5_TWEAK_SENTINEL.encode(), *(m.encode() for m in P5_TWEAK_UI_STRINGS)]
+    leaked = [
+        f"{p.relative_to(P5_OUT)}: {m.decode()}"
+        for p in _p5_walk(P5_OUT)
+        for m in markers
+        if m in p.read_bytes()
+    ]
+    ok_msg = "runtime sentinel in src; it and the panel's UI strings absent from out/"
+    return not leaked, "; ".join(leaked[:5]) or ok_msg
 
 
 def _p5_hex(name: str, css: str) -> str | None:
