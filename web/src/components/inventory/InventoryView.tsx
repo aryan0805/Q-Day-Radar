@@ -189,7 +189,7 @@ export function InventoryView() {
               return (
                 <tr key={asset.id} data-asset-id={asset.id} style={{ ["--i" as string]: Math.min(n, 20) }}>
                   <td>
-                    <Fig src={`inventory:${p}.by_scenario.${scenario}.rank`} label="computed from data" />
+                    <Fig src={`inventory:${p}.by_scenario.${scenario}.rank`} label="computed from data, using design-choice exposure weights" note="The exposure weights are a design choice, set in exposure.yaml, so this figure depends on them." />
                   </td>
                   <td>
                     <button type="button" className="linkish" onClick={() => {
@@ -341,7 +341,7 @@ function Why({ index, scenario }: { index: number; scenario: Scenario }) {
         </dd>
         <dt>Shortfall (weight × years of exposure)</dt>
         <dd>
-          <Fig src={`inventory:${p}.by_scenario.${scenario}.shortfall`} digits={1} label="computed from data" />
+          <Fig src={`inventory:${p}.by_scenario.${scenario}.shortfall`} digits={1} label="computed from data, using design-choice exposure weights" note="Shortfall is the exposure weight times the years of exposure; the weights are a design choice." />
         </dd>
         {target ? (
           <>

@@ -171,7 +171,7 @@ export function OverviewView() {
                 <>
                   <strong><Traced src={`inventory:assets[${active}].name`} /></strong>
                   <span className="muted"> · <Traced src={`inventory:assets[${active}].algorithm`} /> · rank </span>
-                  <Fig src={`inventory:assets[${active}].by_scenario.${scenario}.rank`} label="computed from data" />
+                  <Fig src={`inventory:assets[${active}].by_scenario.${scenario}.rank`} label="computed from data, using design-choice exposure weights" note="The exposure weights are a design choice, set in exposure.yaml, so this figure depends on them." />
                   <span className="muted"> · margin </span>
                   <Fig src={`inventory:assets[${active}].by_scenario.${scenario}.margin_years`} digits={1} sign unit="years" nullText="none" label="computed from data" />
                 </>

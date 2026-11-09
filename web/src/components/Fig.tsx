@@ -12,7 +12,8 @@ export type ProvLabel =
   | "fictional demo input"
   | "design choice"
   | "model estimate"
-  | "computed from data";
+  | "computed from data"
+  | "computed from data, using design-choice exposure weights";
 
 export const LABEL_COLOUR: Record<ProvLabel, string> = {
   hardware: "var(--q)",
@@ -24,6 +25,7 @@ export const LABEL_COLOUR: Record<ProvLabel, string> = {
   "design choice": "var(--text-2)",
   "model estimate": "var(--warn)",
   "computed from data": "var(--text-2)",
+  "computed from data, using design-choice exposure weights": "var(--text-2)",
 };
 
 export interface Extra extends NumFmt {
