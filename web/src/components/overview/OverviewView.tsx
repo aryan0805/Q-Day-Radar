@@ -10,14 +10,15 @@ import { Traced } from "../Traced";
 import { Gloss } from "../Gloss";
 import { Tech } from "../Tech";
 import { ScenarioNote } from "../ScenarioNote";
-import { useEffect, type ComponentType } from "react";
+import { startTransition, useEffect, type ComponentType } from "react";
 
 /** The hero (GSAP and hero.json included) is its own chunk, requested once the page is idle, so it is
  *  not in the home bundle that index.html loads. Its title is rendered by the page itself. */
 function HeroLoader() {
   const [Hero, setHero] = useState<ComponentType | null>(null);
   useEffect(() => {
-    const load = () => void import("../hero/Hero").then((m) => setHero(() => m.Hero));
+    const load = () =>
+      void import("../hero/Hero").then((m) => startTransition(() => setHero(() => m.Hero)));
     // Reduced motion shows the static strip, which needs no GSAP: load it when idle. Otherwise
     // wait for the first interaction (the sequence starts at an empty frame anyway).
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

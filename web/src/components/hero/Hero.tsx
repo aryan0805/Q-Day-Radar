@@ -7,6 +7,7 @@
 // CSS alone, so there is no layout shift and GSAP is never requested.
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { yieldToMain } from "../../lib/interaction";
 import hero from "../../../public/data/herostrip.json";
 import { register } from "../../lib/data";
 import { Fig } from "../Fig";
@@ -201,19 +202,36 @@ export function Hero() {
       const wrapEl = document.querySelector<HTMLElement>(".hero-wrap");
       if (killed || !wrapEl || !stage.current) return;
       gsap.registerPlugin(ScrollTrigger);
-      const ctx = gsap.context(() => {
-        const q = gsap.utils.selector(stage.current);
-        const tl = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
-        const layers = ["circuit", "counts", "factors", "lattice"].map((k) => q(`[data-layer="${k}"]`)[0]);
+      // The set-up is split into steps with a yield between them, so no single task runs long
+      // (the budget is 50 ms per task at a 4x throttle). ctx.add keeps every step in one context,
+      // so one revert cleans up all of it.
+      const ctx = gsap.context(() => undefined, stage);
+      revert = () => ctx.revert();
+      const q = gsap.utils.selector(stage.current);
+      const layers = ["circuit", "counts", "factors", "lattice"].map((k) => q(`[data-layer="${k}"]`)[0]);
+      const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-scale")) || 1;
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
+
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
         gsap.set(layers, { opacity: 0 });
         gsap.set(q(".h-wire"), { strokeDasharray: 1, strokeDashoffset: 1 });
         gsap.set(q(".h-gate"), { opacity: 0 });
-        gsap.set(q(".h-bars-hw rect, .h-bars-ideal rect"), { scaleY: 0, transformOrigin: "50% 100%" });
         gsap.set(q(".fact-line"), { opacity: 0, y: 8 });
         gsap.set(q(".lock-crack"), { strokeDasharray: 1, strokeDashoffset: 1 });
-        gsap.set(q(".lat-dot"), { opacity: 0, scale: 0, transformOrigin: "50% 50%" });
         gsap.set(q(".lat-lines"), { opacity: 0 });
         gsap.set(q(".lat-caption"), { opacity: 0 });
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
+        gsap.set(q(".h-bars-hw rect, .h-bars-ideal rect"), { scaleY: 0, transformOrigin: "50% 100%" });
+        gsap.set(q(".lat-dot"), { opacity: 0, scale: 0, transformOrigin: "50% 50%" });
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
         // 1. the circuit draws itself, wire by wire; gates light up as a pulse passes
         tl.to(layers[0] ?? [], { opacity: 1, duration: 0.3 }, 0)
           .to(q(".h-wire"), { strokeDashoffset: 0, duration: 1.1, stagger: 0.04, ease: "power1.out" }, 0.1)
@@ -221,25 +239,40 @@ export function Hero() {
           .to(layers[0] ?? [], { opacity: 0, duration: 0.3 }, 2.3)
           // 2. measurement: the bars rise to the real counts beside the ideal ones
           .to(layers[1] ?? [], { opacity: 1, duration: 0.3 }, 2.4)
-          .to(q(".h-bars-ideal rect"), { scaleY: 1, duration: 0.8 }, 2.6)
-          .to(q(".h-bars-hw rect"), { scaleY: 1, duration: 0.9, stagger: { each: 0.002, from: "random" } }, 3.0)
-          .to(layers[1] ?? [], { opacity: 0, duration: 0.3 }, 4.5)
-          // 3. the classical step: continued fractions find r, the factors appear, the padlock cracks
-          .to(layers[2] ?? [], { opacity: 1, duration: 0.3 }, 4.6)
+          .to(q(".h-bars-ideal rect"), { scaleY: 1, duration: 0.8 }, 2.6);
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
+        tl.to(q(".h-bars-hw rect"), { scaleY: 1, duration: 0.9, stagger: { each: 0.002, from: "random" } }, 3.0)
+          .to(layers[1] ?? [], { opacity: 0, duration: 0.3 }, 4.5);
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
+        // 3. the classical step: continued fractions find r, the factors appear, the padlock cracks
+        tl.to(layers[2] ?? [], { opacity: 1, duration: 0.3 }, 4.6)
           .to(q(".fact-line"), { opacity: 1, y: 0, duration: 0.5, stagger: 0.35 }, 4.8)
           .to(q(".lock-crack"), { strokeDashoffset: 0, duration: 0.5 }, 5.9)
           .to(q(".lock-left"), { x: -14, rotation: -6, transformOrigin: "100% 100%", duration: 0.6 }, 6.2)
           .to(q(".lock-right"), { x: 14, rotation: 6, transformOrigin: "0% 100%", duration: 0.6 }, 6.2)
           .to(layers[2] ?? [], { opacity: 0, duration: 0.3 }, 6.9)
           // 4. the pieces re-tile into a lattice that locks shut
-          .to(layers[3] ?? [], { opacity: 1, duration: 0.3 }, 7.0)
-          .to(q(".lat-dot"), { opacity: 1, scale: 1, duration: 0.5, stagger: { each: 0.02, from: "center" } }, 7.1)
+          .to(layers[3] ?? [], { opacity: 1, duration: 0.3 }, 7.0);
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
+        tl.to(q(".lat-dot"), { opacity: 1, scale: 1, duration: 0.5, stagger: { each: 0.02, from: "center" } }, 7.1)
           .to(q(".lat-lines"), { opacity: 1, duration: 0.6 }, 7.8)
           .to(q(".lat-caption"), { opacity: 1, duration: 0.5 }, 8.3);
         // One global motion scale (--motion-scale): a larger value is slower.
-        const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-scale")) || 1;
         tl.timeScale(1 / scale);
         tl.progress(0);
+      });
+      await yieldToMain();
+      if (killed) return;
+      ctx.add(() => {
         // a layer takes focus only while it is on screen (times are the timeline's own, in seconds)
         const shows = [[0, 2.6], [2.4, 4.8], [4.6, 7.2], [7.0, Number.POSITIVE_INFINITY]] as const;
         const syncInert = () => {
@@ -264,8 +297,7 @@ export function Hero() {
           replaying = true;
           gsap.fromTo(tl, { progress: 0 }, { progress: 1, duration: tl.duration() * scale, ease: "none", onUpdate: syncInert, onComplete: () => (replaying = false) });
         };
-      }, stage);
-      revert = () => ctx.revert();
+      });
     })();
     return () => {
       killed = true;

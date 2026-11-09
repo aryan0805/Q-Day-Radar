@@ -21,3 +21,9 @@ export function onFirstInteraction(cb: () => void): () => void {
 
 /** Keys and clicks that arrive while a lazy module is still loading, replayed once it is in. */
 export const pending = { keys: [] as string[], coin: false };
+
+/** Let the browser run other tasks (input, paint) before the next step of a long set-up. */
+export function yieldToMain(): Promise<void> {
+  const sched = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+  return sched?.yield ? sched.yield() : new Promise((resolve) => setTimeout(resolve, 0));
+}
