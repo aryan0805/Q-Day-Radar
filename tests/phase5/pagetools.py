@@ -170,3 +170,16 @@ def idle_without_interacting(page: Page, extra_ms: int = 5000) -> None:
     timer-started chunk (builder: a hero chunk loads 1.2 s after load in reduced motion)."""
     page.wait_for_load_state("networkidle")
     page.wait_for_timeout(extra_ms)
+
+
+def seeded_random(seed: int) -> str:
+    """An init script that replaces Math.random with a seeded generator (mulberry32), so egg tests
+    that use randomness are deterministic and repeatable."""
+    return (
+        "(() => { let a = "
+        + str(seed)
+        + " >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) | 0;"
+        + " let t = Math.imul(a ^ (a >>> 15), 1 | a);"
+        + " t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;"
+        + " return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })();"
+    )

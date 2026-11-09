@@ -1,40 +1,41 @@
 {
-  "measured_at": "2026-11-08T23:41:07Z",
+  "measured_at": "2026-11-09T01:24:34Z",
   "runs_per_screen": 3,
   "method": "Lighthouse mobile defaults, performance+accessibility, --headless=new, local static server, median of 3 (the gate's invocation); lab data",
   "builds": {
     "pre-8c-dc77fde": {
+      "commit": "dc77fde0bf6325dc546b1f98a9b3cf70ba4c2466",
       "screens": {
         "/": {
           "runs": [
             {
-              "performance": 0.99,
+              "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.5261,
-              "cls": 0,
-              "tbt_ms": 4.5
+              "lcp_ms": 901.4907000000001,
+              "cls": 9.38151021444355e-05,
+              "tbt_ms": 11
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.4202,
+              "lcp_ms": 901.6574,
               "cls": 9.38151021444355e-05,
-              "tbt_ms": 13.5
+              "tbt_ms": 10.5
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.1818000000001,
+              "lcp_ms": 901.2259820789654,
               "cls": 9.38151021444355e-05,
-              "tbt_ms": 12.5
+              "tbt_ms": 12
             }
           ],
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 901.4202,
+            "lcp_ms": 901.4907000000001,
             "cls": 9.38151021444355e-05,
-            "tbt_ms": 12.5
+            "tbt_ms": 11
           }
         },
         "/lab/": {
@@ -42,21 +43,21 @@
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.3698999999999,
+              "lcp_ms": 901.3122000000001,
               "cls": 0.03573163105854382,
-              "tbt_ms": 0.5
+              "tbt_ms": 1
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.5821000000001,
+              "lcp_ms": 901.5662,
               "cls": 0.03573163105854382,
-              "tbt_ms": 2
+              "tbt_ms": 1
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 900.9921999999999,
+              "lcp_ms": 901.5994000000001,
               "cls": 0.03573163105854382,
               "tbt_ms": 1.5
             }
@@ -64,9 +65,9 @@
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 901.3698999999999,
+            "lcp_ms": 901.5662,
             "cls": 0.03573163105854382,
-            "tbt_ms": 1.5
+            "tbt_ms": 1
           }
         },
         "/scaling/": {
@@ -74,90 +75,21 @@
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.3839,
+              "lcp_ms": 901.6615999999999,
               "cls": 9.38151021444355e-05,
               "tbt_ms": 1.5
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.3016,
-              "cls": 9.38151021444355e-05,
-              "tbt_ms": 1
-            },
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 901.163,
-              "cls": 9.38151021444355e-05,
-              "tbt_ms": 1
-            }
-          ],
-          "median": {
-            "performance": 1,
-            "accessibility": 1,
-            "lcp_ms": 901.3016,
-            "cls": 9.38151021444355e-05,
-            "tbt_ms": 1
-          }
-        },
-        "/inventory/": {
-          "runs": [
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 1051.655,
-              "cls": 0.001930828935478674,
-              "tbt_ms": 1.5
-            },
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 1051.324534142303,
-              "cls": 0.001930828935478674,
-              "tbt_ms": 0
-            },
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 1051.7228,
-              "cls": 0.001930828935478674,
-              "tbt_ms": 1.5
-            }
-          ],
-          "median": {
-            "performance": 1,
-            "accessibility": 1,
-            "lcp_ms": 1051.655,
-            "cls": 0.001930828935478674,
-            "tbt_ms": 1.5
-          }
-        }
-      },
-      "commit": "dc77fde"
-    },
-    "now-a7f5ec9": {
-      "screens": {
-        "/": {
-          "runs": [
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 901.3045,
-              "cls": 9.38151021444355e-05,
-              "tbt_ms": 1
-            },
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 901.0972723841876,
+              "lcp_ms": 901.5663999999999,
               "cls": 9.38151021444355e-05,
               "tbt_ms": 0
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.3976,
+              "lcp_ms": 901.4852000000001,
               "cls": 9.38151021444355e-05,
               "tbt_ms": 0
             }
@@ -165,31 +97,100 @@
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 901.3045,
+            "lcp_ms": 901.5663999999999,
             "cls": 9.38151021444355e-05,
             "tbt_ms": 0
           }
         },
-        "/lab/": {
+        "/inventory/": {
           "runs": [
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1051.1615,
-              "cls": 0.003406544490013293,
+              "lcp_ms": 1051.5244,
+              "cls": 0.001930828935478674,
               "tbt_ms": 1.5
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1051.2737982335166,
+              "lcp_ms": 1051.3701,
+              "cls": 0.001930828935478674,
+              "tbt_ms": 0
+            },
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 1051.2691325420835,
+              "cls": 0.001930828935478674,
+              "tbt_ms": 0
+            }
+          ],
+          "median": {
+            "performance": 1,
+            "accessibility": 1,
+            "lcp_ms": 1051.3701,
+            "cls": 0.001930828935478674,
+            "tbt_ms": 0
+          }
+        }
+      }
+    },
+    "final-head": {
+      "commit": "76feff1ba032f7b699b1b3711700fb60dfd7b784",
+      "screens": {
+        "/": {
+          "runs": [
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 901.3888,
+              "cls": 9.38151021444355e-05,
+              "tbt_ms": 0.5
+            },
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 901.2539999999999,
+              "cls": 9.38151021444355e-05,
+              "tbt_ms": 0
+            },
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 901.3054745792788,
+              "cls": 9.38151021444355e-05,
+              "tbt_ms": 0.5
+            }
+          ],
+          "median": {
+            "performance": 1,
+            "accessibility": 1,
+            "lcp_ms": 901.3054745792788,
+            "cls": 9.38151021444355e-05,
+            "tbt_ms": 0.5
+          }
+        },
+        "/lab/": {
+          "runs": [
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 1050.9481535542768,
+              "cls": 0,
+              "tbt_ms": 0
+            },
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 1051.3540302250574,
               "cls": 0.003406544490013293,
               "tbt_ms": 1
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1051.382,
+              "lcp_ms": 1051.1084,
               "cls": 0.003406544490013293,
               "tbt_ms": 1.5
             }
@@ -197,9 +198,9 @@
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 1051.2737982335166,
+            "lcp_ms": 1051.1084,
             "cls": 0.003406544490013293,
-            "tbt_ms": 1.5
+            "tbt_ms": 1
           }
         },
         "/scaling/": {
@@ -207,31 +208,31 @@
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.2632000000001,
+              "lcp_ms": 901.2425000000001,
               "cls": 0,
-              "tbt_ms": 0.5
+              "tbt_ms": 0
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 901.4286999999999,
+              "lcp_ms": 901.4839999999999,
+              "cls": 0.001126707103388557,
+              "tbt_ms": 0
+            },
+            {
+              "performance": 1,
+              "accessibility": 1,
+              "lcp_ms": 901.3541,
               "cls": 0.001126707103388557,
               "tbt_ms": 1
-            },
-            {
-              "performance": 1,
-              "accessibility": 1,
-              "lcp_ms": 901.2034000000001,
-              "cls": 0.001126707103388557,
-              "tbt_ms": 0.5
             }
           ],
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 901.2632000000001,
+            "lcp_ms": 901.3541,
             "cls": 0.001126707103388557,
-            "tbt_ms": 0.5
+            "tbt_ms": 0
           }
         },
         "/inventory/": {
@@ -239,35 +240,34 @@
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1201.3451999999997,
+              "lcp_ms": 1201.21,
               "cls": 0.005300062672465878,
-              "tbt_ms": 2.5
+              "tbt_ms": 0.5
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1201.4677000000001,
+              "lcp_ms": 1202.1305000000002,
               "cls": 0.005300062672465878,
-              "tbt_ms": 5
+              "tbt_ms": 7
             },
             {
               "performance": 1,
               "accessibility": 1,
-              "lcp_ms": 1201.3333000000002,
+              "lcp_ms": 1201.4301999999998,
               "cls": 0.005300062672465878,
-              "tbt_ms": 2
+              "tbt_ms": 0
             }
           ],
           "median": {
             "performance": 1,
             "accessibility": 1,
-            "lcp_ms": 1201.3451999999997,
+            "lcp_ms": 1201.4301999999998,
             "cls": 0.005300062672465878,
-            "tbt_ms": 2.5
+            "tbt_ms": 0.5
           }
         }
-      },
-      "commit": "a7f5ec9"
+      }
     }
   }
 }

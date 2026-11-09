@@ -39,9 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _commit(web: Path) -> str:
-    """The git commit of the checkout a build came from (so no local path is recorded)."""
+    """The commit a build came from: out/build.json (stamped by the build itself), else the
+    checkout's HEAD. No local path is recorded."""
+    import json
     import subprocess
 
+    stamp = web / "out" / "build.json"
+    if stamp.is_file():
+        return json.loads(stamp.read_text())["commit"]
     r = subprocess.run(
         ["git", "-C", str(web), "rev-parse", "HEAD"], capture_output=True, text=True, check=False
     )

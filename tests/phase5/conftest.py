@@ -98,13 +98,20 @@ def open_page(browser, site: str) -> Iterator[Callable[..., Page]]:  # noqa: ANN
         height: int = 900,
         reduced_motion: bool = False,
         wait: str = "networkidle",
+        init_script: str | None = None,
+        cpu_throttle: float | None = None,
     ) -> Page:
         ctx = browser.new_context(
             viewport={"width": width, "height": height},
             reduced_motion="reduce" if reduced_motion else "no-preference",
         )
         contexts.append(ctx)
+        if init_script:
+            ctx.add_init_script(init_script)  # runs before any page script, on every navigation
         page = ctx.new_page()
+        if cpu_throttle:
+            cdp = ctx.new_cdp_session(page)
+            cdp.send("Emulation.setCPUThrottlingRate", {"rate": cpu_throttle})
         log = SimpleNamespace(
             console=[], pageerrors=[], bad_responses=[], requests=[], responses=[], base=site
         )
