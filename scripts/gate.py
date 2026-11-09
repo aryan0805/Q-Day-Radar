@@ -1274,6 +1274,17 @@ def p5_data_keys_allowed() -> tuple[bool, str]:
     return not hits, "; ".join(hits[:5]) or f"{len(files)} data files, no forbidden keys"
 
 
+def p5_web_tracked() -> tuple[bool, str]:
+    """Every non-ignored file under web/ is tracked: Vercel builds from git, so an untracked
+    input the local build reads would make the deployed site differ (or fail to build)."""
+    r = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "web"],
+                       cwd=ROOT, capture_output=True, text=True)
+    files = r.stdout.split()
+    if files:
+        return False, "untracked: " + ", ".join(files[:5])
+    return True, "no untracked files in web/"
+
+
 def p5_no_source_maps() -> tuple[bool, str]:
     if not P5_OUT.exists():
         return False, "web/out missing"
@@ -2015,6 +2026,7 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("[5a] canary scan: no .env value or secret pattern in out/ or data", p5_canary_scan),
         Py("[5a] data files carry no secret-, credential- or path-named key",
            p5_data_keys_allowed),
+        Py("[5a] no untracked files under web/ (Vercel builds from git)", p5_web_tracked),
         Py("[5a] no source maps in out/", p5_no_source_maps),
         Py("[5a] no third-party script, style, font or image", p5_no_third_party),
         Py("[5a] tweak panel in source, absent from out/", p5_tweak_panel_absent),
