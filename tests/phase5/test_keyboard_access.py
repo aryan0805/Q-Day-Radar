@@ -85,9 +85,10 @@ def tab_through(page, limit: int = 400, settle_ms: int = 0) -> tuple[list[dict],
 
 
 _UNREACHED = (
-    "reached => { const wanted = ("
+    "({reached, start}) => { const wanted = ("
     + _FOCUSABLE.strip()
-    + ")(); return wanted.filter(e => !reached.includes(e.getAttribute('data-kb-id')))"
+    + ")(); return wanted.filter(e => start.includes(e.getAttribute('data-kb-id'))"
+    + " && !reached.includes(e.getAttribute('data-kb-id')))"
     + ".map(e => e.tagName.toLowerCase() + ' ' + (e.textContent || '').trim().slice(0, 40)); }"
 )
 
@@ -100,8 +101,14 @@ def test_keyboard_tab_reaches_every_control(open_page, route) -> None:  # noqa: 
         wake_hero(page)  # the hero and the eggs load on the first interaction, Tab included
         settle(page, "median")
         page.evaluate("() => { scrollTo(0, 0); document.body.focus(); }")
+        page.wait_for_timeout(
+            1500
+        )  # the scrubbed hero re-inerts its layers a moment after a scroll
     page.evaluate(_MARK)  # give every candidate a stable id before focus starts moving
-    n_wanted = len(page.evaluate(_FOCUSABLE))
+    start = page.evaluate(
+        "() => (" + _FOCUSABLE.strip() + ")().map(e => e.getAttribute('data-kb-id'))"
+    )
+    n_wanted = len(start)
     assert n_wanted >= 8, "found almost nothing focusable: wrong selector?"
     reached: set[str] = set()
     page.evaluate("() => document.body.focus()")
@@ -112,7 +119,8 @@ def test_keyboard_tab_reaches_every_control(open_page, route) -> None:  # noqa: 
         kb = page.evaluate("() => document.activeElement?.getAttribute('data-kb-id')")
         if kb is not None:
             reached.add(kb)
-    missing = page.evaluate(_UNREACHED, sorted(reached))
+    # required: focusable before AND after the run (a hero layer that flips inert mid-run is not)
+    missing = page.evaluate(_UNREACHED, {"reached": sorted(reached), "start": start})
     assert missing == [], f"Tab never reached: {missing[:8]}"
 
 

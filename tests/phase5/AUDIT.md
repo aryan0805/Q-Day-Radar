@@ -1,10 +1,10 @@
 # Phase 5 audit (front end)
 
-Reviewer, build `76feff1`. Written by `benchmarks/phase5-build-audit.py`: the prose is here, every
+Reviewer, build `0586995`. Written by `benchmarks/phase5-build-audit.py`: the prose is here, every
 figure below is computed from files, benchmark output or live Chromium runs when the script runs.
 Labels: **measured** (a number read from a run), **extrapolated** (a trend carried forward),
 **literature** (a published figure), **design choice** (a number someone picked), **fictional**
-(the demo company). 438 tests in `tests/phase5` (table in section 9).
+(the demo company). 452 tests in `tests/phase5` (table in section 9).
 
 ## 1. Provenance: every figure traces to a data file
 
@@ -36,22 +36,30 @@ Server-rendered HTML (the hero text is a lazy chunk, so it is not here):
   easter eggs' own computed values (shor and grover rows, the coin's bit and outcome, the "768" in
   the Shift hint): 12 sites in `Eggs.tsx`, each declared with the reason
   "easter egg value, computed in the browser". They are not project results.
-- Tooltip labels in use (server-rendered HTML): see below. The live median pages show: computed from data (108), trend extrapolation (50), hardware (45), simulated (14), published standard (10), published estimate (7), model estimate (4).
+- Tooltip labels in use (server-rendered HTML): see below. The live median pages show: computed from data (66), trend extrapolation (50), hardware (45), computed from data, using design-choice exposure weights (42), simulated (14), published standard (10), published estimate (7), model estimate (4).
 
 | label shown in the tooltip | elements (server-rendered HTML) | one of the brief's five? |
 | --- | --- | --- |
-| computed from data | 101 | no |
+| computed from data | 59 | no |
 | trend extrapolation | 50 | yes |
 | hardware | 44 | yes |
+| computed from data, using design-choice exposure weights | 42 | no |
 | simulated | 14 | yes |
 | published standard | 10 | no |
 | published estimate | 7 | yes |
 | model estimate | 4 | no |
 
-  **Open decision for the lead.** The brief names five labels. In use, these are outside the five:
-  computed from data, model estimate, published standard. Never shown: design choice. The exposure weights that feed the ranking are
-  a design choice, yet ranks and margins carry "computed from data" and never "design choice".
-  A rank rests on extrapolated CRQC years *and* on those weights; the label does not say so.
+  **Label vocabulary (lead's decision, resolved).** The brief names five labels; the build uses
+  more. Outside the five: computed from data, computed from data, using design-choice exposure weights, fictional demo input, model estimate, published standard. Not shown anywhere (server-rendered HTML and the
+  Inventory drawer): none; the drawer carries: computed from data, computed from data, using design-choice exposure weights, design choice, fictional demo input, model estimate, published standard, trend extrapolation. The one decision that
+  mattered: every figure that depends on the exposure weights (rank, shortfall, the weight itself;
+  found by recomputing with perturbed weights, not from a typed list) says it uses design-choice
+  weights, and margins and CRQC years, which the weights cannot change, do not. Checked on the
+  Inventory page (median): 42 dependent figures with 0 missing the label;
+  84 margin and CRQC-year figures with 0 wrongly carrying it; the drawer
+  and the visible tooltip are checked too, and a flipped copy (a label removed, a margin relabelled)
+  fails. The label is the compound "computed from data, using design-choice exposure weights";
+  the test accepts "design choice" with a space or a hyphen.
 - The Phase 4 caveats as shown on screen (checked in the live DOM):
 
 | Phase 4 caveat | present on screen |
@@ -103,13 +111,13 @@ Home-page JavaScript, both ways, gzip -9 (the budget is 200,000 B fetched before
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | before-dc77fde (dc77fde) | normal motion | 193,188 B | 249,789 B | yes | 249,789 B | 27,327 B | NO |
 | before-dc77fde (dc77fde) | reduced motion | 193,188 B | 205,020 B | no | 205,020 B | 0 B | NO |
-| final-head (76feff1) | normal motion | 194,664 B | 189,784 B | no | 249,213 B | 27,327 B | yes |
-| final-head (76feff1) | reduced motion | 194,664 B | 195,926 B | no | 204,444 B | 0 B | yes |
+| final-head (0586995) | normal motion | 194,755 B | 189,958 B | no | 249,387 B | 27,327 B | yes |
+| final-head (0586995) | reduced motion | 194,755 B | 196,100 B | no | 204,618 B | 0 B | yes |
 
 - The gate's static count only names the scripts `index.html` loads. A visitor also fetches chunks
   after hydration. The before-fix build fetched GSAP at load and went over the budget in both
   motion modes; the current build fetches it only on an interaction and never under reduced motion.
-- Margins on the current build: **10,216 B** in normal motion, **4,074 B**
+- Margins on the current build: **10,042 B** in normal motion, **3,900 B**
   under reduced motion (the tighter mode).
 
 ## 4. Motion
@@ -128,7 +136,7 @@ Home-page JavaScript, both ways, gzip -9 (the budget is 200,000 B fetched before
   transitions and keyframes and GSAP only for the hero. UI motion is therefore CSS-only.
 - Long tasks: Chromium with a CPU throttle setting of 4, a `PerformanceObserver` for `longtask`, from
   the hero's first interaction to the end of its Replay: none. **The setting is not the slowdown:**
-  the same JavaScript workload took 1.6 to 2.8 times as long throttled
+  the same JavaScript workload took 3.0 to 3.6 times as long throttled
   (5 trials), so the claim is "no long task at about that slowdown", not "at 4x". The observer is
   proven by a deliberate busy loop scheduled as a page task (work run through the DevTools protocol is
   not attributed as a long task, which the first version of the control missed).
@@ -208,6 +216,7 @@ job's measured counts. Limits stated on screen or here:
 | test_keyboard_defects.py | 1 |
 | test_longtask.py | 6 |
 | test_motionscale.py | 22 |
+| test_provenance_design_choice.py | 14 |
 | test_provenance_figures.py | 46 |
 | test_provenance_hero_data.py | 15 |
 | test_provenance_lab_verdict.py | 22 |

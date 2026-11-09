@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-11-09T01:24:00Z",
+  "measured_at": "2026-11-09T01:47:47Z",
   "budget_gz_bytes": 200000,
   "viewport": {
     "width": 390,
@@ -36,13 +36,13 @@
       }
     },
     "final-head": {
-      "commit": "76feff1ba032f7b699b1b3711700fb60dfd7b784",
-      "static_index_html_gz_bytes": 194664,
+      "commit": "0586995cdcc53151a040f599c6a1d3fe3a58061c",
+      "static_index_html_gz_bytes": 194755,
       "normal_motion": {
-        "before_interaction_gz_bytes": 189784,
+        "before_interaction_gz_bytes": 189958,
         "before_interaction_scripts": 15,
         "gsap_before_interaction": false,
-        "after_one_scroll_gz_bytes": 249213,
+        "after_one_scroll_gz_bytes": 249387,
         "after_one_scroll_scripts": 19,
         "added_by_one_scroll_gz_bytes": 59429,
         "gsap_after_one_scroll": true,
@@ -51,10 +51,10 @@
         "other_origin_requests_total": []
       },
       "reduced_motion": {
-        "before_interaction_gz_bytes": 195926,
+        "before_interaction_gz_bytes": 196100,
         "before_interaction_scripts": 16,
         "gsap_before_interaction": false,
-        "after_one_scroll_gz_bytes": 204444,
+        "after_one_scroll_gz_bytes": 204618,
         "after_one_scroll_scripts": 17,
         "added_by_one_scroll_gz_bytes": 8518,
         "gsap_after_one_scroll": false,

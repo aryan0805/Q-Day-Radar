@@ -76,6 +76,7 @@ def static_facts() -> dict:
         ],
         [[k, v, "yes" if k in FIVE else "no"] for k, v in labels.most_common()],
     )
+    f["static_label_set"] = set(labels)
     f["labels_outside_five"] = ", ".join(sorted(k for k in labels if k not in FIVE)) or "none"
     f["five_unused"] = ", ".join(k for k in FIVE if k not in labels) or "none"
 
@@ -233,7 +234,7 @@ def static_facts() -> dict:
 # -------------------------------------------------------------------------------- live facts
 
 
-def live_facts() -> dict:
+def live_facts(facts_static: set[str]) -> dict:
     from playwright.sync_api import sync_playwright
 
     from tests.phase5.conftest import _Handler, _Server
@@ -272,6 +273,33 @@ def live_facts() -> dict:
                     )
                 caveat_text.setdefault(sc, "")
                 caveat_text[sc] += page.locator("body").text_content().lower() + " "
+                if sc == "median" and route == "/inventory/":
+                    from tests.phase5.test_provenance_design_choice import _FIGURES, label_problems
+
+                    lp = label_problems(page.evaluate(_FIGURES))
+                    f["dc_dependent"] = lp["n_dependent"][0]
+                    f["dc_independent"] = lp["n_independent"][0]
+                    f["dc_missing"] = len(lp["missing"])
+                    f["dc_forbidden"] = len(lp["forbidden"])
+                    inv = jload(WEB / "public" / "data" / "inventory.json")
+                    top = min(inv["assets"], key=lambda a: a["by_scenario"]["median"]["rank"])
+                    page.locator(f"tr[data-asset-id='{top['id']}']").get_by_role(
+                        "button"
+                    ).first.click()
+                    page.get_by_role("dialog").wait_for(state="visible", timeout=5000)
+                    page.wait_for_timeout(300)
+                    drawer = set(
+                        page.eval_on_selector_all(
+                            "[role=dialog] [data-label]", "e => e.map(x => x.dataset.label)"
+                        )
+                    )
+                    f["drawer_labels"] = ", ".join(sorted(drawer)) or "none"
+                    f["labels_outside_five"] = ", ".join(
+                        sorted((set(facts_static) | drawer) - set(FIVE))
+                    )
+                    f["five_unused"] = (
+                        ", ".join(k for k in FIVE if k not in set(facts_static) | drawer) or "none"
+                    )
                 if sc == "median" and route == "/":
                     f["holdout_figures"] = page.locator(
                         "[data-src='scenarios:timeline.fit.holdout.rel_error']"
@@ -353,10 +381,17 @@ Server-rendered HTML (the hero text is a lazy chunk, so it is not here):
 
 {labels_table}
 
-  **Open decision for the lead.** The brief names five labels. In use, these are outside the five:
-  {labels_outside_five}. Never shown: {five_unused}. The exposure weights that feed the ranking are
-  a design choice, yet ranks and margins carry "computed from data" and never "design choice".
-  A rank rests on extrapolated CRQC years *and* on those weights; the label does not say so.
+  **Label vocabulary (lead's decision, resolved).** The brief names five labels; the build uses
+  more. Outside the five: {labels_outside_five}. Not shown anywhere (server-rendered HTML and the
+  Inventory drawer): {five_unused}; the drawer carries: {drawer_labels}. The one decision that
+  mattered: every figure that depends on the exposure weights (rank, shortfall, the weight itself;
+  found by recomputing with perturbed weights, not from a typed list) says it uses design-choice
+  weights, and margins and CRQC years, which the weights cannot change, do not. Checked on the
+  Inventory page (median): {dc_dependent} dependent figures with {dc_missing} missing the label;
+  {dc_independent} margin and CRQC-year figures with {dc_forbidden} wrongly carrying it; the drawer
+  and the visible tooltip are checked too, and a flipped copy (a label removed, a margin relabelled)
+  fails. The label is the compound "computed from data, using design-choice exposure weights";
+  the test accepts "design choice" with a space or a hyphen.
 - The Phase 4 caveats as shown on screen (checked in the live DOM):
 
 {caveats_table}
@@ -501,7 +536,7 @@ correct beyond sentence and word length.
 
 def main() -> int:
     facts = static_facts()
-    facts.update(live_facts())
+    facts.update(live_facts(facts["static_label_set"]))
     (ROOT / "tests" / "phase5" / "AUDIT.md").write_text(
         TEMPLATE.format_map(facts), encoding="utf-8"
     )
