@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "circuit": {
+      "additionalProperties": true,
+      "title": "Circuit",
+      "type": "object"
+    },
+    "hardware": {
+      "additionalProperties": true,
+      "title": "Hardware",
+      "type": "object"
+    },
+    "ideal": {
+      "additionalProperties": true,
+      "title": "Ideal",
+      "type": "object"
+    },
+    "notes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Notes",
+      "type": "object"
+    },
+    "resolution": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Resolution"
+    }
+  },
+  "required": [
+    "circuit",
+    "ideal",
+    "hardware",
+    "notes",
+    "resolution"
+  ],
+  "title": "HeroStripFile",
+  "type": "object"
+}
