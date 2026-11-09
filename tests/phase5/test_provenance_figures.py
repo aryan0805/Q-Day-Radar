@@ -87,9 +87,7 @@ def test_provenance_home_figures_are_traced_after_the_hero_loads(open_page, scen
     settle(page, scenario)
     audit = figure_audit(page)
     assert audit["n_traced"] > before, "waking the hero added no traced figure: is it a no-op?"
-    assert any(True for _ in page.locator("[data-src^='hero:']").all()), (
-        "no hero:* figure on screen"
-    )
+    assert page.locator("[data-src^='hero']").count() >= 1, "no hero figure on screen"
     assert audit["unresolved"] == [] and audit["mismatches"] == [], (
         audit["unresolved"][:3] + audit["mismatches"][:3]
     )

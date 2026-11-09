@@ -145,3 +145,80 @@ def test_hero_ideal_distribution_has_exactly_the_four_period_peaks() -> None:
 
 def test_hero_data_file_lives_where_the_build_writes_it() -> None:
     assert Path(REPO / "web" / "public" / "data" / "hero.json").is_file()
+
+
+# -------------------------------------------- herostrip.json: the hero's lean copy of hero.json
+
+STRIP = load_data("herostrip")
+# the only things the strip may omit: bookkeeping and the per-job count tables (hero.json still
+# feeds the coin egg with those); it may never add or change a value
+ALLOWED_DROPPED = {
+    ".hardware.batch",
+    ".hardware.device_qubits_source",
+    *(
+        f".hardware.jobs[].{k}"
+        for k in ("config", "counts", "finished", "isa_sha256", "shots", "status")
+    ),
+}
+
+
+def _paths(x, p: str = "") -> set[str]:  # noqa: ANN001
+    out: set[str] = set()
+    if isinstance(x, dict):
+        for k, v in x.items():
+            out |= {f"{p}.{k}"} | _paths(v, f"{p}.{k}")
+    elif isinstance(x, list):
+        for v in x:
+            out |= _paths(v, f"{p}[]")
+    return out
+
+
+def _value_diffs(strip, full, path: str = "") -> list[str]:  # noqa: ANN001
+    """Where `strip` holds a value that `full` does not (lists compared element by element)."""
+    if isinstance(strip, dict):
+        if not isinstance(full, dict):
+            return [path]
+        return [
+            d
+            for k, v in strip.items()
+            for d in (_value_diffs(v, full[k], f"{path}.{k}") if k in full else [f"{path}.{k}"])
+        ]
+    if isinstance(strip, list):
+        if not isinstance(full, list) or len(strip) != len(full):
+            return [path]
+        return [
+            d for a, b in zip(strip, full, strict=True) for d in _value_diffs(a, b, f"{path}[]")
+        ]
+    return [] if strip == full else [path]
+
+
+def test_hero_strip_holds_no_value_that_differs_from_hero() -> None:
+    assert _value_diffs(STRIP, HERO) == []
+
+
+def test_hero_strip_adds_nothing_and_drops_only_the_allowed_keys() -> None:
+    strip_paths, hero_paths = _paths(STRIP), _paths(HERO)
+    assert strip_paths - hero_paths == set(), "the strip has a key hero.json does not"
+    dropped = {p for p in hero_paths - strip_paths if ".counts." not in p}
+    assert dropped <= ALLOWED_DROPPED, sorted(dropped - ALLOWED_DROPPED)
+
+
+def test_hero_strip_diff_check_can_fail() -> None:
+    import copy
+
+    bad = copy.deepcopy(STRIP)
+    bad["resolution"]["order"] += 1
+    bad["hardware"]["jobs"][0]["job_id"] = "tampered"
+    assert set(_value_diffs(bad, HERO)) == {".resolution.order", ".hardware.jobs[].job_id"}
+    extra = copy.deepcopy(STRIP)
+    extra["hardware"]["secret_note"] = "x"
+    assert ".hardware.secret_note" in _paths(extra) - _paths(HERO)
+
+
+def test_hero_strip_keeps_what_the_page_shows() -> None:
+    # the hero reads these from the strip; a field lost here would silently empty a figure
+    jobs = STRIP["hardware"]["jobs"]
+    assert [j["job_id"] for j in jobs] == [j["job_id"] for j in HERO["hardware"]["jobs"]]
+    assert STRIP["hardware"]["backend"] == HERO["hardware"]["backend"]
+    assert STRIP["resolution"] == HERO["resolution"]
+    assert STRIP["ideal"] == HERO["ideal"]
