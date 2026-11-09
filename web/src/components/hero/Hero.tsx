@@ -199,7 +199,7 @@ export function Hero() {
     let revert: (() => void) | undefined;
     void (async () => {
       const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
-      const wrapEl = document.querySelector<HTMLElement>(".hero-wrap");
+      const wrapEl = document.querySelector<HTMLElement>(".hero-runway");
       if (killed || !wrapEl || !stage.current) return;
       gsap.registerPlugin(ScrollTrigger);
       // The set-up is split into steps with a yield between them, so no single task runs long
@@ -287,7 +287,10 @@ export function Hero() {
         ScrollTrigger.create({
           trigger: wrapEl,
           start: "top top",
-          end: "bottom bottom",
+          // the sequence ends when the pinned stage's bottom meets the runway's bottom, so the
+          // captions that follow come straight after it
+          end: () => `bottom top+=${stage.current?.parentElement?.offsetHeight ?? 0}`,
+          invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (!replaying) tl.progress(self.progress);
             syncInert();

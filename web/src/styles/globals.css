@@ -490,27 +490,23 @@ select {
 }
 
 /* ---- Hero (the Q-Day sequence) ---- */
+/* The stage pins inside the runway and lets go at its end, so the second caption and the technical
+   layer (#hero-after) follow the sequence in normal flow, with no fixed gap. */
 .hero-wrap {
-  position: relative;
-  height: 340vh;
-  padding-bottom: 16rem;
   margin-bottom: 2rem;
 }
+.hero-runway {
+  height: 340vh; /* the scroll runway the stage is pinned in */
+}
 .hero-after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: static;
+  margin-top: 0.75rem;
 }
 .hero-caption-row {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-}
-.hero-caption-row .hero-notes {
-  flex: 1 1 24rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 .hero-body {
   display: grid;
@@ -523,8 +519,7 @@ select {
   align-content: start;
   padding-top: 4vh;
   gap: 0.75rem;
-  height: 100dvh;
-  max-height: 56rem;
+  align-self: start; /* natural height: it must not stretch to the runway or it could not pin */
 }
 .hero-title {
   margin: 0;
@@ -585,16 +580,13 @@ select {
 }
 .hero-replay {
   justify-self: start;
+  margin-top: 0.5rem;
 }
 
 /* Reduced motion: no scrubbing, no animation; the four end states form a static strip. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-wrap {
+  .hero-runway {
     height: auto;
-    padding-bottom: 0;
-  }
-  .hero-after {
-    position: static;
   }
   .hero-stage {
     position: static;

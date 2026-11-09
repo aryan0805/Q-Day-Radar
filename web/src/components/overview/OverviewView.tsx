@@ -82,16 +82,18 @@ export function OverviewView() {
   return (
     <>
       <div className="hero-wrap" role="group" aria-labelledby="ov-h">
-        <div className="hero-stage">
-          <h1 id="ov-h" className="hero-title">
-            When does quantum computing break what you use?
-          </h1>
-          <p className="muted hero-lead">
-            Q-Day Radar runs real <Gloss term="shor">Shor</Gloss> and <Gloss term="grover">Grover</Gloss> circuits, scales their cost up to real key sizes,
-            and ranks a fictional company&apos;s cryptography by how soon it is exposed. The
-            sequence below shows one real run, then the radar shows every asset.
-          </p>
-          <HeroLoader />
+        <div className="hero-runway">
+          <div className="hero-stage">
+            <h1 id="ov-h" className="hero-title">
+              When does quantum computing break what you use?
+            </h1>
+            <p className="muted hero-lead">
+              Q-Day Radar runs real <Gloss term="shor">Shor</Gloss> and <Gloss term="grover">Grover</Gloss> circuits, scales their cost up to real key sizes,
+              and ranks a fictional company&apos;s cryptography by how soon it is exposed. The
+              sequence below shows one real run, then the radar shows every asset.
+            </p>
+            <HeroLoader />
+          </div>
         </div>
         <div id="hero-after" className="hero-after" />
       </div>
