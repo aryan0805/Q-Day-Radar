@@ -86,11 +86,13 @@ def has_tests(phase: int) -> Callable[[], tuple[bool, str]]:
 _SUITE: dict = {}
 
 
-def full_suite() -> tuple[bool, str]:
-    """Run the non-hardware suite once, with a JUnit report the keyword checks reuse."""
+def full_suite(paths: list[str] | None = None) -> tuple[bool, str]:
+    """Run the non-hardware suite once (or only `paths`, for a sub-phase checkpoint), with a
+    JUnit report the keyword checks reuse."""
     xml = Path(tempfile.gettempdir()) / f"qday-gate-{os.getpid()}.xml"
     r = subprocess.run(
-        [PY, "-m", "pytest", "-m", "not hardware", "-p", "no:cacheprovider", f"--junitxml={xml}"],
+        [PY, "-m", "pytest", *(paths or []), "-m", "not hardware", "-p", "no:cacheprovider",
+         f"--junitxml={xml}"],
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -2103,8 +2105,13 @@ def main() -> int:
 
     checks = REGRESSION + PHASE_CHECKS[phase]
     upto = sys.argv[2] if len(sys.argv) == 3 else None
-    if upto:  # a sub-phase checkpoint: its checks and every earlier sub-phase's, never [live]
-        checks = REGRESSION + [
+    if upto:  # a sub-phase checkpoint: its checks and every earlier sub-phase's, never [live].
+        # Checkpoints run only this phase's tests; the final gate runs the full suite.
+        checks = [
+            REGRESSION[0],
+            Py(f"phase {phase} tests only (checkpoint; full suite at the final gate)",
+               lambda: full_suite([f"tests/phase{phase}"])),
+        ] + [
             c for c in PHASE_CHECKS[phase]
             if c.label.startswith("[") and c.label[1:].split("]")[0] <= upto
             and not c.label.startswith("[live]")
