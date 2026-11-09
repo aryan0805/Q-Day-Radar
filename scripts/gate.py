@@ -1873,7 +1873,27 @@ def p5_observatory() -> tuple[bool, str]:
     return grade == "A+", f"{host}: Observatory {grade} (score {res.get('score')})"
 
 
+P5_SSL_OK_GRADES = {"A", "A+"}  # human decision 2026-11-08: A accepted (scanner gets a 403)
+
+
+def _p5_hsts_at(ip: str, host: str) -> str:
+    """The Strict-Transport-Security header served by one server address (SNI = host)."""
+    import http.client
+    import socket
+    import ssl
+
+    ctx = ssl.create_default_context()
+    raw = socket.create_connection((ip, 443), timeout=20)
+    conn = http.client.HTTPConnection(host, 443, timeout=20)
+    conn.sock = ctx.wrap_socket(raw, server_hostname=host)
+    conn.request("GET", "/", headers={"Host": host, "User-Agent": "qday-gate"})
+    return conn.getresponse().getheader("Strict-Transport-Security") or ""
+
+
 def p5_ssllabs() -> tuple[bool, str]:
+    """SSL Labs grades every endpoint A or A+ with no warnings, and the gate itself reads the
+    required HSTS header on each endpoint's address. (Vercel's bot protection answers the SSL
+    Labs HTTP probe with 403, so SSL Labs cannot see HSTS and caps the grade at A.)"""
     import urllib.parse
     import urllib.request
 
@@ -1884,11 +1904,24 @@ def p5_ssllabs() -> tuple[bool, str]:
         req = urllib.request.Request(api, headers={"User-Agent": "qday-gate"})
         res = json.loads(urllib.request.urlopen(req, timeout=60).read())
         if res.get("status") in ("READY", "ERROR"):
-            grades = [e.get("grade") for e in res.get("endpoints", [])]
-            ok = res["status"] == "READY" and grades and all(g == "A+" for g in grades)
-            return bool(ok), f"{host}: SSL Labs {res['status']} {grades}"
+            break
         time.sleep(20)
-    return False, f"{host}: SSL Labs did not finish in 10 min"
+    else:
+        return False, f"{host}: SSL Labs did not finish in 10 min"
+    eps = res.get("endpoints", [])
+    if res.get("status") != "READY" or not eps:
+        return False, f"{host}: SSL Labs {res.get('status')}, {len(eps)} endpoints"
+    problems, rows = [], []
+    need = P5_REQUIRED_HEADERS["strict-transport-security"]
+    for e in eps:
+        ip, g = e.get("ipAddress"), e.get("grade")
+        code = (e.get("details") or {}).get("httpStatusCode")
+        if g not in P5_SSL_OK_GRADES or e.get("hasWarnings"):
+            problems.append(f"{ip}: grade {g}, warnings {e.get('hasWarnings')}")
+        hsts = _p5_hsts_at(ip, host).lower().replace(" ", "")
+        problems += [f"{ip}: HSTS lacks {p}" for p in need if p not in hsts]
+        rows.append(f"{ip} {g} (probe HTTP {code}), HSTS read directly")
+    return not problems, f"{host}: " + "; ".join(problems or rows)
 
 
 def p5_strict(expr: str) -> Callable[[], tuple[bool, str]]:
@@ -2072,7 +2105,7 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("[live] production serves HEAD with required headers and hash CSP",
            p5_live("production")),
         Py("[live] Mozilla HTTP Observatory grade A+", p5_observatory),
-        Py("[live] SSL Labs grade A+", p5_ssllabs),
+        Py("[live] SSL Labs A or A+ on every endpoint, no warnings; HSTS read on each", p5_ssllabs),
     ],
     6: [],
 }
