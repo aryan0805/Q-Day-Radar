@@ -92,6 +92,7 @@ export function OverviewView() {
           </p>
           <HeroLoader />
         </div>
+        <div id="hero-after" className="hero-after" />
       </div>
       <section aria-labelledby="radar-h">
         <h2 id="radar-h" style={{ fontSize: "1.5rem", marginBlock: "0 0.5rem" }}>

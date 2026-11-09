@@ -55,6 +55,8 @@ export function InventoryView() {
   }, [family, exposure, atRisk, sort, scenario]);
 
   const drawerRef = useRef<HTMLDivElement>(null);
+  const opener = useRef<string | null>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
   const tbody = useRef<HTMLTableSectionElement>(null);
   const tops = useRef<Map<string, number>>(new Map());
   const order = rows.map((r) => r.asset.id).join("|");
@@ -83,11 +85,20 @@ export function InventoryView() {
     tops.current = next;
   }, [order]);
   const open = assetParam ? inventory.assets.findIndex((a) => a.id === assetParam) : -1;
+  // Focus goes back to the row that opened the drawer at the moment the dialog is removed (Radix
+  // would do it a tick later, leaving focus on <body> in between). A deep link has no opener, so
+  // the heading takes it.
+  const returnFocus = () => {
+    const id = opener.current;
+    const btn = id ? document.querySelector<HTMLElement>(`tr[data-asset-id="${id}"] button`) : null;
+    (btn ?? heading.current)?.focus();
+    opener.current = null;
+  };
   const noFinite = inventory.assets.every((a) => sc(a, scenario).margin_years === null);
 
   return (
     <section aria-labelledby="inv-h">
-      <h1 id="inv-h" style={{ fontSize: "2rem", marginBlock: "0 0.5rem" }}>
+      <h1 id="inv-h" ref={heading} tabIndex={-1} style={{ fontSize: "2rem", marginBlock: "0 0.5rem" }}>
         Inventory
       </h1>
       <p className="muted">
@@ -181,7 +192,10 @@ export function InventoryView() {
                     <Fig src={`inventory:${p}.by_scenario.${scenario}.rank`} label="computed from data" />
                   </td>
                   <td>
-                    <button type="button" className="linkish" onClick={() => setAssetParam(asset.id)}>
+                    <button type="button" className="linkish" onClick={() => {
+                        opener.current = asset.id;
+                        setAssetParam(asset.id);
+                      }}>
                       <Traced src={`inventory:${p}.name`} />
                     </button>
                     <div className="muted" style={{ fontSize: "0.8125rem" }}>
@@ -228,9 +242,16 @@ export function InventoryView() {
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
           <Dialog.Content
-            ref={drawerRef}
+            ref={(el) => {
+              drawerRef.current = el;
+              if (!el) returnFocus();
+            }}
             className="drawer"
             aria-describedby={undefined}
+            onCloseAutoFocus={(e) => {
+              // Return focus to the row that opened the drawer; a deep link has none, so the heading.
+              e.preventDefault(); // focus was already returned when the dialog was removed
+            }}
             onOpenAutoFocus={(e) => {
               e.preventDefault(); // land on the dialog, not on the first figure (that opens its tooltip)
               drawerRef.current?.focus();

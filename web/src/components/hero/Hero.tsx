@@ -6,14 +6,15 @@
 // motion is allowed). Under prefers-reduced-motion the four end states show as a static strip, by
 // CSS alone, so there is no layout shift and GSAP is never requested.
 import { useEffect, useRef } from "react";
-import hero from "../../../public/data/hero.json";
+import { createPortal } from "react-dom";
+import hero from "../../../public/data/herostrip.json";
 import { register } from "../../lib/data";
 import { Fig } from "../Fig";
 import { Traced } from "../Traced";
 import { Gloss } from "../Gloss";
 import { Tech } from "../Tech";
 
-register("hero", hero);
+register("herostrip", hero);
 
 const W = 800;
 const H = 330;
@@ -185,6 +186,10 @@ function LatticeSvg() {
 
 export function Hero() {
   const stage = useRef<HTMLDivElement>(null);
+  // This component only renders in the browser. With motion, hidden layers are inert (no focus,
+  // not read out) until the timeline reveals them; the reduced-motion strip is all visible.
+  const after = document.getElementById("hero-after"); // the second caption and the technical layer sit at the end of the sequence
+  const motion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const replay = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -235,6 +240,16 @@ export function Hero() {
         const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-scale")) || 1;
         tl.timeScale(1 / scale);
         tl.progress(0);
+        // a layer takes focus only while it is on screen (times are the timeline's own, in seconds)
+        const shows = [[0, 2.6], [2.4, 4.8], [4.6, 7.2], [7.0, Number.POSITIVE_INFINITY]] as const;
+        const syncInert = () => {
+          const t = tl.time();
+          layers.forEach((el, i) => {
+            const [from, to] = shows[i] ?? [0, 0];
+            if (el) (el as HTMLElement).inert = !(t >= from && t < to);
+          });
+        };
+        syncInert();
         let replaying = false;
         ScrollTrigger.create({
           trigger: wrapEl,
@@ -242,11 +257,12 @@ export function Hero() {
           end: "bottom bottom",
           onUpdate: (self) => {
             if (!replaying) tl.progress(self.progress);
+            syncInert();
           },
         });
         replay.current = () => {
           replaying = true;
-          gsap.fromTo(tl, { progress: 0 }, { progress: 1, duration: tl.duration() * scale, ease: "none", onComplete: () => (replaying = false) });
+          gsap.fromTo(tl, { progress: 0 }, { progress: 1, duration: tl.duration() * scale, ease: "none", onUpdate: syncInert, onComplete: () => (replaying = false) });
         };
       }, stage);
       revert = () => ctx.revert();
@@ -266,71 +282,82 @@ export function Hero() {
             <p className="hero-step">First, the circuit</p>
             <CircuitSvg />
           </div>
-          <div data-layer="counts" className="hero-layer">
+          <div data-layer="counts" className="hero-layer" inert={motion}>
             <p className="hero-step">
-              Measured on <Traced src="hero:hardware.backend" />, on{" "}
-              <Traced src="hero:hardware.jobs[0].finished_date" />, next to the ideal outcome
+              Measured on <Traced src="herostrip:hardware.backend" />, on{" "}
+              <Traced src="herostrip:hardware.jobs[0].finished_date" />, next to the ideal outcome
             </p>
             <HistogramSvg />
           </div>
-          <div data-layer="factors" className="hero-layer">
+          <div data-layer="factors" className="hero-layer" inert={motion}>
             <p className="hero-step">Then a classical step</p>
             <div className="hero-factors">
               <PadlockSvg />
               {res ? (
                 <ol className="fact-list">
                   <li className="fact-line">
-                    Outcome <Traced src="hero:resolution.bitstring" /> is{" "}
-                    <Fig src="hero:resolution.measured" label="hardware" note="Read as a binary number." /> out of{" "}
-                    <Fig src="hero:resolution.denominator" label="computed from data" />
+                    Outcome <Traced src="herostrip:resolution.bitstring" /> is{" "}
+                    <Fig src="herostrip:resolution.measured" label="hardware" note="Read as a binary number." /> out of{" "}
+                    <Fig src="herostrip:resolution.denominator" label="computed from data" />
                   </li>
                   <li className="fact-line">
                     <Gloss term="continued">Continued fractions</Gloss> give{" "}
-                    <Fig src="hero:resolution.convergents[2][0]" label="computed from data" />/
-                    <Fig src="hero:resolution.convergents[2][1]" label="computed from data" />
+                    <Fig src="herostrip:resolution.convergents[2][0]" label="computed from data" />/
+                    <Fig src="herostrip:resolution.convergents[2][1]" label="computed from data" />
                   </li>
                   <li className="fact-line">
-                    The order is <Fig src="hero:resolution.order" label="computed from data" />
+                    The order is <Fig src="herostrip:resolution.order" label="computed from data" />
                   </li>
                   <li className="fact-line">
-                    <Fig src="hero:resolution.n" label="computed from data" /> ={" "}
-                    <Fig src="hero:resolution.factors[0]" label="computed from data" /> ×{" "}
-                    <Fig src="hero:resolution.factors[1]" label="computed from data" />
+                    <Fig src="herostrip:resolution.n" label="computed from data" /> ={" "}
+                    <Fig src="herostrip:resolution.factors[0]" label="computed from data" /> ×{" "}
+                    <Fig src="herostrip:resolution.factors[1]" label="computed from data" />
                   </li>
                 </ol>
               ) : null}
             </div>
           </div>
-          <div data-layer="lattice" className="hero-layer">
+          <div data-layer="lattice" className="hero-layer" inert={motion}>
             <p className="hero-step">The pieces re-form into a lattice that holds</p>
             <LatticeSvg />
             <p className="lat-caption hero-caption"><Gloss term="mlkem">ML-KEM</Gloss>: what to migrate to.</p>
           </div>
         </div>
-        <div className="hero-notes">
+        <div className="hero-caption-row">
+          <div className="hero-notes">
           <p>
             This is a <Gloss term="compiled">simplified demo version</Gloss> of Shor&apos;s algorithm, the quantum attack on{" "}
             <Gloss term="rsa">RSA</Gloss> encryption. To fit on today&apos;s small quantum computers, part of the answer was built in. So
             it shows how the attack works, not a real attack.
           </p>
-          <p>
-            We ran it on IBM&apos;s real quantum computer, <Traced src="hero:hardware.backend" />, in a{" "}
-            <Gloss term="transpiled">transpiled</Gloss> form made for that chip. A run counts as a success when it finds the repeating
-            pattern: here a period of <Traced src="hero:resolution.order" /> for a = <Traced src="hero:resolution.a" />. That period splits{" "}
-            <Traced src="hero:resolution.n" /> into <Traced src="hero:resolution.factors[0]" /> × <Traced src="hero:resolution.factors[1]" />.
-          </p>
+          </div>
+          <button type="button" className="btn hero-replay" onClick={() => replay.current?.()}>
+            Replay the sequence
+          </button>
         </div>
+        {after
+          ? createPortal(
+              <>
+                <div className="hero-notes">
+          <p>
+            We ran it on IBM&apos;s real quantum computer, <Traced src="herostrip:hardware.backend" />, in a{" "}
+            <Gloss term="transpiled">transpiled</Gloss> form made for that chip. A run counts as a success when it finds the repeating
+            pattern: here a period of <Traced src="herostrip:resolution.order" /> for a = <Traced src="herostrip:resolution.a" />. That period splits{" "}
+            <Traced src="herostrip:resolution.n" /> into <Traced src="herostrip:resolution.factors[0]" /> × <Traced src="herostrip:resolution.factors[1]" />.
+          </p>
+                </div>
         <Tech>
           <p style={{ margin: "0 0 0.5rem" }}>
-            Registry label: <Traced src="hero:circuit.kind" />. <Traced src="hero:notes.compiled" />
+            Registry label: <Traced src="herostrip:circuit.kind" />. <Traced src="herostrip:notes.compiled" />
           </p>
           <p style={{ margin: 0 }}>
-            <Traced src="hero:notes.hardware" /> <Traced src="hero:notes.success" />
+            <Traced src="herostrip:notes.hardware" /> <Traced src="herostrip:notes.success" />
           </p>
         </Tech>
-        <button type="button" className="btn hero-replay" onClick={() => replay.current?.()}>
-          Replay the sequence
-        </button>
+              </>,
+              after,
+            )
+          : null}
     </div>
   );
 }

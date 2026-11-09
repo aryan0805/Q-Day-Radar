@@ -314,6 +314,7 @@ ALLOWED: dict[str, frozenset[str]] = {
         }
     ),
 }
+ALLOWED["herostrip"] = ALLOWED["hero"]  # the strip is a subset of hero.json
 
 
 def _walk(name: str, obj: Any, path: str, out: list[str]) -> None:

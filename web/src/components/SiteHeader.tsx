@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ScenarioSwitch } from "./ScenarioSwitch";
+import { useScenario, withScenario } from "../lib/scenario";
 
 const LINKS = [
   { href: "/", label: "Overview" },
@@ -13,6 +14,7 @@ const LINKS = [
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { scenario } = useScenario();
   return (
     <header style={{ borderBottom: "1px solid var(--line)", background: "var(--bg-1)" }}>
       <div
@@ -27,7 +29,7 @@ export function SiteHeader() {
         }}
       >
         <Link
-          href="/"
+          href={withScenario("/", scenario)}
           style={{
             fontFamily: "var(--font-cond)",
             fontWeight: 600,
@@ -44,7 +46,7 @@ export function SiteHeader() {
               <li key={l.href}>
                 <Link
                   className="nav-link"
-                  href={l.href}
+                  href={withScenario(l.href, scenario)}
                   aria-current={pathname === l.href ? "page" : undefined}
                 >
                   {l.label}

@@ -150,6 +150,14 @@ class HeroFile(_M):
     resolution: dict[str, Any] | None
 
 
+class HeroStripFile(_M):
+    circuit: dict[str, Any]
+    ideal: dict[str, Any]
+    hardware: dict[str, Any]
+    notes: dict[str, str]
+    resolution: dict[str, Any] | None
+
+
 class SourceFile(_M):
     path: str
     sha256: str
@@ -167,6 +175,7 @@ MODELS: dict[str, type[BaseModel]] = {
     "scaling": ScalingFile,
     "lab": LabFile,
     "hero": HeroFile,
+    "herostrip": HeroStripFile,
     "meta": Meta,
 }
 
@@ -530,6 +539,27 @@ def _verdict(lo: float, chance: float) -> str:
     return "above random guessing" if lo > chance else "no better than random guessing"
 
 
+def hero_strip(hero: dict) -> dict:
+    """What the home page's static strip draws, without the per-job count tables (those make up
+    most of hero.json and only the coin egg needs them)."""
+    hw = hero["hardware"]
+    return {
+        "circuit": hero["circuit"],
+        "ideal": hero["ideal"],
+        "notes": hero["notes"],
+        "resolution": hero["resolution"],
+        "hardware": {
+            "backend": hw["backend"],
+            "device_qubits": hw["device_qubits"],
+            "pooled_raw_counts": hw["pooled_raw_counts"],
+            "jobs": [
+                {"index": j["index"], "job_id": j["job_id"], "finished_date": j["finished_date"]}
+                for j in hw["jobs"]
+            ],
+        },
+    }
+
+
 def build_all() -> dict[str, dict]:
     timeline = inventory.load_timeline()
     est = _json(EST / "scenarios.json")
@@ -553,6 +583,7 @@ def build_all() -> dict[str, dict]:
         "lab": build_lab(),
         "hero": herodata.build_hero(HW_BATCH, device()["n_qubits"]),
     }
+    data["herostrip"] = hero_strip(data["hero"])
     data["meta"] = {
         "git_commit": _git_commit(),
         "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
