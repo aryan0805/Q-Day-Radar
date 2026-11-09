@@ -187,7 +187,9 @@ export function Eggs() {
       const size = 256;
       const key = Math.floor(Math.random() * size);
       const g = groverTrace(size, key);
-      setResult({ kind: "grover", n: size, key: g.found, steps: g.steps, bound: Math.ceil((Math.PI / 4) * Math.sqrt(size)), trace: g.trace, shown: 0 });
+      // reduced motion: no stepping, the answer is there at once
+      const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setResult({ kind: "grover", n: size, key: g.found, steps: g.steps, bound: Math.ceil((Math.PI / 4) * Math.sqrt(size)), trace: g.trace, shown: still ? g.trace.length - 1 : 0 });
     }
   }, []);
   useKeys(onCode);

@@ -5,7 +5,7 @@
 // no library. Budget: <= 30 fps, paused while the tab is hidden, opacity <= 12 %.
 // Falls back to a static SVG lattice without WebGL or under prefers-reduced-motion.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 const MAX_ALPHA = 0.12;
 const FRAME_MS = 1000 / 30;
@@ -73,13 +73,26 @@ function SvgLattice() {
 export function LatticeField() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [fallback, setFallback] = useState(false);
+  // The preference is an external store (the server snapshot is "no preference"); with reduced
+  // motion the canvas is not rendered at all, so no WebGL context is ever created.
+  const reducedMotion = useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
 
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // The first client render still shows the server's canvas; with reduced motion the store
+    // swaps it for the SVG right after, so do not touch WebGL at all.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const gl = el.getContext("webgl", { alpha: true, antialias: false, premultipliedAlpha: true });
-    if (reduced.matches || !gl) {
+    if (!gl) {
       setFallback(true);
       return;
     }
@@ -168,14 +181,8 @@ export function LatticeField() {
       raf = 0;
     };
     const onVisibility = () => (document.hidden ? stop() : start());
-    const onReduced = () => {
-      if (reduced.matches) {
-        stop();
-        setFallback(true);
-      }
-    };
+
     document.addEventListener("visibilitychange", onVisibility);
-    reduced.addEventListener("change", onReduced);
     // Start once the page has loaded and gone idle, so the shader never competes with hydration.
     const startLater = () => {
       const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
@@ -192,12 +199,11 @@ export function LatticeField() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("visibilitychange", onVisibility);
-      reduced.removeEventListener("change", onReduced);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, []);
+  }, [reducedMotion]);
 
-  if (fallback) return <SvgLattice />;
+  if (fallback || reducedMotion) return <SvgLattice />;
   return (
     <canvas
       ref={canvas}

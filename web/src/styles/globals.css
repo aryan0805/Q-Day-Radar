@@ -743,8 +743,8 @@ select {
 }
 /* Q-Day mode: the palette flips to the threat colour */
 html[data-qday="on"] {
-  --q: #ff5c47;
-  --pqc: #ffb347;
+  --q: var(--threat);
+  --pqc: var(--warn);
   --line: #3a1d1d;
 }
 @keyframes shatter {
@@ -898,5 +898,15 @@ main dd {
 @media (prefers-reduced-motion: no-preference) {
   .expand-panel {
     animation: open-down var(--dur-reveal) var(--ease) both;
+  }
+}
+
+/* Reduced motion: the Q-Day shatter lands on its end state without moving */
+@media (prefers-reduced-motion: reduce) {
+  html[data-qday="on"] .dot[data-family="RSA"],
+  html[data-qday="on"] .dot[data-family="ECC"] {
+    animation: none;
+    transform: translate(var(--sx, 8px), var(--sy, 14px)) rotate(40deg);
+    opacity: 0.2;
   }
 }
