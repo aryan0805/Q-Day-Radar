@@ -2,7 +2,8 @@
 """Phase gate. Owned by lead. Run with:  uv run python scripts/gate.py <phase>
 
 Runs the regression checks every phase must keep green, plus that phase's own
-checks, prints a summary and writes .coord/gates/phase-<N>.md.
+checks, prints a summary and writes a markdown report (.coord/gates/phase-<N>.md in the
+dev repo; the system temp dir where that folder does not exist).
 Exit code 0 = gate passed.
 
 To add a check for a phase: append to PHASE_CHECKS[N]. A check is either
@@ -1138,6 +1139,8 @@ P5_WEB = ROOT / "web"
 P5_OUT = P5_WEB / "out"
 P5_SRC = P5_WEB / "src"
 P5_SITES = ROOT / ".coord" / "gates" / "phase-5-sites.json"  # lead fills: urls, not secrets
+# Used where that file does not exist (the public repo): URLs, not secrets.
+P5_SITES_DEFAULT = {"project": "q-day-web", "production": "https://q-day-web-q-day.vercel.app"}
 P5_SCREENS = ["/", "/lab/", "/scaling/", "/inventory/"]
 P5_TOKENS_CSS = P5_SRC / "styles" / "tokens.css"
 P5_BG_TOKENS = ["bg-0", "bg-1", "bg-2"]
@@ -1719,14 +1722,18 @@ def p5_hooks_and_ci() -> tuple[bool, str]:
     return not problems, "; ".join(problems) or "pre-commit hook and GitHub Action run gitleaks"
 
 
-def p5_github_secret_scanning() -> tuple[bool, str]:
-    r = subprocess.run(["gh", "repo", "view", "--json", "nameWithOwner"], cwd=ROOT,
+def p5_github_secret_scanning(repo: str | None = None,
+                              need_public: bool = False) -> tuple[bool, str]:
+    target = [repo] if repo else []
+    r = subprocess.run(["gh", "repo", "view", *target, "--json", "nameWithOwner"], cwd=ROOT,
                        capture_output=True, text=True) if _which("gh") else None
     if r is None or r.returncode != 0:
         return False, "gh CLI missing or not logged in (brew install gh && gh auth login)"
     repo = json.loads(r.stdout)["nameWithOwner"]
-    vis = subprocess.run(["gh", "repo", "view", "--json", "visibility", "--jq", ".visibility"],
-                         cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    vis = subprocess.run(["gh", "repo", "view", repo, "--json", "visibility", "--jq",
+                          ".visibility"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    if need_public and vis != "PUBLIC":
+        return False, f"{repo} is {vis or 'unknown'}, expected PUBLIC"
     r = subprocess.run(["gh", "api", f"repos/{repo}", "--jq", ".security_and_analysis"],
                        cwd=ROOT, capture_output=True, text=True)
     raw = r.stdout.strip()
@@ -1750,13 +1757,11 @@ def _which(cmd: str) -> bool:
     return shutil.which(cmd) is not None
 
 
-# --- live site (URLs in .coord/gates/phase-5-sites.json; bypass secret in root .env) ---
+# --- live site (URLs in P5_SITES, else P5_SITES_DEFAULT; bypass secret in root .env) ---
 
 
 def _p5_sites() -> dict:
-    if not P5_SITES.exists():
-        raise FileNotFoundError(f"{P5_SITES.relative_to(ROOT)} missing (lead fills it)")
-    return _load(P5_SITES)
+    return _load(P5_SITES) if P5_SITES.exists() else P5_SITES_DEFAULT
 
 
 def _p5_fetch(url: str, bypass: bool = False, follow: bool = True):
@@ -1811,19 +1816,22 @@ def _p5_csp_problems(csp: str, pages: dict[str, bytes]) -> list[str]:
     return problems
 
 
-def p5_live(kind: str) -> Callable[[], tuple[bool, str]]:
+def p5_live(kind: str, expected: Callable[[], str] | None = None) -> Callable[[], tuple[bool, str]]:
     """The deployed site (preview or production) serves HEAD, every screen returns 200 with the
-    required headers, and every inline script's hash is in the CSP."""
+    required headers, and every inline script's hash is in the CSP. With `expected`, the site
+    must serve exactly that commit (phase 6: the public repo's main, whose SHAs differ)."""
 
     def _check() -> tuple[bool, str]:
         base = _p5_sites()[kind].rstrip("/")
         bypass = kind == "preview"
-        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
-                              capture_output=True, text=True).stdout.strip()
+        head = expected() if expected else subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
         problems, pages = [], {}
         st, _, body = _p5_fetch(base + "/build.json", bypass)
         commit = json.loads(body).get("commit") if st == 200 else None
-        if commit != head:
+        if expected and commit != head:
+            problems.append(f"build.json commit {str(commit)[:10]} is not {head[:10]}")
+        elif commit != head:
             # Vercel builds only web/ (its root directory), so a deployment of an ancestor
             # commit with an identical web/ tree serves exactly what HEAD would build.
             anc = commit and subprocess.run(["git", "merge-base", "--is-ancestor", commit, head],
@@ -1928,6 +1936,302 @@ def p5_strict(expr: str) -> Callable[[], tuple[bool, str]]:
     return pytest_selects(expr, path="tests/phase5", strict=True)
 
 
+# ---------- phase 6: public repo and READMEs ----------
+
+# Human decisions 2026-11-08 (first three) and 2026-11-11 (the other five, the repo name).
+P6_PUBLIC_REPO = "aryan0805/q-day-radar"
+P6_REMOVED = [".claude", "docs", "CLAUDE.md", ".coord", "setup/claude", "scripts/coord.py",
+              "scripts/team.sh", "scripts/install-claude-config.sh"]
+# Commit author e-mail in the public history: None until the human decides; True = every author
+# and committer address must be a GitHub noreply address.
+P6_NOREPLY_ONLY: bool | None = None
+P6_READMES = ["README.md", "quantum/README.md", "web/README.md", "tests/README.md",
+              "results/README.md", "scripts/README.md", "benchmarks/README.md"]
+# A kept file that names a removed file is a dead pointer in the public repo.
+P6_REF_PATTERN = (r"(?<![\w.])\.coord\b|(?<![\w./-])docs/|\bCLAUDE\.md\b|(?<![\w.])\.claude\b"
+                  r"|\bcoord\.py\b|\bteam\.sh\b|install-claude-config|setup/claude"
+                  r"|\b(?:STATE|PLAN|DECISIONS|WORKFLOW|TWEAKS|PHASE5-DESIGN)\.md\b|\bDECISIONS\b")
+# Allowed to name them: the list of removed paths itself and the tests of it. results/ is
+# immutable (raw files are never edited); its README is checked like any other file.
+P6_REF_ALLOWED = [".gitignore", "scripts/gate.py", "scripts/make_public.py",
+                  "tests/phase6/test_public_*.py", "tests/phase6/test_norefs*.py"]
+P6_BANNED = r"hackathon|submission|advanced track|judg(?:e|es|ed|ing)\b"
+P6_HOW_BUILT = "How this was built"
+_P6: dict = {}
+
+
+def _p6_git(*args: str, cwd: Path = ROOT) -> str:
+    r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"git {' '.join(args)}: {r.stderr.strip()[:200]}")
+    return r.stdout
+
+
+def _p6_removed(path: str) -> bool:
+    return any(path == r or path.startswith(r + "/") for r in P6_REMOVED)
+
+
+def _p6_kept_files() -> list[str]:
+    return [p for p in _p6_git("ls-files").splitlines() if not _p6_removed(p)]
+
+
+def p6_no_refs_to_removed() -> tuple[bool, str]:
+    import fnmatch
+    import re
+
+    pat, hits = re.compile(P6_REF_PATTERN), []
+    for rel in _p6_kept_files():
+        if any(fnmatch.fnmatch(rel, g) for g in P6_REF_ALLOWED) or rel.endswith(".lock") \
+                or rel.endswith("package-lock.json") or (rel.startswith("results/")
+                                                         and rel != "results/README.md"):
+            continue
+        try:
+            text = (ROOT / rel).read_text()
+        except (UnicodeDecodeError, FileNotFoundError):
+            continue
+        for i, line in enumerate(text.splitlines(), 1):
+            if m := pat.search(line):
+                hits.append(f"{rel}:{i} ({m.group(0)})")
+    return not hits, f"{len(hits)} references: " + "; ".join(hits[:8]) if hits else \
+        "no kept file names a removed path"
+
+
+def p6_make_public_list() -> tuple[bool, str]:
+    """The publish script removes exactly the decided paths (gate's own list, not the script's)."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("make_public", ROOT / "scripts/make_public.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    got = sorted(getattr(mod, "REMOVED_PATHS", []))
+    return got == sorted(P6_REMOVED), f"make_public.REMOVED_PATHS {got} vs decided {P6_REMOVED}"
+
+
+def p6_readmes_exist() -> tuple[bool, str]:
+    tracked = set(_p6_git("ls-files").splitlines())
+    problems = [f"{r} missing or not tracked" for r in P6_READMES
+                if r not in tracked or not (ROOT / r).read_text().strip()]
+    root = (ROOT / "README.md").read_text() if (ROOT / "README.md").exists() else ""
+    if not any(ln.startswith("#") and P6_HOW_BUILT.lower() in ln.lower()
+               for ln in root.splitlines()):
+        problems.append(f"README.md has no '{P6_HOW_BUILT}' heading")
+    if _p5_sites()["production"].rstrip("/") not in root:
+        problems.append("README.md does not link the production site")
+    return not problems, "; ".join(problems) or f"{len(P6_READMES)} READMEs, how-built, live link"
+
+
+def _p6_readme_lines(text: str):
+    """(line number, text) outside fenced code and generated blocks, link targets removed."""
+    import re
+
+    fence, gen = False, None
+    for i, line in enumerate(text.splitlines(), 1):
+        if line.lstrip().startswith("```"):
+            fence = not fence
+            continue
+        if m := re.search(r"<!--\s*gen:([\w.-]+)\s*-->", line):
+            gen = m.group(1)
+        if gen:
+            if re.search(rf"<!--\s*/gen:{re.escape(gen)}\s*-->", line):
+                gen = None
+            continue
+        if not fence:
+            yield i, re.sub(r"\]\([^)]*\)|<https?://[^>]*>|https?://\S+", "]", line)
+
+
+def p6_readme_figures() -> tuple[bool, str]:
+    """Every figure in a README is inside a generated block, or on a line marked
+    <!-- literal: reason --> (listed for lead to read)."""
+    import re
+
+    bad, literal = [], []
+    for rel in P6_READMES:
+        f = ROOT / rel
+        if not f.exists():
+            continue
+        for i, line in _p6_readme_lines(f.read_text()):
+            m = re.search(r"<!--\s*literal:\s*(.+?)\s*-->", line)
+            figs = _p5_figures(re.sub(r"<!--.*?-->", " ", line))
+            if figs and m:
+                literal.append(f"{rel}:{i} {figs[:3]} ({m.group(1)})")
+            elif figs:
+                bad.append(f"{rel}:{i} {figs[:3]}")
+    detail = (f"{len(bad)} untraced: " + "; ".join(bad[:6]) + " · ") if bad else ""
+    return not bad, detail + f"{len(literal)} literal lines: " + "; ".join(literal)
+
+
+def _p6_slug(heading: str) -> str:
+    import re
+
+    h = re.sub(r"[^\w\- ]", "", heading.strip().lstrip("#").strip().lower())
+    return h.replace(" ", "-")
+
+
+def p6_readme_links() -> tuple[bool, str]:
+    """Relative links point at a kept tracked file or folder (and an existing heading anchor);
+    external links answer below 400. 401/403/429 count as reachable (bot walls) and are listed."""
+    import re
+    import urllib.error
+    import urllib.request
+
+    kept = _p6_kept_files()
+    dirs = {str(Path(p).parent) for p in kept} | {
+        str(q) for p in kept for q in Path(p).parents}
+    bad, walled, n = [], [], 0
+    for rel in P6_READMES:
+        f = ROOT / rel
+        if not f.exists():
+            continue
+        text = f.read_text()
+        anchors = {_p6_slug(ln) for ln in text.splitlines() if ln.startswith("#")}
+        for target in re.findall(r"\]\(([^)\s]+)", text) + re.findall(r"<(https?://[^>]+)>", text):
+            n += 1
+            if target.startswith(("http://", "https://")):
+                try:
+                    req = urllib.request.Request(target, headers={"User-Agent": "qday-gate"})
+                    urllib.request.urlopen(req, timeout=30)
+                except urllib.error.HTTPError as e:
+                    (walled if e.code in (401, 403, 429) else bad).append(f"{target} {e.code}")
+                except Exception as e:  # noqa: BLE001
+                    bad.append(f"{target} {type(e).__name__}")
+                continue
+            if target.startswith("mailto:"):
+                bad.append(f"{rel}: mailto link {target}")
+                continue
+            path, _, anchor = target.partition("#")
+            if path:
+                dest = (f.parent / path).resolve().relative_to(ROOT).as_posix()
+                if _p6_removed(dest) or (dest not in kept and dest not in dirs):
+                    bad.append(f"{rel} -> {target}")
+                    continue
+                if anchor and dest.endswith(".md"):
+                    other = (ROOT / dest).read_text().splitlines()
+                    if anchor not in {_p6_slug(ln) for ln in other if ln.startswith("#")}:
+                        bad.append(f"{rel} -> {target} (no such heading)")
+            elif anchor and anchor not in anchors:
+                bad.append(f"{rel} -> #{anchor} (no such heading)")
+    detail = f"{n} links, {len(bad)} broken" + (": " + "; ".join(bad[:6]) if bad else "")
+    return not bad, detail + (f"; bot-walled (reachable): {', '.join(walled)}" if walled else "")
+
+
+def p6_wording() -> tuple[bool, str]:
+    """No hackathon, submission or judging language in any README or in the site."""
+    import re
+
+    pat, hits = re.compile(P6_BANNED, re.I), []
+    files = [ROOT / r for r in P6_READMES] + [
+        p for base in (P5_SRC, P5_OUT) if base.exists() for p in base.rglob("*")
+        if p.is_file() and p.suffix in {".ts", ".tsx", ".md", ".mdx", ".html", ".txt", ".json"}]
+    for f in files:
+        if f.exists():
+            for i, line in enumerate(f.read_text(errors="ignore").splitlines(), 1):
+                if m := pat.search(line):
+                    hits.append(f"{f.relative_to(ROOT)}:{i} ({m.group(0)})")
+    return not hits, "; ".join(hits[:8]) or f"{len(files)} files clean"
+
+
+# --- the public repo (cloned fresh; nothing here trusts a file the producer wrote) ---
+
+
+def _p6_clone() -> Path:
+    if "dir" not in _P6:
+        d = Path(tempfile.mkdtemp(prefix="qday-public-"))
+        url = f"https://github.com/{P6_PUBLIC_REPO}.git"
+        _p6_git("clone", "--mirror", "-q", url, str(d / "mirror.git"), cwd=d)
+        _p6_git("clone", "-q", str(d / "mirror.git"), str(d / "work"), cwd=d)
+        _P6["dir"] = d
+    return _P6["dir"]
+
+
+def p6_public_main_sha() -> str:
+    return _p6_git("rev-parse", "HEAD", cwd=_p6_clone() / "work").strip()
+
+
+def p6_public_history() -> tuple[bool, str]:
+    """No removed path in any commit of any ref of the public repo."""
+    mirror = _p6_clone() / "mirror.git"
+    names = set(_p6_git("log", "--all", "--name-only", "--format=", cwd=mirror).split())
+    found = sorted({p for p in names if _p6_removed(p)})
+    refs = len(_p6_git("for-each-ref", "--format=%(refname)", cwd=mirror).split())
+    commits = len(_p6_git("rev-list", "--all", cwd=mirror).split())
+    return not found, (f"{len(found)} removed paths in history: {found[:6]}" if found else
+                       f"{commits} commits, {refs} refs: no removed path in any of them")
+
+
+def p6_public_tree() -> tuple[bool, str]:
+    """Public main = this repo's HEAD minus the removed paths, blob for blob."""
+    def tree(ref: str, cwd: Path) -> dict[str, str]:
+        rows = (ln.split("\t", 1) for ln in _p6_git("ls-tree", "-r", ref, cwd=cwd).splitlines())
+        return {path: meta for meta, path in rows if not _p6_removed(path)}
+
+    pub, mine = tree("HEAD", _p6_clone() / "work"), tree("HEAD", ROOT)
+    diff = sorted(set(pub) ^ set(mine)) + sorted(p for p in set(pub) & set(mine)
+                                                if pub[p] != mine[p])
+    return not diff, (f"{len(diff)} paths differ: {diff[:6]}" if diff else
+                      f"{len(pub)} files identical to this HEAD minus removed paths")
+
+
+def p6_public_gitleaks() -> tuple[bool, str]:
+    r = subprocess.run(["gitleaks", "git", "--redact", "--no-banner", str(_p6_clone() / "work")],
+                       capture_output=True, text=True)
+    out = [ln for ln in (r.stdout + r.stderr).splitlines() if ln.strip()]
+    return r.returncode == 0, " | ".join(out[-2:])
+
+
+def p6_public_emails() -> tuple[bool, str]:
+    if P6_NOREPLY_ONLY is None:
+        return False, "human decision pending: keep commit e-mails or rewrite to noreply"
+    mails = set(_p6_git("log", "--all", "--format=%ae%n%ce", cwd=_p6_clone() / "mirror.git")
+                .split())
+    other = [m for m in mails if not m.endswith("users.noreply.github.com")
+             and m != "noreply@github.com"]
+    if not P6_NOREPLY_ONLY:
+        return True, f"human kept commit e-mails as they are ({len(mails)} distinct)"
+    return not other, f"{len(other)} non-noreply author/committer addresses" if other else \
+        f"{len(mails)} distinct addresses, all GitHub noreply"
+
+
+def _p6_clean_env() -> dict:
+    drop = {"VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT", "QDAY_WEB_ROOT", "PYTHONPATH"}
+    return {k: v for k, v in os.environ.items() if k not in drop}
+
+
+def _p6_run(argv: list[str], cwd: Path) -> tuple[bool, str]:
+    r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True, env=_p6_clean_env())
+    out = [ln for ln in (r.stdout + r.stderr).splitlines() if ln.strip()]
+    return r.returncode == 0, f"{' '.join(argv[:4])}: " + " | ".join(out[-2:])
+
+
+def p6_public_web_build() -> tuple[bool, str]:
+    work = _p6_clone() / "work"
+    for argv in (["npm", "--prefix", "web", "ci", "--no-audit", "--no-fund"],
+                 ["npm", "--prefix", "web", "run", "build"]):
+        ok, detail = _p6_run(argv, work)
+        if not ok:
+            return False, detail
+    return True, "clean clone: npm ci && npm run build exit 0"
+
+
+def p6_public_tests() -> tuple[bool, str]:
+    """A clean clone (no .env, no dev-only folders) passes the non-hardware suite."""
+    work = _p6_clone() / "work"
+    if not (work / "web" / "out").exists():
+        ok, detail = p6_public_web_build()
+        if not ok:
+            return False, detail
+    for argv in (["uv", "sync", "--frozen"],
+                 ["uv", "run", "python", "-m", "playwright", "install", "chromium"],
+                 ["uv", "run", "pytest", "-m", "not hardware", "-q", "-p", "no:cacheprovider"]):
+        ok, detail = _p6_run(argv, work)
+        if not ok:
+            return False, detail
+    return True, detail
+
+
+def p6_strict(expr: str) -> Callable[[], tuple[bool, str]]:
+    return pytest_selects(expr, path="tests/phase6", strict=True)
+
+
 # ---------- checks ----------
 
 REGRESSION: list[Check] = [
@@ -1948,7 +2252,7 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         ),
     ],
     # Lead: at /phase-start N, turn every command-checkable exit criterion
-    # in docs/PLAN.md into a check here before BUILD starts.
+    # in the plan into a check here before BUILD starts.
     1: [
         Py("phase 1 tests exist", has_tests(1)),
         Cmd("metrics regenerate", [PY, "scripts/record_metrics.py"]),
@@ -2107,7 +2411,57 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("[live] Mozilla HTTP Observatory grade A+", p5_observatory),
         Py("[live] SSL Labs A or A+ on every endpoint, no warnings; HSTS read on each", p5_ssllabs),
     ],
-    6: [],
+    # 6a runs in this repo on phase-6 / main; 6b clones the public repo fresh; [live] last.
+    6: [
+        Py("[6a] phase 6 tests exist", has_tests(6)),
+        Py("[6a] no kept file names a removed path (dead pointers in the public repo)",
+           p6_no_refs_to_removed),
+        Py("[6a] make_public removes exactly the decided paths", p6_make_public_list),
+        Py("[6a] READMEs: root + 6 folders, 'How this was built', live link", p6_readmes_exist),
+        Cmd("[6a] README numbers regenerate byte-exact from data",
+            [PY, "scripts/build_readme.py", "--verify"]),
+        Py("[6a] every README figure is generated or marked literal (list read by lead)",
+           p6_readme_figures),
+        Py("[6a] every README link resolves (relative, anchors, external)", p6_readme_links),
+        Py("[6a] no hackathon, submission or judging wording in READMEs or the site",
+           p6_wording),
+        Cmd("[6a] npm audit: no high/critical", ["npm", "--prefix", "web", "audit",
+                                                 "--audit-level=high"]),
+        Py("[6a] .env never committed", p5_env_never_committed),
+        Cmd("[6a] gitleaks: no secret in git history",
+            ["gitleaks", "git", "--redact", "--no-banner", "."]),
+        Cmd("[6a] no QPU used since phase 5",
+            ["git", "diff", "--quiet", "phase-5-done", "--", "results/budget.json",
+             "results/hardware"]),
+        Py("[6a] readme tests pass (no xfail/skip)", p6_strict("readme")),
+        Py("[6a] links tests pass (no xfail/skip)", p6_strict("links")),
+        Py("[6a] wording tests pass (no xfail/skip)", p6_strict("wording")),
+        Py("[6a] norefs tests pass (no xfail/skip)", p6_strict("norefs")),
+        Py("[6a] public (make_public on a scratch repo) tests pass (no xfail/skip)",
+           p6_strict("public")),
+        Py("[6b] public repo: no removed path in any commit of any ref", p6_public_history),
+        Py("[6b] public main = this HEAD minus removed paths, blob for blob", p6_public_tree),
+        Py("[6b] public repo: gitleaks history scan clean", p6_public_gitleaks),
+        Py("[6b] public repo: commit e-mails per the human's decision", p6_public_emails),
+        Py("[6b] public repo: public, secret scanning, push protection, Dependabot",
+           lambda: p5_github_secret_scanning(P6_PUBLIC_REPO, need_public=True)),
+        Py("[6b] clean clone: npm ci && npm run build", p6_public_web_build),
+        Py("[6b] clean clone: uv sync && pytest -m 'not hardware'", p6_public_tests),
+        # after Vercel builds production from the public repo's main:
+        Py("[live] production serves public main with required headers and hash CSP",
+           p5_live("production", expected=p6_public_main_sha)),
+        Py("[live] Mozilla HTTP Observatory grade A+", p5_observatory),
+        Py("[live] SSL Labs A or A+ on every endpoint, no warnings; HSTS read on each", p5_ssllabs),
+    ],
+}
+
+# Run before the regression checks (the full suite reads web/out, so build it fresh first).
+PHASE_PRE: dict[int, list[Check]] = {
+    6: [
+        Cmd("npm ci", ["npm", "--prefix", "web", "ci", "--no-audit", "--no-fund"]),
+        Cmd("npm run build (fresh web/out for the suite)", ["npm", "--prefix", "web", "run",
+                                                            "build"]),
+    ],
 }
 
 
@@ -2136,11 +2490,11 @@ def main() -> int:
         print(f"no checks defined for phase {phase}")
         return 2
 
-    checks = REGRESSION + PHASE_CHECKS[phase]
+    checks = PHASE_PRE.get(phase, []) + REGRESSION + PHASE_CHECKS[phase]
     upto = sys.argv[2] if len(sys.argv) == 3 else None
     if upto:  # a sub-phase checkpoint: its checks and every earlier sub-phase's, never [live].
         # Checkpoints run only this phase's tests; the final gate runs the full suite.
-        checks = [
+        checks = PHASE_PRE.get(phase, []) + [
             REGRESSION[0],
             Py(f"phase {phase} tests only (checkpoint; full suite at the final gate)",
                lambda: full_suite([f"tests/phase{phase}"])),
@@ -2159,7 +2513,10 @@ def main() -> int:
     verdict = "PASSED" if passed else "FAILED"
     print(f"\nGate {phase}: {verdict} ({sum(ok for _, ok, _, _ in rows)}/{len(rows)} checks)")
 
-    out = ROOT / ".coord" / "gates" / f"phase-{phase}{'-' + upto if upto else ''}.md"
+    reports = ROOT / ".coord" / "gates"
+    if not reports.parent.is_dir():  # public repo: no .coord/, so the report goes to temp
+        reports = Path(tempfile.gettempdir()) / "qday-gate"
+    out = reports / f"phase-{phase}{'-' + upto if upto else ''}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         f"# Gate report — phase {phase}" + (f" (checkpoint {upto})" if upto else ""),
@@ -2177,7 +2534,7 @@ def main() -> int:
         retro = prev[prev.index("## Retro") :]  # keep a retro already written
     lines += ["", retro]
     out.write_text("\n".join(lines))
-    print(f"report: {out.relative_to(ROOT)}")
+    print(f"report: {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
     return 0 if passed else 1
 
 
