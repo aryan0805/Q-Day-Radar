@@ -492,3 +492,28 @@ def test_public_defect_a_script_that_pushes_during_a_dry_run_is_caught(tools, tm
 def test_public_checker_reports_nothing_on_a_correct_output(scratch, dry):
     assert public_problems(scratch, dry["out"]) == []
     assert json.dumps(public_problems(scratch, dry["out"])) == "[]"
+
+
+@pytest.mark.parametrize("path", REMOVED)
+def test_public_defect_a_script_that_forgets_one_removed_path_is_caught(
+    path, scratch, tools, tmp_path
+):
+    """Plant the defect in a copy of the script: one path missing from its list. The script's own
+    check uses its own list, so it cannot notice; this checker, with the decided list, must."""
+    text = MAKE_PUBLIC.read_text()
+    line = f'    "{path}",\n'
+    assert text.count(line) == 1, f"{path}: REMOVED_PATHS line not found once"
+    bad_script = tmp_path / "make_public_forgetful.py"
+    bad_script.write_text(text.replace(line, ""))
+    cp = subprocess.run(
+        [sys.executable, str(bad_script), "--source", str(scratch), "--keep"],
+        capture_output=True,
+        text=True,
+        env=ENV,
+    )
+    out = kept_dir(cp)
+    try:
+        problems = public_problems(scratch, out)
+        assert any("removed paths survive" in p for p in problems), (path, problems)
+    finally:
+        shutil.rmtree(out.parent, ignore_errors=True)
