@@ -4,7 +4,10 @@ What it does (all in a temporary directory; this checkout is never touched):
 
 1. fresh ``git clone --no-local`` of one branch (default ``main``) plus the ``phase-*-done`` tags;
 2. ``git filter-repo --invert-paths`` for every path in ``REMOVED_PATHS``, in every commit;
-3. optional rewrite of every author and committer e-mail (``--noreply-email``, off by default);
+3. optional rewrite of every author and committer e-mail to the GitHub noreply address
+   (``--noreply-from-gh`` reads it from ``gh api user`` at run time; ``--noreply-email`` takes it
+   as an argument), and the same address set as ``user.email`` of the result clone. The address is
+   never printed;
 4. checks on the result: no removed path in any commit, gitleaks finds nothing;
 5. a summary: removed paths, kept refs, commit count.
 
@@ -22,6 +25,7 @@ Needs ``git-filter-repo`` (``brew install git-filter-repo``) and ``gitleaks``.
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 import subprocess
 import sys
@@ -54,6 +58,23 @@ def git(*args: str, cwd: Path, check: bool = True) -> str:
     if check and r.returncode != 0:
         raise PublishError(f"git {' '.join(args)}: {r.stderr.strip()[:300]}")
     return r.stdout
+
+
+NOREPLY_RE = re.compile(r"^\d+\+[A-Za-z0-9-]+@users\.noreply\.github\.com$")
+GH_NOREPLY_JQ = '"\\(.id)+\\(.login)@users.noreply.github.com"'
+
+
+def noreply_from_gh() -> str:
+    """The signed-in account's GitHub noreply address, read from ``gh api user``."""
+    if shutil.which("gh") is None:
+        raise PublishError("gh is not installed or not logged in (brew install gh; gh auth login)")
+    r = subprocess.run(["gh", "api", "user", "--jq", GH_NOREPLY_JQ], capture_output=True,
+                       text=True)
+    addr = r.stdout.strip()
+    if r.returncode != 0 or not NOREPLY_RE.match(addr):
+        raise PublishError("gh api user did not return an <id>+<login>@users.noreply.github.com "
+                           "address; nothing was rewritten")
+    return addr
 
 
 def have_filter_repo() -> bool:
@@ -120,13 +141,26 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--source", type=Path, default=ROOT, help="repository to publish from")
     ap.add_argument("--branch", default=PUBLIC_BRANCH,
                     help="source branch that becomes public main (default main)")
+    ap.add_argument("--noreply-from-gh", action="store_true",
+                    help="rewrite every author and committer e-mail to the noreply address that "
+                         "`gh api user` reports, and set it as user.email of the result")
     ap.add_argument("--noreply-email", metavar="ADDRESS",
-                    help="rewrite every author and committer e-mail to this address "
-                         "(off by default; the human decides)")
+                    help="same, with the address given (must be an @users.noreply.github.com one)")
     ap.add_argument("--push", metavar="URL", help="push the result to this URL; omit for a dry run")
     ap.add_argument("--keep", action="store_true", help="keep the temporary directory and print it")
     args = ap.parse_args(argv)
 
+    if args.noreply_from_gh and args.noreply_email:
+        print("use one of --noreply-from-gh and --noreply-email", file=sys.stderr)
+        return 2
+    try:
+        if args.noreply_from_gh:
+            args.noreply_email = noreply_from_gh()
+        elif args.noreply_email and not NOREPLY_RE.match(args.noreply_email):
+            raise PublishError("--noreply-email is not an @users.noreply.github.com address")
+    except PublishError as e:
+        print(f"FAIL: {e}", file=sys.stderr)
+        return 1
     if not have_filter_repo():
         print("git-filter-repo is not installed: brew install git-filter-repo", file=sys.stderr)
         return 2
@@ -138,6 +172,8 @@ def main(argv: list[str] | None = None) -> int:
         before = history_paths(work)
         had = removed_in(before)
         filter_history(work, args.noreply_email)
+        if args.noreply_email:
+            git("config", "user.email", args.noreply_email, cwd=work)
         after = history_paths(work)
         left = removed_in(after)
         clean, leak_line = gitleaks_history(work)
@@ -151,7 +187,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"kept refs      : {', '.join(refs)}")
         print(f"commits        : {n_commits}")
         print(f"author e-mails : {len(addrs)} distinct"
-              + (" (all rewritten)" if args.noreply_email else " (unchanged)"))
+              + (" (all rewritten to the noreply address; set as user.email of the result)"
+                 if args.noreply_email else " (unchanged)"))
+        if args.noreply_email and addrs != {args.noreply_email}:
+            print("FAIL: an author or committer address was not rewritten", file=sys.stderr)
+            return 1
         print(f"gitleaks       : {'clean' if clean else 'FINDINGS'} {leak_line}")
         if left:
             print(f"FAIL: removed paths survive in history: {left[:5]}", file=sys.stderr)
