@@ -40,7 +40,7 @@ DEFAULT_OUT_ROOT = ROOT / "results" / "hardware"
 NOISY_DIR = ROOT / "results" / "noisy"
 STATIC_CONFIGS = ("raw", "dd", "dd_twirl")
 MAX_TOTAL_SECONDS = 300.0
-# Human decision (DECISIONS.md): N=21 stays off the hardware batch whatever its noisy result is.
+# Human decision: N=21 stays off the hardware batch whatever its noisy result is.
 DEFAULT_EXCLUDE = {
     "shor21_beauregard": "human decision: N=21 stays off the hardware batch "
     "(excluded explicitly, not by the signal rule)"

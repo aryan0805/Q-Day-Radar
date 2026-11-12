@@ -34,8 +34,8 @@ def _gate_names(qasm: str) -> set[str]:
 def qualtran_counts_from_cost(cost, logical_qubits: int) -> dict:
     """Map a Qualtran GateCounts (QECGatesCost) to our counts.
 
-    Rule (DECISIONS, 2026-11-08): toffoli = and_bloq + cswap + raw toffoli, so each And and each
-    CSwap is one Toffoli-equivalent. And-dagger is Clifford + measurement and adds 0.
+    Rule (fixed 2026-11-08, before the numbers were used): toffoli = and_bloq + cswap + raw
+    toffoli, so each And and each CSwap is one Toffoli-equivalent. And-dagger is Clifford + measurement and adds 0.
     t = t, rotations = rotation (as printed).
     """
     return {

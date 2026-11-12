@@ -1,5 +1,5 @@
 /*
- * Design tokens (docs/PHASE5-DESIGN.md §2, corrected by DECISIONS 2026-11-08 · P5 phase-start).
+ * Design tokens (Phase 5 design spec, section 2, with the 2026-11-08 corrections: `--sim-text` added).
  *
  * Every token is declared twice: a plain #rrggbb hex fallback (read by the gate's contrast check)
  * and, inside @supports, its OKLCH form. The tweak panel (dev only) rewrites these variables.

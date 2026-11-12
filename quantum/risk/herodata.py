@@ -103,7 +103,7 @@ def _resolution(counts: dict[str, int], n_count: int, a: int, big_n: int) -> dic
 
 
 def _notes(kind: str, a: int, big_n: int, backend: str) -> dict[str, str]:
-    """Caption text for the hero, built from the data it describes (DECISIONS P5, task 6)."""
+    """Caption text for the hero, built from the data it describes (Phase 5 hero)."""
     return {
         "compiled": (
             f"This circuit is labelled {kind}: the multiplications for a = {a} mod {big_n} are "

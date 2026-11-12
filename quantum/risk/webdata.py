@@ -214,7 +214,7 @@ HEADLINE_CONFIG = "raw"
 
 def _headline_hardware(hw: list[dict]) -> dict | None:
     """The raw configuration is the headline: it was fixed before the data. The error-suppression
-    settings are shown beside it as exploratory (DECISIONS P2: that rule came after the data)."""
+    settings are shown beside it as exploratory (that rule was set after the data was seen)."""
     raw = [h for h in hw if h["config"] == HEADLINE_CONFIG]
     if not raw:
         return None
