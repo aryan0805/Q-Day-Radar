@@ -408,7 +408,9 @@ Server-rendered HTML (the hero text is a lazy chunk, so it is not here):
 - Secrets: the build scans `out/` and the data for the values in the local `.env` and for secret
   patterns, and the tests plant a canary in a temp copy (script, binary font, bare pattern) and
   require it to be found. A scan that scanned nothing now fails (found by these tests). `.env` was
-  never committed on any branch; gitleaks runs as a pre-commit hook and in an Action.
+  never committed on any branch; gitleaks runs as a pre-commit hook and in an Action. In a clean
+  clone with no `.env` there is no real value to scan for; the test then only checks that no
+  `.env` is tracked, and the planted-canary tests prove the scanner works.
 - `security.txt` Contact scheme: `{contact_scheme}:`. It is the human's own address, published on
   purpose (a decision by the human); RFC 9116 needs a reachable contact.
 - Not measured here: the live checks on the deployed site (headers, Observatory, SSL Labs) are the

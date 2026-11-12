@@ -4,7 +4,7 @@ Reviewer, build `0586995`. Written by `benchmarks/phase5-build-audit.py`: the pr
 figure below is computed from files, benchmark output or live Chromium runs when the script runs.
 Labels: **measured** (a number read from a run), **extrapolated** (a trend carried forward),
 **literature** (a published figure), **design choice** (a number someone picked), **fictional**
-(the demo company). 452 tests in `tests/phase5` (table in section 9).
+(the demo company). 454 tests in `tests/phase5` (table in section 9).
 
 ## 1. Provenance: every figure traces to a data file
 
@@ -83,7 +83,9 @@ Server-rendered HTML (the hero text is a lazy chunk, so it is not here):
 - Secrets: the build scans `out/` and the data for the values in the local `.env` and for secret
   patterns, and the tests plant a canary in a temp copy (script, binary font, bare pattern) and
   require it to be found. A scan that scanned nothing now fails (found by these tests). `.env` was
-  never committed on any branch; gitleaks runs as a pre-commit hook and in an Action.
+  never committed on any branch; gitleaks runs as a pre-commit hook and in an Action. In a clean
+  clone with no `.env` there is no real value to scan for; the test then only checks that no
+  `.env` is tracked, and the planted-canary tests prove the scanner works.
 - `security.txt` Contact scheme: `mailto:`. It is the human's own address, published on
   purpose (a decision by the human); RFC 9116 needs a reachable contact.
 - Not measured here: the live checks on the deployed site (headers, Observatory, SSL Labs) are the
@@ -227,7 +229,7 @@ job's measured counts. Limits stated on screen or here:
 | test_scenario_plain_sentences.py | 21 |
 | test_scenario_switch.py | 15 |
 | test_security_headers_csp.py | 18 |
-| test_security_source_hygiene.py | 19 |
+| test_security_source_hygiene.py | 21 |
 | test_security_static_output.py | 25 |
 | test_smoke_routes.py | 23 |
 | test_tweak_panel_browser.py | 8 |
