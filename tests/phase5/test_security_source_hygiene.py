@@ -110,13 +110,46 @@ def test_security_python_scanner_finds_the_same_planted_value(
     assert hit.file.endswith("x.json") and FAKE not in repr(hit)
 
 
+def real_env_problems(env: Path, trees: list[Path]) -> list[str]:
+    """Problems with the real-secret scan for one `.env` path and the trees that must not hold it.
+
+    The real values are read in memory only and never printed (a hit reports an index).
+    * `.env` exists: it must hold at least one value of 8+ characters (scanning for nothing proves
+      nothing) and no tree may contain any value.
+    * `.env` does not exist (a clean clone has none): there is no real secret that could have
+      leaked, so there is nothing to scan for; the scanner itself is proven by the planted-canary
+      tests above and below, and the file must not be tracked by git.
+    """
+    if not env.exists():
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", ".env"], cwd=REPO, capture_output=True, text=True
+        ).stdout.strip()
+        return [".env is tracked by git"] if tracked else []
+    values = read_dotenv_values(env)
+    if not values:
+        return ["no value of 8+ characters in the .env: nothing to scan for"]
+    hits = [h for tree in trees for h in scan_tree(tree, values)]
+    return [f"{len(hits)} hit(s); value indexes {sorted({h.detail for h in hits})}"] if hits else []
+
+
 def test_security_real_env_values_are_absent_from_out_and_the_data(out_dir: Path) -> None:
-    # The real values are read in memory only and never printed (a hit reports an index).
-    values = read_dotenv_values(REPO / ".env")
-    # scanning for nothing proves nothing: with no loadable value this check must not pass
-    assert values, "no value of 8+ characters in the root .env: nothing to scan for"
-    hits = scan_tree(out_dir, values) + scan_tree(DATA_DIR, values)
-    assert hits == [], f"{len(hits)} hit(s); value indexes {sorted({h.detail for h in hits})}"
+    assert real_env_problems(REPO / ".env", [out_dir, DATA_DIR]) == []
+
+
+def test_security_real_env_scan_defects_are_reported(out_dir: Path, tmp_path: Path) -> None:
+    """Planted: an .env that holds no usable value, and an .env value present in a scanned tree."""
+    empty = tmp_path / "empty.env"
+    empty.write_text("# nothing\nSHORT=abc\n", encoding="utf-8")
+    assert real_env_problems(empty, [out_dir]), "an .env with no loadable value passed"
+    leaky = tmp_path / "leaky.env"
+    leaky.write_text(f"K={FAKE}\n", encoding="utf-8")
+    tree = tmp_path / "tree"
+    tree.mkdir()
+    (tree / "a.txt").write_text(f"x {FAKE} y", encoding="utf-8")
+    problems = real_env_problems(leaky, [tree])
+    assert problems and FAKE not in " ".join(problems), "a leaked value was missed or printed"
+    assert real_env_problems(leaky, [out_dir]) == [], "a clean tree was flagged"
+    assert real_env_problems(tmp_path / "no-such.env", [out_dir]) == []
 
 
 # -------------------------------------------------------------------- env in the web source
@@ -219,11 +252,38 @@ def test_security_the_committed_env_template_holds_only_placeholders() -> None:
     assert read_dotenv_values(REPO / ".env.example") == []
 
 
-def test_security_the_pre_commit_hook_runs_gitleaks_and_is_wired_up() -> None:
+def hook_wiring(repo: Path) -> str:
+    """'enabled', 'not enabled' or 'wrong: <value>' for this clone's core.hooksPath.
+
+    The setting is per-clone git config, so a fresh clone does not carry it; the hook file says how
+    to enable it. The phase gate checks 'enabled' in the development repository.
+    """
+    r = subprocess.run(
+        ["git", "config", "--get", "core.hooksPath"], cwd=repo, capture_output=True, text=True
+    )
+    value = r.stdout.strip()
+    if r.returncode != 0 or not value:
+        return "not enabled"
+    return "enabled" if value == ".githooks" else f"wrong: {value}"
+
+
+def test_security_the_pre_commit_hook_runs_gitleaks_and_says_how_to_enable_it() -> None:
     hook = REPO / ".githooks" / "pre-commit"
-    assert hook.is_file() and "gitleaks" in hook.read_text()
+    text = hook.read_text()
+    assert hook.is_file() and "gitleaks" in text
     assert hook.stat().st_mode & 0o111, "hook is not executable"
-    assert _git("config", "--get", "core.hooksPath") == ".githooks"
+    assert "git config core.hooksPath .githooks" in text, "the hook does not say how to enable it"
+    assert hook_wiring(REPO) in ("enabled", "not enabled"), hook_wiring(REPO)
+
+
+def test_security_hook_wiring_defects_are_reported(tmp_path: Path) -> None:
+    repo = tmp_path / "r"
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    assert hook_wiring(repo) == "not enabled"
+    subprocess.run(["git", "config", "core.hooksPath", ".githooks"], cwd=repo, check=True)
+    assert hook_wiring(repo) == "enabled"
+    subprocess.run(["git", "config", "core.hooksPath", "/dev/null"], cwd=repo, check=True)
+    assert hook_wiring(repo).startswith("wrong"), "a hooks path that disables the hook passed"
 
 
 def test_security_a_github_action_runs_gitleaks_on_push() -> None:
