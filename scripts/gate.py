@@ -1942,9 +1942,9 @@ def p5_strict(expr: str) -> Callable[[], tuple[bool, str]]:
 P6_PUBLIC_REPO = "aryan0805/q-day-radar"
 P6_REMOVED = [".claude", "docs", "CLAUDE.md", ".coord", "setup/claude", "scripts/coord.py",
               "scripts/team.sh", "scripts/install-claude-config.sh"]
-# Commit author e-mail in the public history: None until the human decides; True = every author
-# and committer address must be a GitHub noreply address.
-P6_NOREPLY_ONLY: bool | None = None
+# Commit author e-mail in the public history (human, 2026-11-11): every author and committer
+# address is rewritten to the account's own GitHub noreply address, read from `gh api user`.
+P6_NOREPLY_ONLY: bool | None = True
 P6_READMES = ["README.md", "quantum/README.md", "web/README.md", "tests/README.md",
               "results/README.md", "scripts/README.md", "benchmarks/README.md"]
 # A kept file that names a removed file is a dead pointer in the public repo.
@@ -2183,12 +2183,17 @@ def p6_public_emails() -> tuple[bool, str]:
         return False, "human decision pending: keep commit e-mails or rewrite to noreply"
     mails = set(_p6_git("log", "--all", "--format=%ae%n%ce", cwd=_p6_clone() / "mirror.git")
                 .split())
-    other = [m for m in mails if not m.endswith("users.noreply.github.com")
-             and m != "noreply@github.com"]
     if not P6_NOREPLY_ONLY:
         return True, f"human kept commit e-mails as they are ({len(mails)} distinct)"
-    return not other, f"{len(other)} non-noreply author/committer addresses" if other else \
-        f"{len(mails)} distinct addresses, all GitHub noreply"
+    mine = subprocess.run(["gh", "api", "user", "--jq",
+                           '"\\(.id)+\\(.login)@users.noreply.github.com"'],
+                          capture_output=True, text=True).stdout.strip()
+    if not mine.endswith("@users.noreply.github.com"):
+        return False, "could not read the account's noreply address with gh api user"
+    other = [m for m in mails if m not in (mine, "noreply@github.com")]  # web merges: GitHub
+    return not other, (f"{len(other)} author/committer addresses other than the account's "
+                       "noreply" if other else
+                       f"{len(mails)} distinct addresses, all the account's noreply (or GitHub)")
 
 
 def _p6_clean_env() -> dict:
