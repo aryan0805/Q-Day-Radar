@@ -2435,6 +2435,10 @@ PHASE_CHECKS: dict[int, list[Check]] = {
         Py("[6a] .env never committed", p5_env_never_committed),
         Cmd("[6a] gitleaks: no secret in git history",
             ["gitleaks", "git", "--redact", "--no-banner", "."]),
+        # The phase 5 test now accepts an unwired hook (a fresh clone has no core.hooksPath),
+        # so the dev repo's wiring is checked here.
+        Py("[6a] dev repo: gitleaks pre-commit hook wired up, GitHub Action present",
+           p5_hooks_and_ci),
         Cmd("[6a] no QPU used since phase 5",
             ["git", "diff", "--quiet", "phase-5-done", "--", "results/budget.json",
              "results/hardware"]),
