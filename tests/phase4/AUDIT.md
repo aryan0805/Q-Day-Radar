@@ -165,7 +165,7 @@ Toffoli count: `google2026_logical_qubits_ecc256` (1200, upper), `google2026_tof
 | `g2025_physical_error_rate` | 0.001 | Abstract: 'a uniform gate error rate of 0.1%' |
 
 Tolerance 1.5x was fixed before the build; the parameters were posted as `[INTERFACE]` at 2026-11-08 15:24, lead's arithmetic
-followed at 2026-11-08 15:25, and the first calibration rows were reported at 2026-11-08 15:27 (times from `.coord/LOG.md`).
+followed at 2026-11-08 15:25, and the first calibration rows were reported at 2026-11-08 15:27 (times copied from the dev log into `tests/data/private_facts.json`).
 
 | check | input | v2 physical qubits | paper | ratio | tolerance | within |
 |---|---|---|---|---|---|---|

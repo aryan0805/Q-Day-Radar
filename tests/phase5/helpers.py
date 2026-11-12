@@ -1,6 +1,6 @@
 """Pure-Python helpers for the Phase 5 tests. Owned by reviewer. No browser, no network.
 
-Thresholds come from the "Falsifying checks" table in .coord/STATE.md (fixed before BUILD):
+Thresholds come from the phase brief's "Falsifying checks" table (fixed before BUILD):
   * provenance: 0 untraced figures, 0 mismatches beyond HALF THE LAST DIGIT SHOWN.
   * secret hygiene: 0 hits, and a planted canary in a temp copy must be caught.
 These helpers implement the comparison rules once so the tests only decide *what* to compare.

@@ -64,14 +64,31 @@ def test_crosscheck_P005_compared_over_several_bases_not_order_two_only(rows):
         assert any(ref.order(a, n) > 2 for n, a in bases), f"{kind}: every base has order <= 2"
 
 
-def test_crosscheck_every_ratio_over_3x_is_explained_in_decisions(rows):
-    text = ref.DECISIONS.read_text()
+def _unexplained_over_limit(rows, explained):
     over = []
     for r in rows:
         for key in ("ratio_logical_qubits", "ratio_toffoli_equiv"):
-            if r[key] > LIMIT and r["case"] not in text:
+            if r[key] > LIMIT and r["case"] not in explained:
                 over.append(f"{r['case']} {key}={r[key]:.3g}")
-    assert not over, "over 3x with no DECISIONS.md entry: " + "; ".join(over)
+    return over
+
+
+def test_crosscheck_every_ratio_over_3x_has_a_written_explanation(rows):
+    explained = set(ref.private_facts()["explained_crosscheck_case_ids"])
+    over = _unexplained_over_limit(rows, explained)
+    assert not over, "over 3x with no written explanation: " + "; ".join(over)
+
+
+def test_crosscheck_explanation_check_catches_an_unexplained_case(rows):
+    """Planted defect: drop one over-3x case from the explained set and the check must name it."""
+    explained = set(ref.private_facts()["explained_crosscheck_case_ids"])
+    first_over = next(
+        r["case"]
+        for r in rows
+        if r["ratio_logical_qubits"] > LIMIT or r["ratio_toffoli_equiv"] > LIMIT
+    )
+    over = _unexplained_over_limit(rows, explained - {first_over})
+    assert any(first_over in o for o in over)
 
 
 def test_crosscheck_ids_unique(rows):
@@ -80,7 +97,9 @@ def test_crosscheck_ids_unique(rows):
 
 
 def test_crosscheck_same_circuit_cases_gave_both_tools_the_identical_non_dynamic_circuit(rows):
-    """DECISIONS caveat B: one non-dynamic form feeds QDK and Qualtran; the hash proves it.
+    """Caveat B (written down before the phase closed): one non-dynamic form feeds both tools.
+
+    The hash proves it.
 
     Needs `circuit_sha256` (sha256 of the QASM both tools were given) and `circuit_form` in both
     per-case files of every same_circuit row.

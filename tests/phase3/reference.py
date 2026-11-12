@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 EST = ROOT / "results" / "estimate"
 LIT = ROOT / "quantum" / "estimate" / "literature.yaml"
 FACTCHECK = ROOT / "tests" / "phase3" / "factcheck.json"
-DECISIONS = ROOT / "docs" / "DECISIONS.md"
+FACTS = ROOT / "tests" / "data" / "private_facts.json"
 
 REGISTRY = {
     "shor15_textbook": "compiled",
@@ -35,6 +35,11 @@ def load_json(path: Path) -> dict:
     if not path.exists():
         pytest.fail(f"{path.relative_to(ROOT)} does not exist yet (promised by the phase brief)")
     return json.loads(path.read_text())
+
+
+def private_facts() -> dict:
+    """Facts copied once from the dev repo's notes (tests/data/copy_private_facts.py)."""
+    return load_json(FACTS)
 
 
 def cases(tool: str) -> dict[str, dict]:

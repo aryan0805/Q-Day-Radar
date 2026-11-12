@@ -1,6 +1,6 @@
 """Security: the headers the build hands to Vercel, and the hash-based CSP (task 7, brief table).
 
-Thresholds, fixed before BUILD (STATE.md):
+Thresholds, fixed in the phase brief before BUILD:
   * headers: the six exact values below, on every path (route src "/(.*)").
   * CSP: every inline script on the 4 pages + 404 hashes into script-src (0 misses); no
     'unsafe-inline' / 'unsafe-eval' / wildcard / http: source in script-src.

@@ -70,8 +70,8 @@ def facts() -> dict:
     f["sf_max"] = g(max(r["ratio_toffoli_equiv"] for r in sf))
     f["sf_q_min"] = g(min(r["ratio_logical_qubits"] for r in sf))
     f["sf_q_max"] = g(max(r["ratio_logical_qubits"] for r in sf))
-    text = ref.DECISIONS.read_text()
-    f["n_sf_in_decisions"] = sum(1 for r in sf if r["case"] in text)
+    explained = set(ref.private_facts()["explained_crosscheck_case_ids"])
+    f["n_sf_explained"] = sum(1 for r in sf if r["case"] in explained)
     qdk = ref.cases("qdk")
     k = next(iter(qdk.values()))["rotation_t_cost"]
     f["rot_cost"], f["eps"] = g(k), g(next(iter(qdk.values()))["rotation_eps"])
@@ -216,7 +216,7 @@ is absorbed into it. Direction depends on the circuit; it was measured, not assu
 
 {n_sf} pairs (our Fourier-adder Beauregard on QDK vs Qualtran's Toffoli-based `ModExp`, same N and a). The toffoli_equiv
 ratio runs from {sf_min} to {sf_max} and grows with n; the logical-qubit ratio only from {sf_q_min} to {sf_q_max}.
-{n_sf_in_decisions} of {n_sf} case ids are explained in `docs/DECISIONS.md`.
+{n_sf_explained} of {n_sf} case ids have a written explanation (copied into `tests/data/private_facts.json`).
 
 The measured reason: rotations priced at rotation_t_cost = {rot_cost} T (eps = {eps}) are {rot_share_min} to {rot_share_max}
 of QDK's Beauregard toffoli_equiv. So the gap is mostly the price assigned to arbitrary-angle rotations, not a disagreement

@@ -34,7 +34,7 @@ is absorbed into it. Direction depends on the circuit; it was measured, not assu
 
 44 pairs (our Fourier-adder Beauregard on QDK vs Qualtran's Toffoli-based `ModExp`, same N and a). The toffoli_equiv
 ratio runs from 28.26 to 316.1 and grows with n; the logical-qubit ratio only from 1.091 to 1.355.
-44 of 44 case ids are explained in `docs/DECISIONS.md`.
+44 of 44 case ids have a written explanation (copied into `tests/data/private_facts.json`).
 
 The measured reason: rotations priced at rotation_t_cost = 99.66 T (eps = 1e-10) are 98.8% to 99.8%
 of QDK's Beauregard toffoli_equiv. So the gap is mostly the price assigned to arbitrary-angle rotations, not a disagreement

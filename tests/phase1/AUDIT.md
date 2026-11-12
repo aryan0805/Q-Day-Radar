@@ -27,8 +27,8 @@ be misled in any other way.
 | F1 textbook x13 block | **closed** in 9891f8f | `shor_textbook.py` swap order fixed; `test_shor_textbook_blocks_multiply_by_7_to_the_power_mod_15` passes for powers 1, 2, 4, 8 |
 | F2 one-sided success check | **closed** (P004) | two-sided `abs(success - theory) <= 0.02` in my metrics tests; gate change reported by lead (I did not read `gate.py`) |
 | F3 dephasing claim | **closed** (my correction) | P003 CORRECTION, dephasing tests, `chance_baseline` verified for all 7 circuits |
-| F4 cost spread over `a` | **closed** (P005) | `benchmarks/phase1-spread-over-a.*`; rules now in PLAN.md Phase 3 |
-| F5 Grover cost vs AES | **open, carried to Phase 3** | rule recorded in PLAN.md (`peel_last_sbox=False` for AES projections); nothing to fix in Phase 1 code |
+| F4 cost spread over `a` | **closed** (P005) | `benchmarks/phase1-spread-over-a.*`; rules now in the project plan, Phase 3 |
+| F5 Grover cost vs AES | **open, carried to Phase 3** | rule recorded in the project plan (`peel_last_sbox=False` for AES projections); nothing to fix in Phase 1 code |
 | F6 pair-count guard | **closed** | `test_grover_registry_plaintexts_give_m_equal_one_for_every_key`; plan A (2 pairs for k <= 4) passes it |
 | F7 `compiled_reason` | **closed** in 9891f8f | metadata field, test added |
 | F8 registry/builder agreement | **closed** in 9891f8f | `registry._check_metadata`, rejection tests added |
@@ -80,7 +80,7 @@ at N=15 (coherent 0.512, theory 0.500) and 0.075 at N=21 (coherent 0.331); depha
 final H changes nothing (0.491 / 0.329), which is the placement that produced "0.5 either way".
 Chance baselines (every outcome equally likely), verified: 0.1719 (N=15), 0.0781 (N=21), 0.25 /
 0.125 / 0.0625 / 0.0312 (Grover k=2..5). Fixed in P003 (CORRECTION) and tests added. Lead's note in
-PLAN.md that N=15 a=7 "scores 0.50 even when dephased" should be corrected. Success values
+the project plan that N=15 a=7 "scores 0.50 even when dephased" should be corrected. Success values
 should be shown next to their chance baseline. -> **P004**. Owner: lead (docs), builder (field).
 
 ### F4. CONCERN: generic cost still varies with the base · verified
@@ -96,7 +96,7 @@ most expensive N=15 base, 5446, but its median is 5368, mid-pack):
   (rank 4 of 11, the cheapest of the r >= 3 bases).
 The `generic` label stands (the structure, 28 / 45 cswaps, is the same for every base). But a
 single `a` is not "the cost of N". Publish the spread, and do not scale Phase 3 resource numbers
-from an order-2 base. -> **P005** (accepted; rules are in PLAN.md Phase 3).
+from an order-2 base. -> **P005** (accepted; rules are in the project plan, Phase 3).
 
 ### F5. CONCERN: Grover costs do not carry over to AES · reported, reasoning checked in code
 `peel_last_sbox=True` (`grover_present.py:186-187`) works only because the toy SPN has no key

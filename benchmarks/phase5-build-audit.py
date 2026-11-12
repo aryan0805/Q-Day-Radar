@@ -410,7 +410,7 @@ Server-rendered HTML (the hero text is a lazy chunk, so it is not here):
   require it to be found. A scan that scanned nothing now fails (found by these tests). `.env` was
   never committed on any branch; gitleaks runs as a pre-commit hook and in an Action.
 - `security.txt` Contact scheme: `{contact_scheme}:`. It is the human's own address, published on
-  purpose (DECISIONS); RFC 9116 needs a reachable contact.
+  purpose (a decision by the human); RFC 9116 needs a reachable contact.
 - Not measured here: the live checks on the deployed site (headers, Observatory, SSL Labs) are the
   lead's `[live]` gate checks. Preview protection is checked by the gate with the bypass secret.
 
@@ -476,7 +476,7 @@ Home-page JavaScript, both ways, gzip -9 (the budget is {budget} fetched before 
   The scorer is the gate's own; a mutation test shows it fails hard prose, one overlong sentence, too
   little prose, a missing technical layer and a missing page.
 - The hero's plain text says "simplified demo version" for the compiled circuit; the exact term and
-  its explanation are in the technical layer and the glossary (DECISIONS, tweak round 1). `hero.json`
+  its explanation are in the technical layer and the glossary (the plain-language tweak round). `hero.json`
   says `compiled`, checked against the circuit registry.
 
 ## 7. The Lab verdict rule

@@ -1,9 +1,9 @@
 """Independent reference for the Phase 4 risk model (nothing here imports from quantum/).
 
-The model is fixed in the phase brief (.coord/STATE.md) so that it can be recomputed. Everything
-below is written from that text and from textbook statistics, so builder's code and result files
-are checked against something builder did not produce. Loaders FAIL (never skip) when a file the
-phase promises is missing.
+The model was fixed in the phase brief, before any code was written, so that it can be recomputed.
+Everything below is written from that text and from textbook statistics, so builder's
+code and result files are checked against something builder did not produce. Loaders FAIL
+(never skip) when a file the phase promises is missing.
 
 Falsifying checks (listed first, as the Phase 3 retro asks):
 - timeline fit: known-answer synthetic series, a hand-computed regression, a Student-t table value.
@@ -26,7 +26,6 @@ WEB_DATA = ROOT / "web" / "public" / "data"
 EST = ROOT / "results" / "estimate"
 LIT = ROOT / "quantum" / "estimate" / "literature.yaml"
 FACTCHECK = ROOT / "tests" / "phase3" / "factcheck.json"
-DECISIONS = ROOT / "docs" / "DECISIONS.md"
 DEMO_CBOM = RISK / "data" / "demo_cbom.cdx.json"
 
 SCENARIOS = ("optimistic", "median", "pessimistic")

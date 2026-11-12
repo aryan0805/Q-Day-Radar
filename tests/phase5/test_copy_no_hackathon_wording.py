@@ -2,7 +2,7 @@
 
 Q-Day Radar is a personal project that started at Qiskit Fall Fest 2026; it is not an entry. So the
 words a competition entry would use must not appear in what a visitor reads or in the source behind
-it. "Qiskit Fall Fest" itself is allowed (CLAUDE.md states the project's origin that way). The scan
+it. "Qiskit Fall Fest" itself is allowed (the project states its origin that way). The scan
 covers README.md and web/ except dependencies, build output and the lockfile. A mutation test plants
 each banned word in a temp tree and checks the scanner finds it.
 """

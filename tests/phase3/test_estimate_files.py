@@ -187,7 +187,7 @@ def test_estimate_no_qpu_used_in_phase_3():
         assert r.returncode == 0, f"{path} changed since phase-2-done"
 
 
-# ---- DECISIONS 2026-11-08 caveat C: Qualtran make_for_shor sizes x one bit short -----------
+# ---- decision of 2026-11-08, caveat C: Qualtran make_for_shor sizes x one bit short -----------
 JUST_ABOVE_POWER_OF_TWO = (2**60 + 33, 2**126 + 15, 2**2046 + 9)
 
 

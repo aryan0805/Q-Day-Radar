@@ -19,7 +19,7 @@ import pytest
 
 from tests.phase4 import reference as ref
 
-# Pre-registered values (DECISIONS.md, builder [INTERFACE] accepted unchanged, 2026-11-08):
+# Pre-registered values (the builder's interface note, accepted unchanged on 2026-11-08):
 REGISTERED = {
     "g2025_code_distance": 25,
     "g2025_cold_storage_physical_per_logical": 430,
@@ -162,19 +162,44 @@ def test_physical_v2_every_parameter_has_a_locator_and_is_a_verified_gidney_entr
     assert spec["tolerance_factor"] == TOLERANCE
 
 
-def test_physical_v2_was_pre_registered_before_its_first_calibration_in_the_log():
-    """LOG.md order: builder [INTERFACE] for physical v2, then lead's DECISION computing the
-    ratios, then builder's READY_FOR_TEST that carries the calibration rows."""
-    lines = (ref.ROOT / ".coord" / "LOG.md").read_text().splitlines()
+def _preregistration_order_problem(events: dict) -> str | None:
+    """None when the events happened in the required order, else what is wrong."""
+    order = ("interface", "decision", "first_calibration")
+    missing = [k for k in order if k not in events]
+    if missing:
+        return f"missing events {missing}"
+    stamps = [events[k]["time"] for k in order]  # "YYYY-MM-DD HH:MM" sorts as time
+    if not stamps[0] < stamps[1] <= stamps[2]:
+        return f"calibration reported before the parameters were pre-registered: {stamps}"
+    return None
 
-    def first(pred):
-        return next((i for i, ln in enumerate(lines) if pred(ln)), None)
 
-    iface = first(lambda ln: "[INTERFACE]" in ln and "physical v2" in ln.lower())
-    ready = first(lambda ln: "[READY_FOR_TEST]" in ln and "physical_v2" in ln)
-    assert iface is not None, "no [INTERFACE] line for physical v2 in .coord/LOG.md"
-    assert ready is not None, "no READY_FOR_TEST line mentioning physical_v2"
-    assert iface < ready, "the calibration was reported before the parameters were pre-registered"
+def test_physical_v2_was_pre_registered_before_its_first_calibration():
+    """Event order (copied once from the dev log): the builder's interface note for physical v2,
+    then the lead's decision computing the ratios, then the builder's report carrying the first
+    calibration rows. Reading the copy, not the log: the log is not in the public repo."""
+    events = ref.load_json(ref.ROOT / "tests" / "data" / "private_facts.json")[
+        "preregistration_events"
+    ]
+    assert _preregistration_order_problem(events) is None, _preregistration_order_problem(events)
+    assert [events[k]["type"] for k in ("interface", "decision", "first_calibration")] == [
+        "INTERFACE",
+        "DECISION",
+        "READY_FOR_TEST",
+    ]
+
+
+def test_physical_v2_order_check_catches_a_calibration_reported_first():
+    """Planted defect: swap the first and last times and the check must fail."""
+    events = ref.load_json(ref.ROOT / "tests" / "data" / "private_facts.json")[
+        "preregistration_events"
+    ]
+    bad = {k: dict(v) for k, v in events.items()}
+    bad["interface"]["time"], bad["first_calibration"]["time"] = (
+        events["first_calibration"]["time"],
+        events["interface"]["time"],
+    )
+    assert _preregistration_order_problem(bad) is not None
 
 
 # builder's [INTERFACE] (15:24, forwarded verbatim by lead), item -> literature id the code reads:

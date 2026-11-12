@@ -1,4 +1,4 @@
-"""Provenance of the Lab verdict (lead's rule, DECISIONS 2026-11-08 P5).
+"""Provenance of the Lab verdict (the lead's rule of 2026-11-08, phase 5).
 
 Rule: the headline verdict for a circuit is the RAW configuration's, because the raw configuration
 was fixed before the data; "above random guessing" only if the raw 95% Wilson lower bound is above

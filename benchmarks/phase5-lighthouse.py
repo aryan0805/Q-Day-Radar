@@ -43,7 +43,7 @@ def _commit(web: Path) -> str:
 
 SCREENS = ("/", "/lab/", "/scaling/", "/inventory/")
 RUNS = 3
-# thresholds from the Phase 5 brief (STATE.md), repeated here only to print pass/fail
+# thresholds fixed in the Phase 5 brief before BUILD, repeated here only to print pass/fail
 MIN = {"performance": 0.90, "accessibility": 1.00}
 MAX_LCP_MS, MAX_CLS = 2000.0, 0.05
 

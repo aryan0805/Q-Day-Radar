@@ -338,15 +338,12 @@ def facts() -> dict:
     f["v2_sens"] = table(
         ["max logical qubits used for the cold fraction", "(a) ratio", "(b) ratio"], sens
     )
-    log = (ref.ROOT / ".coord" / "LOG.md").read_text().splitlines()
-
-    def stamp(pred):
-        ln = next((x for x in log if pred(x)), "")
-        return ln[2:18] if ln else "not found"
-
-    f["t_iface"] = stamp(lambda x: "[INTERFACE]" in x and "physical v2" in x.lower())
-    f["t_dec"] = stamp(lambda x: "[DECISION]" in x and "v2 pre-registration accepted" in x)
-    f["t_ready"] = stamp(lambda x: "[READY_FOR_TEST]" in x and "physical_v2" in x)
+    pre = json.loads((ref.ROOT / "tests" / "data" / "private_facts.json").read_text())[
+        "preregistration_events"
+    ]
+    f["t_iface"] = pre["interface"]["time"]
+    f["t_dec"] = pre["decision"]["time"]
+    f["t_ready"] = pre["first_calibration"]["time"]
 
     # ---------------------------------------------------------------- ECC inputs
     esrc = est["targets"]["ecc256"]["logical_source"]
@@ -515,7 +512,7 @@ Toffoli count: {ecc_ids} (upper bounds). {ecc_also}: one work, one source, never
 {v2_params}
 
 Tolerance 1.5x was fixed before the build; the parameters were posted as `[INTERFACE]` at {t_iface}, lead's arithmetic
-followed at {t_dec}, and the first calibration rows were reported at {t_ready} (times from `.coord/LOG.md`).
+followed at {t_dec}, and the first calibration rows were reported at {t_ready} (times copied from the dev log into `tests/data/private_facts.json`).
 
 {v2_table}
 
