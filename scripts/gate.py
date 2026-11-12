@@ -2209,9 +2209,13 @@ def _p6_clean_env() -> dict:
 
 
 def _p6_run(argv: list[str], cwd: Path) -> tuple[bool, str]:
+    import re
+
     r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True, env=_p6_clean_env())
     out = [ln for ln in (r.stdout + r.stderr).splitlines() if ln.strip()]
-    return r.returncode == 0, f"{' '.join(argv[:4])}: " + " | ".join(out[-2:])
+    # pytest ends with warnings; keep its summary line ("N passed ...") in the detail
+    summary = [ln for ln in out if re.search(r"\d+ (passed|failed|errors?)\b", ln)]
+    return r.returncode == 0, f"{' '.join(argv[:4])}: " + " | ".join((summary or out)[-2:])
 
 
 def p6_public_web_build() -> tuple[bool, str]:
