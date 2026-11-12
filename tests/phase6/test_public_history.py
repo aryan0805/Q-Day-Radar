@@ -111,7 +111,16 @@ def refs(repo: Path) -> list[str]:
 
 
 def emails(repo: Path) -> set[str]:
-    return set(git(repo, "log", "--all", "--format=%ae%n%ce").split())
+    """Every identity address in any ref: author, committer and the tagger of annotated tags."""
+    found = set(git(repo, "log", "--all", "--format=%ae%n%ce").split())
+    taggers = git(repo, "for-each-ref", "--format=%(taggeremail)", "refs/tags").split()
+    return found | {t.strip("<>") for t in taggers}
+
+
+def local_email_problem(repo: Path, target: str) -> str | None:
+    """The output repo's own `user.email` (repository-local config) must be the rewrite target."""
+    got = git(repo, "config", "--local", "--get", "user.email", check=False).strip()
+    return None if got == target else f"local user.email is {got!r}, not {target!r}"
 
 
 def public_problems(source: Path, public: Path, *, rewritten_email: str | None = None) -> list[str]:
@@ -149,9 +158,14 @@ def _write(repo: Path, rel: str, data: str | bytes, mode: int | None = None) -> 
         p.chmod(mode)
 
 
-def _commit(repo: Path, msg: str, when: str) -> None:
+OTHER = "other@example.net"  # a second identity, so author and committer can differ
+
+
+def _commit(repo: Path, msg: str, when: str, author: str | None = None) -> None:
     git(repo, "add", "-A")
     env = {**ENV, "GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when}
+    if author:
+        env["GIT_AUTHOR_EMAIL"] = author
     git(repo, "commit", "-q", "-m", msg, env=env)
 
 
@@ -186,7 +200,7 @@ def build_source(base: Path) -> Path:
     shutil.rmtree(repo / ".claude")
     _write(repo, "CLAUDE.md", "removed, edited\n")
     _commit(repo, "c2 second", "2026-01-02T10:00:00+00:00")
-    git(repo, "tag", "phase-2-done")
+    git(repo, "tag", "-a", "-m", "second phase", "phase-2-done")
     git(repo, "tag", "private-note")
     # c3: touches only removed paths (its kept tree equals c2's)
     _write(repo, "docs/NEW.md", "removed\n")
@@ -195,8 +209,16 @@ def build_source(base: Path) -> Path:
     # c4: kept change, a removed folder returns
     _write(repo, "quantum/b.py", "B = 1\n")
     _write(repo, ".claude/again.json", "{}\n")
-    _commit(repo, "c4 fourth", "2026-01-04T10:00:00+00:00")
-    git(repo, "tag", "phase-3-done")
+    _commit(repo, "c4 fourth", "2026-01-04T10:00:00+00:00", author=OTHER)
+    git(
+        repo,
+        "tag",
+        "-a",
+        "-m",
+        "third phase",
+        "phase-3-done",
+        env={**ENV, "GIT_COMMITTER_EMAIL": OTHER},
+    )
     git(repo, "branch", "feature")
     # origin: a bare repo standing in for the private remote
     private = base / "private-origin.git"
@@ -356,20 +378,44 @@ def test_public_push_to_a_new_remote_publishes_exactly_the_kept_refs(scratch, to
     assert public_problems(scratch, remote) == []
 
 
-def test_public_email_rewrite_is_off_by_default_and_applies_to_everyone_when_asked(scratch, tools):
-    default = {"scratch@example.org"}
+def test_public_scratch_has_more_than_one_identity_in_commits_and_tags(scratch):
+    """The input must hold addresses a careless rewrite would miss."""
+    assert emails(scratch) == {"scratch@example.org", OTHER}
+    assert (
+        git(scratch, "log", "--all", "--format=%ae %ce").count(f"{OTHER} scratch@example.org") >= 1
+    )
+    assert OTHER in git(
+        scratch, "for-each-ref", "--format=%(taggeremail)", "refs/tags/phase-3-done"
+    )
+
+
+def test_public_email_rewrite_is_off_by_default(scratch, tools):
     cp = run_make_public(scratch, "--keep")
+    out = kept_dir(cp)
     try:
-        assert emails(kept_dir(cp)) == default
+        assert emails(out) == emails(scratch)
     finally:
-        shutil.rmtree(kept_dir(cp).parent, ignore_errors=True)
+        shutil.rmtree(out.parent, ignore_errors=True)
+
+
+def test_public_email_rewrite_leaves_no_other_address_in_any_ref(scratch, tools):
+    """Human decision: every author and committer address is rewritten to the target (a fake one
+    here), annotated tags included, and the output repo's own user.email is that target."""
     cp = run_make_public(scratch, "--keep", "--noreply-email", NOREPLY)
+    assert cp.returncode == 0, cp.stdout + cp.stderr
+    out = kept_dir(cp)
     try:
-        out = kept_dir(cp)
-        assert emails(out) == {NOREPLY}
+        assert emails(out) == {NOREPLY}, emails(out)
         assert public_problems(scratch, out, rewritten_email=NOREPLY) == []
+        assert local_email_problem(out, NOREPLY) is None
+        # the rewrite touched identities only: same subjects, same trees
+        assert git(out, "log", "--format=%s", "--reverse", "main").splitlines() == [
+            "c1 first",
+            "c2 second",
+            "c4 fourth",
+        ]
     finally:
-        shutil.rmtree(kept_dir(cp).parent, ignore_errors=True)
+        shutil.rmtree(out.parent, ignore_errors=True)
 
 
 def test_public_the_script_never_modifies_the_source_repository(scratch, dry):
@@ -473,6 +519,40 @@ def test_public_defect_an_unrewritten_email_is_reported(scratch, dry, tmp_path):
     assert any("e-mails" in p for p in public_problems(scratch, bad, rewritten_email=NOREPLY))
 
 
+def _rewritten_copy(tmp_path: Path) -> Path:
+    """A correct rewritten output, built without the script (history rewritten by hand)."""
+    out = tmp_path / "rewritten"
+    git(tmp_path, "init", "-q", "-b", "main", str(out))
+    _write(out, "a.txt", "x\n")
+    env = {**ENV, "GIT_AUTHOR_EMAIL": NOREPLY, "GIT_COMMITTER_EMAIL": NOREPLY}
+    git(out, "add", "-A")
+    git(out, "commit", "-q", "-m", "c", env=env)
+    git(out, "config", "--local", "user.email", NOREPLY)
+    return out
+
+
+def test_public_defect_an_author_or_committer_or_tagger_left_behind_is_reported(tmp_path):
+    out = _rewritten_copy(tmp_path)
+    assert emails(out) == {NOREPLY}
+    assert local_email_problem(out, NOREPLY) is None
+    # an author left behind
+    _write(out, "b.txt", "y\n")
+    _commit(out, "b", "2026-02-01T10:00:00+00:00", author=OTHER)
+    assert OTHER in emails(out) and emails(out) != {NOREPLY}
+    # a tagger left behind (annotated tag), on a repo that is otherwise right
+    out2 = _rewritten_copy(tmp_path / "second") if (tmp_path / "second").mkdir() is None else None
+    git(out2, "tag", "-a", "-m", "t", "phase-1-done", env={**ENV, "GIT_COMMITTER_EMAIL": OTHER})
+    assert emails(out2) == {NOREPLY, OTHER}  # the only other identity is the tagger
+
+
+def test_public_defect_a_wrong_or_missing_local_user_email_is_reported(tmp_path):
+    out = _rewritten_copy(tmp_path)
+    git(out, "config", "--local", "user.email", OTHER)
+    assert local_email_problem(out, NOREPLY) is not None
+    git(out, "config", "--local", "--unset", "user.email")
+    assert local_email_problem(out, NOREPLY) is not None
+
+
 def test_public_defect_a_script_that_pushes_during_a_dry_run_is_caught(tools, tmp_path):
     """Plant the defect in a copy of the script: it pushes to the private origin on a dry run."""
     text = MAKE_PUBLIC.read_text()
@@ -517,3 +597,80 @@ def test_public_defect_a_script_that_forgets_one_removed_path_is_caught(
         assert any("removed paths survive" in p for p in problems), (path, problems)
     finally:
         shutil.rmtree(out.parent, ignore_errors=True)
+
+
+# ------------------------------------------------------------------ the address from `gh api user`
+
+FAKE_GH_ADDRESS = "4242+fake-account@users.noreply.github.com"
+
+
+def _fake_gh(bindir: Path, body: str) -> Path:
+    bindir.mkdir(parents=True, exist_ok=True)
+    gh = bindir / "gh"
+    gh.write_text(f"#!/bin/sh\n{body}\n")
+    gh.chmod(0o755)
+    return bindir
+
+
+def _run_with_gh(source: Path, bindir: Path, *extra: str) -> subprocess.CompletedProcess:
+    env = {**ENV, "PATH": f"{bindir}{os.pathsep}{ENV['PATH']}"}
+    return subprocess.run(
+        [sys.executable, str(MAKE_PUBLIC), "--source", str(source), *extra],
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+
+def test_public_noreply_from_gh_rewrites_everything_and_never_prints_the_address(
+    scratch, tools, tmp_path
+):
+    bindir = _fake_gh(tmp_path / "bin", f"echo '{FAKE_GH_ADDRESS}'")
+    cp = _run_with_gh(scratch, bindir, "--keep", "--noreply-from-gh")
+    assert cp.returncode == 0, cp.stdout + cp.stderr
+    out = kept_dir(cp)
+    try:
+        assert emails(out) == {FAKE_GH_ADDRESS}
+        assert local_email_problem(out, FAKE_GH_ADDRESS) is None
+        assert public_problems(scratch, out, rewritten_email=FAKE_GH_ADDRESS) == []
+        assert FAKE_GH_ADDRESS not in cp.stdout + cp.stderr, "the address was printed"
+    finally:
+        shutil.rmtree(out.parent, ignore_errors=True)
+
+
+def test_public_noreply_email_flag_does_not_print_the_address_either(scratch, tools):
+    cp = run_make_public(scratch, "--keep", "--noreply-email", NOREPLY)
+    try:
+        assert cp.returncode == 0, cp.stdout + cp.stderr
+        assert NOREPLY not in cp.stdout + cp.stderr
+    finally:
+        shutil.rmtree(kept_dir(cp).parent, ignore_errors=True)
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "exit 1",  # gh not logged in
+        "echo 'not an address'",  # garbage
+        "echo 'someone@example.org'",  # a real-looking address that is not a noreply one
+        "echo ''",  # empty
+    ],
+    ids=["gh-fails", "garbage", "not-a-noreply-address", "empty"],
+)
+def test_public_noreply_from_gh_refuses_a_bad_answer_and_rewrites_nothing(
+    scratch, tools, tmp_path, body
+):
+    cp = _run_with_gh(scratch, _fake_gh(tmp_path / "bin", body), "--noreply-from-gh", "--keep")
+    assert cp.returncode == 1, cp.stdout + cp.stderr
+    assert "kept:" not in cp.stdout, "an output was produced although the address was refused"
+    assert "dry run" not in cp.stdout
+
+
+def test_public_a_plain_email_address_is_refused_as_a_rewrite_target(scratch, tools):
+    cp = run_make_public(scratch, "--keep", "--noreply-email", "someone@example.org")
+    assert cp.returncode == 1 and "kept:" not in cp.stdout, cp.stdout + cp.stderr
+
+
+def test_public_the_two_rewrite_flags_cannot_be_combined(scratch, tools):
+    cp = run_make_public(scratch, "--noreply-from-gh", "--noreply-email", NOREPLY)
+    assert cp.returncode == 2, cp.stdout + cp.stderr
