@@ -583,6 +583,70 @@ select {
   margin-top: 0.5rem;
 }
 
+/* Phones: nothing in the hero may be wider than the screen (grid tracks default to min-content,
+   so the fact list and long words pushed the whole stage ~17px past the edge). */
+.hero-stage,
+.hero-body {
+  grid-template-columns: minmax(0, 1fr);
+}
+.hero-factors {
+  grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr);
+}
+.fact-line {
+  overflow-wrap: anywhere;
+}
+/* Phones, animated sequence only: a fixed-height stage tall enough for every layer (the 800:360
+   box was shorter than its content, so the chart and the fact list ran into the caption), charts
+   sit under their heading, and the SVG axis text is scaled up so it is readable at ~45% scale. */
+@media (max-width: 599px) and (prefers-reduced-motion: no-preference) {
+  .hero-layers {
+    aspect-ratio: auto;
+    height: 14rem;
+    max-height: none;
+  }
+  .hero-layer {
+    grid-template-rows: auto auto;
+    align-content: start;
+  }
+  .hero-svg {
+    height: auto;
+    overflow: visible;
+  }
+  .hero-svg [data-axis] {
+    font-size: 22px;
+  }
+  .hero-svg > text {
+    font-size: 21px;
+  }
+  .hero-factors {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+  .fact-list {
+    gap: 0.4rem;
+    font-size: 1rem;
+  }
+}
+/* Phones held sideways (wide but short): the 40dvh stage is only ~156px, so the fact list is
+   tightened to fit above the caption. */
+@media (min-width: 600px) and (max-height: 500px) and (prefers-reduced-motion: no-preference) {
+  .hero-factors {
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .fact-list {
+    gap: 0.2rem;
+    font-size: 0.95rem;
+  }
+}
+/* The smallest phones (320px): four nav tabs at full padding are 11px wider than the screen. */
+@media (max-width: 359px) {
+  .nav-link {
+    padding-inline: 0.45rem;
+  }
+}
+
 /* Reduced motion: no scrubbing, no animation; the four end states form a static strip. */
 @media (prefers-reduced-motion: reduce) {
   .hero-runway {
@@ -598,6 +662,7 @@ select {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
     gap: 1rem;
     aspect-ratio: auto;
+    max-height: none; /* the 40dvh cap is for the pinned stage; the static strip must not clip into the caption */
   }
   .hero-layer {
     position: static;
