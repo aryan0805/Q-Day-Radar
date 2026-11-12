@@ -2138,6 +2138,13 @@ def _p6_clone() -> Path:
         d = Path(tempfile.mkdtemp(prefix="qday-public-"))
         url = f"https://github.com/{P6_PUBLIC_REPO}.git"
         _p6_git("clone", "--mirror", "-q", url, str(d / "mirror.git"), cwd=d)
+        # An empty or partial repo must fail every public check, never pass it vacuously.
+        refs = set(_p6_git("for-each-ref", "--format=%(refname)", cwd=d / "mirror.git").split())
+        local_tags = {f"refs/tags/{t}" for t in _p6_git("tag", "--list", "phase-*-done").split()}
+        missing = sorted(({"refs/heads/main"} | local_tags) - refs)
+        if missing:
+            raise RuntimeError(f"{P6_PUBLIC_REPO} lacks {', '.join(missing[:4])}"
+                               + (f" (+{len(missing) - 4})" if len(missing) > 4 else ""))
         _p6_git("clone", "-q", str(d / "mirror.git"), str(d / "work"), cwd=d)
         _P6["dir"] = d
     return _P6["dir"]
