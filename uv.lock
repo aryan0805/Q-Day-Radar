@@ -4137,7 +4137,7 @@ wheels = [
 
 [[package]]
 name = "qiskit-ibm-runtime"
-version = "0.51.0"
+version = "0.52.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ibm-platform-services" },
@@ -4156,9 +4156,9 @@ dependencies = [
     { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dd/33/a6ff6aad92fef92a733f376204083f0cb6b1e0dadddf8ed85d7e63168f62/qiskit_ibm_runtime-0.51.0.tar.gz", hash = "sha256:8873224137d4eb0e2187813252bc5e84ce73dfce7f17c954d25d51c74a6b4827", size = 3690046, upload-time = "2026-10-22T19:07:39.43Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/83/13/70dd0acd8e02f3aea26193ce23671722ccd7c98ec8718c909091355d9472/qiskit_ibm_runtime-0.52.0.tar.gz", hash = "sha256:b179da1e0fb6e2dc42e0f87ab3c017f58ea490feeb9b23eed11a99726b6976f7", size = 3692373, upload-time = "2026-11-09T17:43:00.396Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/c5/7c14b2f83b526aa9fb2df8802b631853fb7ad5a644f19cb1e5e6c1f5bcd7/qiskit_ibm_runtime-0.51.0-py3-none-any.whl", hash = "sha256:eb3fd3dbf09e7a066106fc557bb4beb8a3cbf3cbc40623c8e9647db00ed7c28c", size = 1989560, upload-time = "2026-10-22T19:07:37.448Z" },
+    { url = "https://files.pythonhosted.org/packages/46/a6/d7e6ae89428ceda6def665237789a18353cec8a873ea1bba47235613a2f5/qiskit_ibm_runtime-0.52.0-py3-none-any.whl", hash = "sha256:eb8cd5359a1712e3e66a9839c0aa4fe1d8852f641afecfbdc1ff68dd8a32f3e9", size = 1990440, upload-time = "2026-11-09T17:42:58.1Z" },
 ]
 
 [[package]]
